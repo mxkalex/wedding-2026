@@ -366,7 +366,22 @@
         /* ============================================================
            DRESSCODE
         ============================================================ */
-        #dresscode { background: var(--beige-pale); }
+        #dresscode {
+            background: var(--beige-pale);
+            position: relative;
+            overflow: hidden;
+        }
+        .dc-bg {
+            position: absolute;
+            inset: -60px;
+            background: url('дресскод/женский образ 1.png') center / cover no-repeat;
+            filter: blur(60px);
+            -webkit-filter: blur(60px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+        #dresscode > .container { position: relative; z-index: 1; }
 
         .dc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
         @media (max-width: 768px) { .dc-grid { grid-template-columns: 1fr; } }
@@ -417,6 +432,136 @@
         .dc-notice strong { color: #c04040; }
 
         /* ============================================================
+           DRESSCODE CAROUSEL
+        ============================================================ */
+        .dc-carousel-wrap {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            background: var(--white);
+        }
+        .dc-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .dc-carousel-track {
+            display: flex;
+            transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            cursor: grab;
+            user-select: none;
+        }
+        .dc-carousel-track.dragging { cursor: grabbing; transition: none; }
+        .dc-slide { min-width: 100%; }
+        .dc-slide-rules { padding: 2rem; }
+        .dc-slide-photo {
+            display: flex; align-items: center; justify-content: center;
+            background: var(--beige-pale);
+        }
+        .dc-slide-photo img {
+            width: 100%; max-width: 526px;
+            height: auto; aspect-ratio: 526 / 590;
+            object-fit: contain; display: block;
+            margin: 0 auto;
+        }
+        .dc-photo-placeholder {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.9rem; width: 100%; min-height: 380px;
+            padding: 2rem; text-align: center;
+        }
+        .ph-icon  { font-size: 3.8rem; opacity: 0.5; }
+        .ph-label {
+            font-family: var(--font-h); font-size: 1.35rem;
+            font-style: italic; color: var(--text-light);
+        }
+        .ph-hint {
+            font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+            color: var(--beige); background: var(--white);
+            padding: 0.3rem 1rem; border-radius: 50px;
+            border: 1px dashed var(--beige);
+        }
+        .dc-nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 38px; height: 38px; border-radius: 50%;
+            background: rgba(255,250,246,0.92); backdrop-filter: blur(8px);
+            border: 1.5px solid var(--beige-light);
+            box-shadow: 0 2px 12px rgba(24,74,0,0.13);
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 1.3rem; line-height: 1;
+            color: var(--green);
+            transition: background var(--tr), color var(--tr), border-color var(--tr);
+            z-index: 5; user-select: none;
+        }
+        .dc-nav-btn:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+        .dc-nav-prev { left: 10px; }
+        .dc-nav-next { right: 10px; }
+        .dc-dots {
+            display: flex; justify-content: center; align-items: center;
+            gap: 7px; padding: 0.8rem 1rem;
+            background: var(--white); border-top: 1px solid var(--beige-light);
+        }
+        .dc-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--beige-light);
+            transition: background 0.25s, transform 0.25s;
+            cursor: pointer;
+        }
+        .dc-dot.active { background: var(--green); transform: scale(1.4); }
+        @media (max-width: 768px) {
+            .dc-slide-rules { padding: 1.25rem; }
+            .dc-slide-photo img { max-width: 100%; }
+            .dc-photo-placeholder { min-height: 260px; }
+        }
+
+        /* ============================================================
+           SWATCH POPUP
+        ============================================================ */
+        .swatch-c { cursor: pointer; }
+        #swatchPopup {
+            position: fixed; z-index: 3000;
+            background: var(--white); border-radius: var(--radius);
+            box-shadow: 0 16px 48px rgba(24,74,0,0.18), 0 2px 8px rgba(0,0,0,0.09);
+            overflow: hidden; width: 220px;
+            opacity: 0; pointer-events: none;
+            transform: scale(0.9) translateY(8px);
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+        #swatchPopup.sp-visible {
+            opacity: 1; pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+        .sp-img { width: 100%; height: auto; object-fit: contain; display: none; }
+        .sp-img-placeholder {
+            width: 100%; height: 180px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem;
+        }
+        .sp-caption {
+            padding: 0.6rem 1rem;
+            font-size: 0.73rem; font-weight: 700;
+            letter-spacing: 0.13em; text-transform: uppercase;
+            color: var(--text-light); text-align: center;
+            border-top: 1px solid var(--beige-light);
+        }
+        #spOverlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.38); z-index: 2999;
+        }
+        #spOverlay.sp-visible { display: block; }
+        @media (max-width: 600px) {
+            #swatchPopup {
+                position: fixed !important;
+                top: 50% !important; left: 50% !important;
+                transform: translate(-50%, -50%) scale(0.9) !important;
+                width: min(85vw, 280px);
+            }
+            #swatchPopup.sp-visible {
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+        }
+
+        /* ============================================================
            GIFTS
         ============================================================ */
         #gifts { background: var(--white); }
@@ -457,6 +602,434 @@
         .wish-card h3     { color: var(--green); font-size: 1.25rem; margin-bottom: 0.1rem; }
         .wish-card .handle{ font-size: 0.78rem; color: var(--text-light); }
         .wish-soon { font-family: var(--font-h); font-style: italic; color: var(--text-light); font-size: 1.05rem; text-align: center; padding: 1.2rem 0; }
+
+        /* ============================================================
+           MUSIC
+        ============================================================ */
+        #music {
+            background: var(--beige-pale);
+            position: relative;
+            overflow: hidden;
+        }
+        .music-bg {
+            position: absolute;
+            inset: -50px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(45px);
+            -webkit-filter: blur(45px);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .music-bg.active { opacity: 0.3; }
+        #music > .container { position: relative; z-index: 1; }
+
+        .music-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .music-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--green);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--green);
+            font-family: var(--font-b);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background var(--tr), color var(--tr), box-shadow var(--tr);
+        }
+        .music-tab:hover {
+            background: rgba(24,74,0,0.06);
+        }
+        .music-tab.active {
+            background: var(--green);
+            color: var(--white);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .music-tab-icon {
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
+        .music-player {
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            background: var(--white);
+        }
+
+        .ap-panel {
+            display: none;
+            width: 100%;
+        }
+        .ap-panel.active {
+            display: block;
+        }
+
+        .ap-now-playing {
+            text-align: center;
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+        .ap-track-title {
+            font-family: var(--font-h);
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--green);
+            min-height: 1.4em;
+        }
+
+        .ap-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            padding: 0.8rem 0;
+        }
+        .ap-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--green);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: color var(--tr), transform var(--tr);
+        }
+        .ap-btn:hover { color: var(--green-light); }
+        .ap-btn:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+        .ap-btn:active { transform: scale(0.92); }
+        .ap-btn svg { display: block; }
+
+        .ap-btn--prev, .ap-btn--next { width: 36px; height: 36px; }
+        .ap-btn--play {
+            width: 52px; height: 52px;
+            background: var(--green);
+            color: var(--white);
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+            transition: background var(--tr), box-shadow var(--tr), transform var(--tr);
+        }
+        .ap-btn--play:hover {
+            background: var(--green-light);
+            box-shadow: var(--shadow-hover);
+        }
+        .ap-btn--play:active { transform: scale(0.95); }
+        .ap-btn--play svg { margin-left: 2px; }
+
+        .ap-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0 1.5rem 1rem;
+        }
+        .ap-time {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-variant-numeric: tabular-nums;
+            min-width: 32px;
+            text-align: center;
+        }
+        .ap-progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--beige-light);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            touch-action: none;
+        }
+        .ap-progress-fill {
+            position: absolute;
+            left: 0; top: 0;
+            height: 100%;
+            background: var(--pink);
+            border-radius: 2px;
+            pointer-events: none;
+            width: 0%;
+        }
+        .ap-progress-thumb {
+            position: absolute;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--pink-dark);
+            border: 2px solid var(--white);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+            top: 50%;
+            transform: translate(-50%, -50%);
+            left: 0%;
+            opacity: 0;
+            transition: opacity 0.15s;
+            pointer-events: none;
+        }
+        .ap-progress-bar:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+        .ap-progress-bar:hover .ap-progress-thumb,
+        .ap-progress-bar:focus .ap-progress-thumb,
+        .ap-progress-bar.seeking .ap-progress-thumb {
+            opacity: 1;
+        }
+
+        .ap-tracklist {
+            list-style: none;
+            padding: 0.4rem 0.5rem 0.6rem;
+            border-top: 1px solid var(--beige-light);
+            margin: 0;
+        }
+        .ap-track {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.55rem 0.8rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background var(--tr);
+        }
+        .ap-track:hover { background: var(--beige-pale); }
+        .ap-track.active { background: rgba(255,156,156,0.12); }
+
+        .ap-track-num {
+            width: 1.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+        .ap-track-name {
+            flex: 1;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Equalizer bars animation */
+        .ap-eq { display: none; gap: 1px; align-items: flex-end; height: 12px; }
+        .ap-track.active .ap-eq { display: inline-flex; }
+        .ap-track.active .ap-track-idx { display: none; }
+        .ap-eq-bar {
+            width: 2px;
+            background: var(--pink);
+            border-radius: 1px;
+            animation: eqBounce 0.6s ease-in-out infinite alternate;
+        }
+        .ap-eq-bar:nth-child(1) { height: 4px; animation-delay: 0s; }
+        .ap-eq-bar:nth-child(2) { height: 8px; animation-delay: 0.15s; }
+        .ap-eq-bar:nth-child(3) { height: 5px; animation-delay: 0.3s; }
+        .ap-track.paused .ap-eq-bar { animation-play-state: paused; }
+
+        @keyframes eqBounce {
+            from { height: 2px; }
+            to { height: 12px; }
+        }
+
+        @media (max-width: 600px) {
+            .music-tabs { gap: 0.6rem; }
+            .music-tab { padding: 0.65rem 1.3rem; font-size: 0.7rem; }
+            .ap-now-playing { padding: 1.2rem 1rem 0.3rem; }
+            .ap-progress { padding: 0 1rem 0.8rem; }
+            .ap-tracklist { padding: 0.3rem 0.3rem 0.5rem; }
+            .ap-track { padding: 0.5rem 0.6rem; }
+            .ap-btn--play { width: 46px; height: 46px; }
+        }
+
+        /* ============================================================
+           MINI PLAYER (sticky bottom bar)
+        ============================================================ */
+        .mp-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 990;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(13, 42, 0, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 156, 156, 0.15);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1);
+        }
+        .mp-bar.visible {
+            transform: translateY(0);
+            will-change: transform;
+        }
+
+        /* Avatar — playlist switcher */
+        .mp-avatar {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            border: 2px solid var(--pink);
+            background: var(--green);
+            color: var(--white);
+            font-family: var(--font-h);
+            font-size: 1.3rem;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color var(--tr), transform var(--tr);
+            padding: 0;
+            overflow: hidden;
+        }
+        .mp-avatar:hover { border-color: var(--white); transform: scale(1.08); }
+        .mp-avatar:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+        .mp-avatar img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Track info + progress */
+        .mp-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .mp-title {
+            font-family: var(--font-h);
+            font-style: italic;
+            font-size: 0.88rem;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+        .mp-playlist-label {
+            font-family: var(--font-b);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 250, 246, 0.5);
+            line-height: 1;
+        }
+        .mp-progress-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 250, 246, 0.15);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            touch-action: none;
+        }
+        .mp-progress-bar::before {
+            content: '';
+            position: absolute;
+            top: -10px; bottom: -10px;
+            left: 0; right: 0;
+        }
+        .mp-progress-fill {
+            position: absolute;
+            left: 0; top: 0;
+            height: 100%;
+            background: var(--pink);
+            border-radius: 2px;
+            width: 0%;
+            pointer-events: none;
+        }
+
+        /* Controls */
+        .mp-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+        .mp-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 250, 246, 0.8);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 50%;
+            transition: color var(--tr), transform var(--tr);
+        }
+        .mp-btn:hover { color: var(--white); }
+        .mp-btn:active { transform: scale(0.9); }
+        .mp-btn:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+        .mp-btn svg { display: block; }
+
+        .mp-btn--play {
+            width: 36px; height: 36px;
+            background: var(--pink);
+            color: var(--green);
+            border-radius: 50%;
+        }
+        .mp-btn--play:hover { background: var(--pink-dark); color: var(--green); }
+
+        /* Volume */
+        .mp-volume {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .mp-vol-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 250, 246, 0.2);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        .mp-vol-slider:focus-visible {
+            outline: 2px solid var(--pink);
+            outline-offset: 3px;
+        }
+        .mp-vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--pink);
+            cursor: pointer;
+        }
+        .mp-vol-slider::-moz-range-thumb {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--pink);
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Close button */
+        .mp-btn--close {
+            color: rgba(255, 250, 246, 0.4);
+            padding: 2px;
+        }
+        .mp-btn--close:hover { color: var(--pink); }
+
+        @media (max-width: 600px) {
+            .mp-bar { gap: 0.5rem; padding: 0.45rem 0.6rem; }
+            .mp-avatar { width: 38px; height: 38px; font-size: 1.1rem; }
+            .mp-btn--play { width: 32px; height: 32px; }
+            .mp-title { font-size: 0.78rem; }
+            .mp-volume { display: none; }
+            .mp-controls { gap: 0.2rem; }
+        }
 
         /* ============================================================
            RSVP
@@ -697,6 +1270,7 @@
         }
         #scrollTop.show { opacity: 1; transform: none; }
         #scrollTop:hover { background: var(--green-light); transform: translateY(-3px) !important; }
+        .mp-bar.visible ~ #scrollTop { bottom: calc(2rem + 60px); }
     </style>
 </head>
 <body>
@@ -709,6 +1283,7 @@
         <li><a href="#program"   onclick="closeNav()">Программа</a></li>
         <li><a href="#dresscode" onclick="closeNav()">Дресс-код</a></li>
         <li><a href="#gifts"     onclick="closeNav()">Подарки</a></li>
+        <li><a href="#music"     onclick="closeNav()">Музыка</a></li>
         <li><a href="#rsvp"      onclick="closeNav()">Участие</a></li>
         <li><a href="#contacts"  onclick="closeNav()">Контакты</a></li>
     </ul>
@@ -753,6 +1328,86 @@
     <div class="hero-btns">
         <a href="#rsvp"    class="btn btn-green">Подтвердить участие</a>
         <a href="#program" class="btn btn-outline">Программа дня</a>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ MUSIC ═══════════════════════════════════ -->
+<section id="music" aria-labelledby="musicHeading">
+    <div class="music-bg" id="musicBg" aria-hidden="true"></div>
+    <div class="container">
+        <div class="sec-header reveal">
+            <span class="label">Музыка</span>
+            <h2 id="musicHeading">Включи свой вайб</h2>
+        </div>
+
+        <div class="music-tabs reveal" role="tablist" aria-label="Плейлисты">
+            <button class="music-tab active" data-playlist="bride" type="button"
+                    role="tab" aria-selected="true" aria-controls="playlistBride" id="tab-bride">
+                <span class="music-tab-icon" aria-hidden="true">&#9825;</span> Вайб невесты
+            </button>
+            <button class="music-tab" data-playlist="groom" type="button"
+                    role="tab" aria-selected="false" aria-controls="playlistGroom" id="tab-groom" tabindex="-1">
+                <span class="music-tab-icon" aria-hidden="true">&#9834;</span> Вайб жениха
+            </button>
+        </div>
+
+        <div class="music-player reveal">
+            <!-- Плейлист невесты -->
+            <div class="ap-panel active" id="playlistBride" role="tabpanel" aria-labelledby="tab-bride">
+                <div class="ap-now-playing">
+                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                </div>
+                <div class="ap-controls">
+                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                </div>
+                <div class="ap-progress">
+                    <span class="ap-time ap-time--current">0:00</span>
+                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="ap-progress-fill"></div>
+                        <div class="ap-progress-thumb"></div>
+                    </div>
+                    <span class="ap-time ap-time--duration">0:00</span>
+                </div>
+                <ol class="ap-tracklist" aria-label="Плейлист Анастасии"></ol>
+            </div>
+
+            <!-- Плейлист жениха -->
+            <div class="ap-panel" id="playlistGroom" role="tabpanel" aria-labelledby="tab-groom">
+                <div class="ap-now-playing">
+                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                </div>
+                <div class="ap-controls">
+                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                </div>
+                <div class="ap-progress">
+                    <span class="ap-time ap-time--current">0:00</span>
+                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="ap-progress-fill"></div>
+                        <div class="ap-progress-thumb"></div>
+                    </div>
+                    <span class="ap-time ap-time--duration">0:00</span>
+                </div>
+                <ol class="ap-tracklist" aria-label="Плейлист Александра"></ol>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -877,6 +1532,7 @@
 
 <!-- ═══════════════════════════════════════ DRESSCODE ════════════════════════════════ -->
 <section id="dresscode">
+    <div class="dc-bg" aria-hidden="true"></div>
     <div class="container">
         <div class="sec-header reveal">
             <span class="label">Внешний вид</span>
@@ -889,64 +1545,103 @@
                 <p>Предпочтительны оттенки из нашей цветовой палитры: нежный розовый, глубокий зелёный и тёплый бежевый.</p>
                 <div class="swatches" aria-label="Палитра дресс-кода">
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#FFCECE" title="Пудровый розовый"></div>
+                        <div class="swatch-c" style="background:#FFCECE" title="Пудровый розовый" data-ref="дресскод/1х1 мужской образ пудровый.png"></div>
                         <span>Пудровый</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#FF9C9C" title="#FF9C9C"></div>
+                        <div class="swatch-c" style="background:#FF9C9C" title="Розовый" data-ref="дресскод/1х1 женский образ розовый.png"></div>
                         <span>Розовый</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#5e9640" title="Светло-зелёный"></div>
+                        <div class="swatch-c" style="background:#5e9640" title="Оливковый" data-ref="дресскод/1х1 женский образ оливковый.png"></div>
                         <span>Оливковый</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#184A00" title="#184A00"></div>
+                        <div class="swatch-c" style="background:#184A00" title="Зелёный" data-ref="дресскод/1х1 образ зелёный.png"></div>
                         <span>Зелёный</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#DEB192" title="#DEB192"></div>
+                        <div class="swatch-c" style="background:#DEB192" title="Бежевый" data-ref="дресскод/1х1 образ бежевый.png"></div>
                         <span>Бежевый</span>
                     </div>
                     <div class="swatch">
-                        <div class="swatch-c" style="background:#F5DBBB" title="Светлый бежевый"></div>
+                        <div class="swatch-c" style="background:#F5DBBB" title="Песочный" data-ref="дресскод/1х1 образ песочный.png"></div>
                         <span>Песочный</span>
                     </div>
                 </div>
             </div>
-            <div class="dc-card reveal">
-                <div class="dc-card-sections">
-                    <div class="dc-section">
-                        <div class="dc-section-title">
-                            <span class="dc-icon" aria-hidden="true">👗</span> Дамы
+            <div class="dc-carousel-wrap reveal">
+                <div class="dc-carousel">
+                    <div class="dc-carousel-track" id="dcTrack">
+
+                        <!-- Слайд 0: Правила -->
+                        <div class="dc-slide dc-slide-rules">
+                            <div class="dc-card-sections">
+                                <div class="dc-section">
+                                    <div class="dc-section-title">
+                                        <span class="dc-icon" aria-hidden="true">👗</span> Дамы
+                                    </div>
+                                    <ul class="dc-list">
+                                        <li><span>Вечернее или коктейльное платье</span></li>
+                                        <li><span>Элегантный брючный костюм</span></li>
+                                        <li><span>Оттенки из палитры бренда</span></li>
+                                        <li><span>Удобная обувь — будем танцевать!</span></li>
+                                    </ul>
+                                    <div class="dc-notice">
+                                        <strong>Просьба:</strong> чисто белый и айвори — только для невесты. Спасибо за понимание!
+                                    </div>
+                                </div>
+                                <div class="dc-section">
+                                    <div class="dc-section-title">
+                                        <span class="dc-icon" aria-hidden="true">🤵</span> Джентльмены
+                                    </div>
+                                    <ul class="dc-list">
+                                        <li><span>Классический костюм-двойка или тройка</span></li>
+                                        <li><span>Смокинг приветствуется</span></li>
+                                        <li><span>Оттенки зелёного, бежевого, розового</span></li>
+                                        <li><span>Галстук или галстук-бабочка</span></li>
+                                        <li><span>Классические оксфорды или дерби</span></li>
+                                    </ul>
+                                    <div class="dc-notice">
+                                        <strong>Просьба:</strong> полностью чёрный наряд не приветствуется — добавьте акцент в палитре бренда.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <ul class="dc-list">
-                            <li><span>Вечернее или коктейльное платье</span></li>
-                            <li><span>Элегантный брючный костюм</span></li>
-                            <li><span>Оттенки из палитры бренда</span></li>
-                            <li><span>Удобная обувь — будем танцевать!</span></li>
-                        </ul>
-                        <div class="dc-notice">
-                            <strong>Просьба:</strong> чисто белый и айвори — только для невесты. Спасибо за понимание!
+
+                        <!-- Слайд 1: Женский образ 1 -->
+                        <div class="dc-slide dc-slide-photo">
+                            <img src="дресскод/женский образ 1.png" alt="Женский образ" loading="lazy">
                         </div>
-                    </div>
-                    <div class="dc-section">
-                        <div class="dc-section-title">
-                            <span class="dc-icon" aria-hidden="true">🤵</span> Джентльмены
+
+                        <!-- Слайд 2: Мужской образ 1 -->
+                        <div class="dc-slide dc-slide-photo">
+                            <img src="дресскод/мужской образ 1.png" alt="Мужской образ" loading="lazy">
                         </div>
-                        <ul class="dc-list">
-                            <li><span>Классический костюм-двойка или тройка</span></li>
-                            <li><span>Смокинг приветствуется</span></li>
-                            <li><span>Оттенки зелёного, бежевого, розового</span></li>
-                            <li><span>Галстук или галстук-бабочка</span></li>
-                            <li><span>Классические оксфорды или дерби</span></li>
-                        </ul>
-                        <div class="dc-notice">
-                            <strong>Просьба:</strong> полностью чёрный наряд не приветствуется — добавьте акцент в палитре бренда.
+
+                        <!-- Слайд 3: Женский образ 2 -->
+                        <div class="dc-slide dc-slide-photo">
+                            <img src="дресскод/женский образ 2.png" alt="Женский образ 2" loading="lazy">
                         </div>
-                    </div>
+
+                        <!-- Слайд 4: Мужской образ 2 -->
+                        <div class="dc-slide dc-slide-photo">
+                            <img src="дресскод/мужской образ 2.png" alt="Мужской образ 2" loading="lazy">
+                        </div>
+
+                    </div><!-- /dc-carousel-track -->
+
+                    <button class="dc-nav-btn dc-nav-prev" id="dcPrev" aria-label="Предыдущий слайд">&#8249;</button>
+                    <button class="dc-nav-btn dc-nav-next" id="dcNext" aria-label="Следующий слайд">&#8250;</button>
+                </div><!-- /dc-carousel -->
+                <div class="dc-dots" id="dcDots">
+                    <div class="dc-dot active" data-idx="0"></div>
+                    <div class="dc-dot" data-idx="1"></div>
+                    <div class="dc-dot" data-idx="2"></div>
+                    <div class="dc-dot" data-idx="3"></div>
+                    <div class="dc-dot" data-idx="4"></div>
                 </div>
-            </div>
+            </div><!-- /dc-carousel-wrap -->
         </div>
     </div>
 </section>
@@ -965,30 +1660,9 @@
                Если вы хотите порадовать нас чем-то материальным — денежный конверт станет идеальным выбором.
                Он поможет нам создать уютный семейный дом и воплотить наши мечты.</p>
         </div>
-        <div class="wish-grid">
-            <div class="wish-card reveal">
-                <div class="wish-head">
-                    <div class="wish-ava groom" aria-hidden="true">🤵</div>
-                    <div>
-                        <h3>Вишлист жениха</h3>
-                        <span class="handle">@mxkalex</span>
-                    </div>
-                </div>
-                <p class="wish-soon">Скоро появится вишлист ✨</p>
-            </div>
-            <div class="wish-card reveal">
-                <div class="wish-head">
-                    <div class="wish-ava bride" aria-hidden="true">👰</div>
-                    <div>
-                        <h3>Вишлист невесты</h3>
-                        <span class="handle">@mak_nast</span>
-                    </div>
-                </div>
-                <p class="wish-soon">Скоро появится вишлист ✨</p>
-            </div>
-        </div>
     </div>
 </section>
+
 
 <!-- ═══════════════════════════════════════ RSVP ════════════════════════════════════ -->
 <section id="rsvp">
@@ -1007,16 +1681,6 @@
                 <div class="form-group">
                     <label class="form-label" for="fullName">Ваше имя и фамилия *</label>
                     <input type="text" id="fullName" name="fullName" placeholder="Иванова Мария Ивановна" required autocomplete="name">
-                </div>
-
-                <!-- Попутчики -->
-                <div class="form-group">
-                    <span class="form-label">Кто едет вместе с вами?</span>
-                    <p class="companion-hint">Укажите имя и фамилию партнёра или родственников, которые приедут вместе с вами</p>
-                    <div class="companions-list" id="companionsList"></div>
-                    <button type="button" class="btn-add-companion" id="addCompanion">
-                        + Добавить попутчика
-                    </button>
                 </div>
 
                 <!-- Присутствие -->
@@ -1184,6 +1848,7 @@
                 <li><a href="#program">Программа</a></li>
                 <li><a href="#dresscode">Дресс-код</a></li>
                 <li><a href="#gifts">Подарки</a></li>
+                <li><a href="#music">Музыка</a></li>
                 <li><a href="#rsvp">RSVP</a></li>
                 <li><a href="#contacts">Контакты</a></li>
             </ul>
@@ -1210,8 +1875,51 @@
     </div>
 </footer>
 
+<!-- ═══════════════════════════════════ MINI PLAYER ═══════════════════════════════ -->
+<div id="miniPlayer" class="mp-bar" aria-label="Мини-плеер" role="region">
+    <button class="mp-avatar" id="mpAvatar" type="button" aria-label="Переключить плейлист">
+        <img class="mp-avatar-img" id="mpAvatarImg" src="плейлист/аватарки для плейлиста/wifey.jpg" alt="Невеста">
+    </button>
+    <div class="mp-info">
+        <span class="mp-playlist-label" id="mpPlaylistLabel">Невеста</span>
+        <div class="mp-title" id="mpTitle" aria-live="polite">Выберите трек</div>
+        <div class="mp-progress-bar" id="mpProgressBar">
+            <div class="mp-progress-fill" id="mpProgressFill"></div>
+        </div>
+    </div>
+    <div class="mp-controls">
+        <button class="mp-btn mp-btn--prev" id="mpPrev" type="button" aria-label="Предыдущий трек">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+        </button>
+        <button class="mp-btn mp-btn--play" id="mpPlay" type="button" aria-label="Воспроизвести">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mp-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mp-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        </button>
+        <button class="mp-btn mp-btn--next" id="mpNext" type="button" aria-label="Следующий трек">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+    </div>
+    <div class="mp-volume">
+        <button class="mp-btn mp-btn--vol" id="mpVolBtn" type="button" aria-label="Громкость">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="mpVolIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.49 4.49 0 0 0 2.5-3.5zM14 3.23v2.06a7.007 7.007 0 0 1 0 13.42v2.06A9.003 9.003 0 0 0 14 3.23z"/></svg>
+        </button>
+        <input type="range" class="mp-vol-slider" id="mpVolSlider" min="0" max="100" value="100" aria-label="Уровень громкости">
+    </div>
+    <button class="mp-btn mp-btn--close" id="mpClose" type="button" aria-label="Закрыть плеер">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+</div>
+
 <!-- scroll-to-top -->
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Наверх">↑</button>
+
+<!-- Swatch Popup -->
+<div id="swatchPopup" role="tooltip" aria-hidden="true">
+    <img class="sp-img" id="spImg" src="" alt="">
+    <div class="sp-img-placeholder" id="spPlaceholder"></div>
+    <div class="sp-caption" id="spCaption"></div>
+</div>
+<div id="spOverlay"></div>
 
 <!-- ═══════════════════════════════════════ SCRIPTS ══════════════════════════════════ -->
 <script>
@@ -1286,27 +1994,6 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ── Companions ──────────────────────────────────────────────── */
-let companionCount = 0;
-document.getElementById('addCompanion').addEventListener('click', () => {
-    companionCount++;
-    const list = document.getElementById('companionsList');
-    const row = document.createElement('div');
-    row.className = 'companion-row';
-    row.innerHTML = `
-        <input type="text" class="companion-input" name="companion_${companionCount}"
-               placeholder="Имя и фамилия попутчика" autocomplete="off">
-        <button type="button" class="companion-remove" aria-label="Удалить попутчика" title="Удалить">×</button>`;
-    row.querySelector('.companion-remove').addEventListener('click', () => {
-        row.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(-6px)';
-        setTimeout(() => row.remove(), 160);
-    });
-    list.appendChild(row);
-    row.querySelector('input').focus();
-});
-
 /* ── RSVP form ───────────────────────────────────────────────── */
 document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -1334,8 +2021,6 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         return;
     }
 
-    const companions = [...document.querySelectorAll('.companion-input')]
-        .map(i => i.value.trim()).filter(Boolean);
     const transport = this.querySelector('input[name="transport"]:checked');
     const drinks  = [...this.querySelectorAll('input[name="drinks"]:checked')].map(c => c.value).join(', ');
     const comment = document.getElementById('comment').value.trim();
@@ -1352,6 +2037,662 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     this.style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
 });
+
+/* ── Dresscode Carousel ──────────────────────────────────────── */
+(function() {
+    const track = document.getElementById('dcTrack');
+    if (!track) return;
+    const dotsEl = document.querySelectorAll('#dcDots .dc-dot');
+    const total  = dotsEl.length;
+    let cur = 0, startX = 0, isDrag = false;
+
+    function goTo(n) {
+        cur = ((n % total) + total) % total;
+        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+        dotsEl.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+    }
+
+    document.getElementById('dcNext').addEventListener('click', function() { goTo(cur + 1); });
+    document.getElementById('dcPrev').addEventListener('click', function() { goTo(cur - 1); });
+    dotsEl.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx); }); });
+
+    track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; isDrag = true; }, { passive: true });
+    track.addEventListener('touchend', function(e) {
+        if (!isDrag) return; isDrag = false;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 48) goTo(dx < 0 ? cur + 1 : cur - 1);
+    }, { passive: true });
+    track.addEventListener('mousedown',  function(e) { startX = e.clientX; isDrag = true;  track.classList.add('dragging'); });
+    track.addEventListener('mouseup',    function(e) {
+        if (!isDrag) return; isDrag = false; track.classList.remove('dragging');
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 48) goTo(dx < 0 ? cur + 1 : cur - 1);
+    });
+    track.addEventListener('mouseleave', function() { isDrag = false; track.classList.remove('dragging'); });
+})();
+
+/* ── Swatch Popup ────────────────────────────────────────────── */
+(function() {
+    const popup   = document.getElementById('swatchPopup');
+    const overlay = document.getElementById('spOverlay');
+    const img     = document.getElementById('spImg');
+    const ph      = document.getElementById('spPlaceholder');
+    const caption = document.getElementById('spCaption');
+    if (!popup) return;
+    let hideTimer;
+
+    function isMobile() { return window.matchMedia('(max-width:600px)').matches; }
+
+    function show(swatch) {
+        const c      = swatch.querySelector('.swatch-c');
+        const label  = (swatch.querySelector('span') || {}).textContent || '';
+        const imgSrc = c.dataset.ref || '';
+        caption.textContent = label;
+
+        if (imgSrc) {
+            img.src = imgSrc; img.style.display = 'block'; ph.style.display = 'none';
+        } else {
+            ph.style.background = c.style.background;
+            ph.style.display = 'flex'; img.style.display = 'none';
+        }
+
+        if (!isMobile()) {
+            const r = c.getBoundingClientRect();
+            let l = r.right + 14, t = r.top - 12;
+            if (l + 230 > window.innerWidth  - 8) l = r.left - 234;
+            if (t + 240 > window.innerHeight - 8) t = window.innerHeight - 248;
+            if (t < 8) t = 8;
+            popup.style.left = l + 'px';
+            popup.style.top  = t + 'px';
+        }
+
+        popup.classList.add('sp-visible');
+        popup.removeAttribute('aria-hidden');
+        if (isMobile()) overlay.classList.add('sp-visible');
+    }
+
+    function hide() {
+        popup.classList.remove('sp-visible');
+        overlay.classList.remove('sp-visible');
+        popup.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('.swatch').forEach(function(sw) {
+        const c = sw.querySelector('.swatch-c');
+        c.addEventListener('mouseenter', function() { clearTimeout(hideTimer); show(sw); });
+        c.addEventListener('mouseleave', function() { hideTimer = setTimeout(hide, 160); });
+        c.addEventListener('click', function(e) {
+            if (!isMobile()) return;
+            e.stopPropagation();
+            popup.classList.contains('sp-visible') ? hide() : show(sw);
+        });
+    });
+
+    popup.addEventListener('mouseenter', function() { clearTimeout(hideTimer); });
+    popup.addEventListener('mouseleave', function() { hideTimer = setTimeout(hide, 160); });
+    overlay.addEventListener('click', hide);
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.swatch-c') && !e.target.closest('#swatchPopup')) hide();
+    });
+})();
+
+/* ── Music audio player ── */
+(function() {
+    var tabsArr = Array.prototype.slice.call(document.querySelectorAll('.music-tab'));
+    if (!tabsArr.length) return;
+
+    /* ── Track data ── */
+    var PLAYLISTS = {
+        bride: [
+            { title: 'SQWOZ BAB \u2013 BAZA', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043d\u0435\u0432\u0435\u0441\u0442\u0430/SQWOZ BAB \u2013 BAZA (Official audio).m4a' },
+            { title: 'SQWOZ BAB \u2013 TOKYO', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043d\u0435\u0432\u0435\u0441\u0442\u0430/SQWOZ BAB \u2014 TOKYO (prod. DJ AUX) (Official audio).m4a' },
+            { title: 'Tokyo Drift', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043d\u0435\u0432\u0435\u0441\u0442\u0430/Tokyo Drift.m4a' },
+            { title: '\u041c\u043e\u043d\u0435\u0442\u043e\u0447\u043a\u0430 \u2013 \u041a\u0438\u0441 \u041a\u0438\u0441 \u041a\u0438\u0441', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043d\u0435\u0432\u0435\u0441\u0442\u0430/\u041c\u043e\u043d\u0435\u0442\u043e\u0447\u043a\u0430 - \u041a\u0438\u0441 \u041a\u0438\u0441 \u041a\u0438\u0441 (Live Video 2025).m4a' },
+            { title: '\u0420\u0423\u0421\u0421\u041a\u0410\u042f \u0414\u0423\u0428\u0410', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043d\u0435\u0432\u0435\u0441\u0442\u0430/\u0420\u0423\u0421\u0421\u041a\u0410\u042f \u0414\u0423\u0428\u0410.m4a' }
+        ],
+        groom: [
+            { title: '\u0414\u0430\u0439\u0442\u0435 \u0422\u0430\u043d\u043a! \u2014 \u0424\u0430\u043c\u0438\u043b\u0438\u044f', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u0414\u0430\u0439\u0442\u0435 \u0422\u0430\u043d\u043a! \u2014 \u0424\u0430\u043c\u0438\u043b\u0438\u044f.m4a' },
+            { title: '\u0414\u0414\u0422 \u2013 \u0412\u0430\u0448\u0438 \u0432\u0435\u0449\u0438 \u043c\u0451\u0440\u0442\u0432\u044b', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u0414\u0414\u0422 - \u0412\u0430\u0448\u0438 \u0432\u0435\u0449\u0438 \u043c\u0435\u0440\u0442\u0432\u044b (\u0422\u0432\u043e\u0440\u0447\u0435\u0441\u0442\u0432\u043e \u0432 \u043f\u0443\u0441\u0442\u043e\u0442\u0435 - 2. \u0410\u0443\u0434\u0438\u043e).m4a' },
+            { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041d\u0430 \u043a\u0440\u0430\u044e', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041d\u0430 \u043a\u0440\u0430\u044e (\u041f\u043e\u0441\u043b\u0435\u0434\u043d\u0438\u044f \u0430\u0440\u0438\u044f \u0422\u043e\u0434\u0434\u0430).m4a' },
+            { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041f\u0430\u043d\u0438\u043a\u0430 \u0432 \u0441\u0435\u043b\u0435', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041f\u0430\u043d\u0438\u043a\u0430 \u0432 \u0441\u0435\u043b\u0435.m4a' },
+            { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u0421\u0447\u0430\u0441\u0442\u044c\u0435', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u0421\u0447\u0430\u0441\u0442\u044c\u0435_ (\u0410\u0440\u0438\u044f \u0422\u043e\u0434\u0434\u0430).m4a' }
+        ]
+    };
+
+    /* ── Track background images (per-track mapping for #music section bg) ── */
+    var TRACK_BG = {
+        bride: [
+            'music_back_logo/sqwzbab.jpg',
+            'music_back_logo/sqwzbab.jpg',
+            'music_back_logo/tokyo.webp',
+            'music_back_logo/монеточка.jpeg',
+            'music_back_logo/русская душа.jpg'
+        ],
+        groom: [
+            'music_back_logo/Фамилия.png',
+            'music_back_logo/DDT.png',
+            'music_back_logo/Король и Шут.jpg',
+            'music_back_logo/Король и Шут.jpg',
+            'music_back_logo/Король и Шут.jpg'
+        ]
+    };
+    var musicBgEl = document.getElementById('musicBg');
+
+    var activePlaylist = 'bride';
+    var pState = {
+        bride: { index: 0, time: 0, wasPlaying: false, loaded: false },
+        groom: { index: 0, time: 0, wasPlaying: false, loaded: false }
+    };
+
+    var audio = new Audio();
+    audio.preload = 'metadata';
+
+    /* ── DOM cache per panel ── */
+    var panels = {};
+    ['bride', 'groom'].forEach(function(key) {
+        var el = document.getElementById(key === 'bride' ? 'playlistBride' : 'playlistGroom');
+        if (!el) return;
+        panels[key] = {
+            root: el,
+            title: el.querySelector('.ap-track-title'),
+            playBtn: el.querySelector('.ap-btn--play'),
+            prevBtn: el.querySelector('.ap-btn--prev'),
+            nextBtn: el.querySelector('.ap-btn--next'),
+            fill: el.querySelector('.ap-progress-fill'),
+            thumb: el.querySelector('.ap-progress-thumb'),
+            bar: el.querySelector('.ap-progress-bar'),
+            timeCur: el.querySelector('.ap-time--current'),
+            timeDur: el.querySelector('.ap-time--duration'),
+            list: el.querySelector('.ap-tracklist'),
+            icoPlay: el.querySelector('.ap-ico-play'),
+            icoPause: el.querySelector('.ap-ico-pause')
+        };
+    });
+
+    /* ── Mini-player DOM cache ── */
+    var mpEl = document.getElementById('miniPlayer');
+    var mpTitle = mpEl ? document.getElementById('mpTitle') : null;
+    var mpPlaylistLabel = mpEl ? document.getElementById('mpPlaylistLabel') : null;
+    var mpAvatarImg = mpEl ? document.getElementById('mpAvatarImg') : null;
+    var mpAvatar = mpEl ? document.getElementById('mpAvatar') : null;
+    var mpPlay = mpEl ? document.getElementById('mpPlay') : null;
+    var mpIcoPlay = mpEl ? mpEl.querySelector('.mp-ico-play') : null;
+    var mpIcoPause = mpEl ? mpEl.querySelector('.mp-ico-pause') : null;
+    var mpPrev = mpEl ? document.getElementById('mpPrev') : null;
+    var mpNext = mpEl ? document.getElementById('mpNext') : null;
+    var mpClose = mpEl ? document.getElementById('mpClose') : null;
+    var mpProgressBar = mpEl ? document.getElementById('mpProgressBar') : null;
+    var mpProgressFill = mpEl ? document.getElementById('mpProgressFill') : null;
+    var mpVolSlider = mpEl ? document.getElementById('mpVolSlider') : null;
+    var mpVolBtn = mpEl ? document.getElementById('mpVolBtn') : null;
+    var mpDismissed = false;
+    var MP_META = {
+        bride: { label: 'Невеста', img: 'плейлист/аватарки для плейлиста/wifey.jpg' },
+        groom: { label: 'Жених', img: 'плейлист/аватарки для плейлиста/husband.jpg' }
+    };
+
+    /* ── Helpers ── */
+    function fmtTime(s) {
+        if (isNaN(s) || !isFinite(s)) return '0:00';
+        var m = Math.floor(s / 60);
+        var sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    function escHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function encodePath(src) {
+        return src.split('/').map(encodeURIComponent).join('/');
+    }
+
+    function getPanel() { return panels[activePlaylist]; }
+
+    /* ── Render track lists ── */
+    ['bride', 'groom'].forEach(function(key) {
+        var p = panels[key];
+        if (!p) return;
+        var html = '';
+        PLAYLISTS[key].forEach(function(t, i) {
+            html += '<li class="ap-track" data-index="' + i + '" tabindex="0">' +
+                '<span class="ap-track-num">' +
+                    '<span class="ap-track-idx">' + (i + 1) + '</span>' +
+                    '<span class="ap-eq" aria-hidden="true"><span class="ap-eq-bar"></span><span class="ap-eq-bar"></span><span class="ap-eq-bar"></span></span>' +
+                '</span>' +
+                '<span class="ap-track-name">' + escHtml(t.title) + '</span>' +
+            '</li>';
+        });
+        p.list.innerHTML = html;
+    });
+
+    /* ── Update UI for a panel ── */
+    function highlightTrack(key, idx) {
+        var p = panels[key];
+        if (!p) return;
+        var items = p.list.querySelectorAll('.ap-track');
+        for (var i = 0; i < items.length; i++) {
+            items[i].classList.toggle('active', i === idx);
+            items[i].setAttribute('aria-current', i === idx ? 'true' : 'false');
+        }
+        p.title.textContent = PLAYLISTS[key][idx].title;
+        /* Sync music section background */
+        if (musicBgEl && TRACK_BG[key] && TRACK_BG[key][idx]) {
+            musicBgEl.style.backgroundImage = 'url(' + encodePath(TRACK_BG[key][idx]) + ')';
+            musicBgEl.classList.add('active');
+        }
+        /* Sync mini-player */
+        if (key === activePlaylist && mpTitle) {
+            mpTitle.textContent = PLAYLISTS[key][idx].title;
+            if (mpPlaylistLabel) mpPlaylistLabel.textContent = MP_META[key].label;
+            if (mpAvatarImg) mpAvatarImg.src = encodePath(MP_META[key].img);
+        }
+    }
+
+    function setPlayIcon(key, playing) {
+        var p = panels[key];
+        if (!p) return;
+        p.icoPlay.style.display = playing ? 'none' : 'block';
+        p.icoPause.style.display = playing ? 'block' : 'none';
+        p.playBtn.setAttribute('aria-label', playing ? '\u041f\u0430\u0443\u0437\u0430' : '\u0412\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0441\u0442\u0438');
+        /* Toggle eq animation */
+        var active = p.list.querySelector('.ap-track.active');
+        if (active) active.classList.toggle('paused', !playing);
+        /* Sync mini-player */
+        if (key === activePlaylist && mpIcoPlay) {
+            mpIcoPlay.style.display = playing ? 'none' : 'block';
+            mpIcoPause.style.display = playing ? 'block' : 'none';
+            mpPlay.setAttribute('aria-label', playing ? '\u041f\u0430\u0443\u0437\u0430' : '\u0412\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0441\u0442\u0438');
+        }
+    }
+
+    function setProgress(key, pct, cur, dur) {
+        var p = panels[key];
+        if (!p) return;
+        p.fill.style.width = pct + '%';
+        p.thumb.style.left = pct + '%';
+        p.timeCur.textContent = fmtTime(cur);
+        p.timeDur.textContent = fmtTime(dur);
+        p.bar.setAttribute('aria-valuenow', Math.round(pct));
+        p.bar.setAttribute('aria-valuetext', fmtTime(cur) + ' \u0438\u0437 ' + fmtTime(dur));
+    }
+
+    /* ── Load & play ── */
+    function loadTrack(key, idx, autoplay) {
+        pState[key].index = idx;
+        pState[key].loaded = true;
+        highlightTrack(key, idx);
+
+        if (key === activePlaylist) {
+            audio.src = encodePath(PLAYLISTS[key][idx].src);
+            audio.load();
+            if (autoplay) {
+                audio.play().catch(function() { setPlayIcon(key, false); });
+            }
+        }
+    }
+
+    /* ── Audio events ── */
+    audio.addEventListener('timeupdate', function() {
+        var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        setProgress(activePlaylist, pct, audio.currentTime, audio.duration);
+    });
+
+    audio.addEventListener('loadedmetadata', function() {
+        var p = getPanel();
+        if (p) p.timeDur.textContent = fmtTime(audio.duration);
+    });
+
+    audio.addEventListener('play', function() { setPlayIcon(activePlaylist, true); });
+    audio.addEventListener('pause', function() { setPlayIcon(activePlaylist, false); });
+
+    audio.addEventListener('ended', function() {
+        var tracks = PLAYLISTS[activePlaylist];
+        var next = pState[activePlaylist].index + 1;
+        if (next < tracks.length) {
+            loadTrack(activePlaylist, next, true);
+        } else {
+            setPlayIcon(activePlaylist, false);
+            setProgress(activePlaylist, 0, 0, audio.duration);
+            pState[activePlaylist].index = 0;
+            highlightTrack(activePlaylist, 0);
+        }
+    });
+
+    audio.addEventListener('error', function() {
+        var p = getPanel();
+        if (p) p.title.textContent = '\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0442\u0440\u0435\u043a';
+    });
+
+    /* ── Control buttons (event delegation) ── */
+    ['bride', 'groom'].forEach(function(key) {
+        var p = panels[key];
+        if (!p) return;
+
+        p.playBtn.addEventListener('click', function() {
+            if (!pState[key].loaded) {
+                loadTrack(key, 0, true);
+                return;
+            }
+            if (key !== activePlaylist) return;
+            if (audio.paused) {
+                audio.play().catch(function() {});
+            } else {
+                audio.pause();
+            }
+        });
+
+        p.prevBtn.addEventListener('click', function() {
+            if (!pState[key].loaded || key !== activePlaylist) return;
+            var wasPlaying = !audio.paused;
+            if (audio.currentTime > 3) {
+                audio.currentTime = 0;
+            } else {
+                var prev = (pState[key].index - 1 + PLAYLISTS[key].length) % PLAYLISTS[key].length;
+                loadTrack(key, prev, wasPlaying);
+            }
+        });
+
+        p.nextBtn.addEventListener('click', function() {
+            if (!pState[key].loaded || key !== activePlaylist) return;
+            var wasPlaying = !audio.paused;
+            var next = (pState[key].index + 1) % PLAYLISTS[key].length;
+            loadTrack(key, next, wasPlaying);
+        });
+
+        /* Track list clicks */
+        p.list.addEventListener('click', function(e) {
+            var li = e.target.closest('.ap-track');
+            if (!li) return;
+            var idx = parseInt(li.getAttribute('data-index'), 10);
+            if (isNaN(idx)) return;
+            loadTrack(key, idx, true);
+        });
+
+        /* Keyboard on track list items */
+        p.list.addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var li = e.target.closest('.ap-track');
+            if (!li) return;
+            e.preventDefault();
+            li.click();
+        });
+    });
+
+    /* ── Progress bar seeking ── */
+    ['bride', 'groom'].forEach(function(key) {
+        var p = panels[key];
+        if (!p) return;
+
+        function seek(e) {
+            if (key !== activePlaylist || !audio.duration) return;
+            var rect = p.bar.getBoundingClientRect();
+            var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            var pct = Math.max(0, Math.min(1, x / rect.width));
+            audio.currentTime = pct * audio.duration;
+        }
+
+        p.bar.addEventListener('mousedown', function(e) {
+            if (key !== activePlaylist || !audio.duration) return;
+            seek(e);
+            p.bar.classList.add('seeking');
+            function onMove(ev) { seek(ev); }
+            function onUp() {
+                p.bar.classList.remove('seeking');
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            }
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+
+        p.bar.addEventListener('touchstart', function(e) {
+            if (key !== activePlaylist || !audio.duration) return;
+            seek(e);
+            p.bar.classList.add('seeking');
+            function onMove(ev) { ev.preventDefault(); seek(ev); }
+            function onEnd() {
+                p.bar.classList.remove('seeking');
+                p.bar.removeEventListener('touchmove', onMove);
+                p.bar.removeEventListener('touchend', onEnd);
+            }
+            p.bar.addEventListener('touchmove', onMove, { passive: false });
+            p.bar.addEventListener('touchend', onEnd);
+        }, { passive: true });
+
+        /* Keyboard seeking on progress bar */
+        p.bar.addEventListener('keydown', function(e) {
+            if (key !== activePlaylist || !audio.duration) return;
+            var step = 5;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                audio.currentTime = Math.min(audio.duration, audio.currentTime + step);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                audio.currentTime = Math.max(0, audio.currentTime - step);
+            }
+        });
+    });
+
+    /* ── Tab switching with audio state ── */
+    function activateTab(key) {
+        /* Save current audio state */
+        if (pState[activePlaylist].loaded) {
+            pState[activePlaylist].time = audio.currentTime;
+            pState[activePlaylist].wasPlaying = !audio.paused;
+        }
+        audio.pause();
+        setPlayIcon(activePlaylist, false);
+
+        /* Toggle tabs */
+        tabsArr.forEach(function(t) {
+            var isActive = t.getAttribute('data-playlist') === key;
+            t.classList.toggle('active', isActive);
+            t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            t.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+
+        /* Toggle panels */
+        Object.keys(panels).forEach(function(k) {
+            panels[k].root.classList.toggle('active', k === key);
+        });
+
+        activePlaylist = key;
+
+        /* Restore new panel state */
+        if (pState[key].loaded) {
+            audio.src = encodePath(PLAYLISTS[key][pState[key].index].src);
+            audio.load();
+            var savedKey = key;
+            audio.addEventListener('loadedmetadata', function restoreTime() {
+                audio.currentTime = pState[savedKey].time;
+                var pct = audio.duration ? (pState[savedKey].time / audio.duration) * 100 : 0;
+                setProgress(savedKey, pct, pState[savedKey].time, audio.duration);
+                audio.removeEventListener('loadedmetadata', restoreTime);
+            });
+            highlightTrack(key, pState[key].index);
+        }
+    }
+
+    tabsArr.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            activateTab(tab.getAttribute('data-playlist'));
+        });
+    });
+
+    /* Arrow key navigation per WAI-ARIA tabs pattern */
+    var tablist = document.querySelector('.music-tabs');
+    if (tablist) {
+        tablist.addEventListener('keydown', function(e) {
+            var idx = tabsArr.indexOf(document.activeElement);
+            if (idx < 0) return;
+            var next = -1;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                next = (idx + 1) % tabsArr.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                next = (idx - 1 + tabsArr.length) % tabsArr.length;
+            } else if (e.key === 'Home') {
+                next = 0;
+            } else if (e.key === 'End') {
+                next = tabsArr.length - 1;
+            }
+            if (next >= 0) {
+                e.preventDefault();
+                tabsArr[next].focus();
+                activateTab(tabsArr[next].getAttribute('data-playlist'));
+            }
+        });
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       Mini-player logic
+    ══════════════════════════════════════════════════════════════ */
+    if (mpEl) {
+        function showMp() {
+            if (mpDismissed) return;
+            mpEl.classList.add('visible');
+        }
+        function hideMp() {
+            mpEl.classList.remove('visible');
+        }
+
+        /* Show on play (don't reset mpDismissed — only user interaction resets it) */
+        audio.addEventListener('play', function() {
+            showMp();
+        });
+
+        /* Progress sync (merged into existing timeupdate) */
+        audio.addEventListener('timeupdate', function() {
+            if (!mpEl.classList.contains('visible')) return;
+            var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+            mpProgressFill.style.width = pct + '%';
+        });
+
+        /* Play / Pause — user interaction resets dismiss */
+        mpPlay.addEventListener('click', function() {
+            mpDismissed = false;
+            if (!pState[activePlaylist].loaded) {
+                loadTrack(activePlaylist, 0, true);
+                return;
+            }
+            if (audio.paused) audio.play().catch(function() {});
+            else audio.pause();
+        });
+
+        /* Prev */
+        mpPrev.addEventListener('click', function() {
+            if (!pState[activePlaylist].loaded) return;
+            var wasPlaying = !audio.paused;
+            if (audio.currentTime > 3) {
+                audio.currentTime = 0;
+            } else {
+                var prev = (pState[activePlaylist].index - 1 + PLAYLISTS[activePlaylist].length) % PLAYLISTS[activePlaylist].length;
+                loadTrack(activePlaylist, prev, wasPlaying);
+            }
+        });
+
+        /* Next */
+        mpNext.addEventListener('click', function() {
+            if (!pState[activePlaylist].loaded) return;
+            var wasPlaying = !audio.paused;
+            var next = (pState[activePlaylist].index + 1) % PLAYLISTS[activePlaylist].length;
+            loadTrack(activePlaylist, next, wasPlaying);
+        });
+
+        /* Avatar click — switch playlist */
+        mpAvatar.addEventListener('click', function() {
+            var wasPlaying = !audio.paused;
+            var newKey = activePlaylist === 'bride' ? 'groom' : 'bride';
+            activateTab(newKey);
+            /* Update mini-player labels */
+            mpPlaylistLabel.textContent = MP_META[newKey].label;
+            mpAvatarImg.src = encodePath(MP_META[newKey].img);
+
+            if (pState[newKey].loaded) {
+                mpTitle.textContent = PLAYLISTS[newKey][pState[newKey].index].title;
+                if (wasPlaying) {
+                    audio.addEventListener('loadedmetadata', function mpAutoPlay() {
+                        audio.play().catch(function() {});
+                        audio.removeEventListener('loadedmetadata', mpAutoPlay);
+                    });
+                }
+            } else {
+                if (wasPlaying) {
+                    loadTrack(newKey, 0, true);
+                } else {
+                    mpTitle.textContent = PLAYLISTS[newKey][0].title;
+                }
+            }
+        });
+
+        /* Close */
+        mpClose.addEventListener('click', function() {
+            audio.pause();
+            mpDismissed = true;
+            hideMp();
+        });
+
+        /* Volume slider */
+        mpVolSlider.addEventListener('input', function() {
+            audio.volume = this.value / 100;
+        });
+
+        /* Volume mute toggle */
+        var mpLastVol = 1;
+        mpVolBtn.addEventListener('click', function() {
+            if (audio.volume > 0) {
+                mpLastVol = audio.volume;
+                audio.volume = 0;
+                mpVolSlider.value = 0;
+            } else {
+                audio.volume = mpLastVol;
+                mpVolSlider.value = Math.round(mpLastVol * 100);
+            }
+        });
+
+        /* Progress bar seeking (click + touch drag) */
+        function mpSeek(e) {
+            if (!audio.duration) return;
+            var rect = mpProgressBar.getBoundingClientRect();
+            var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            var pct = Math.max(0, Math.min(1, x / rect.width));
+            audio.currentTime = pct * audio.duration;
+        }
+
+        mpProgressBar.addEventListener('mousedown', function(e) {
+            if (!audio.duration) return;
+            mpSeek(e);
+            function onMove(ev) { mpSeek(ev); }
+            function onUp() {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            }
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+
+        mpProgressBar.addEventListener('touchstart', function(e) {
+            if (!audio.duration) return;
+            mpSeek(e);
+            function onMove(ev) { ev.preventDefault(); mpSeek(ev); }
+            function onEnd() {
+                mpProgressBar.removeEventListener('touchmove', onMove);
+                mpProgressBar.removeEventListener('touchend', onEnd);
+            }
+            mpProgressBar.addEventListener('touchmove', onMove, { passive: false });
+            mpProgressBar.addEventListener('touchend', onEnd);
+        }, { passive: true });
+
+        /* Also reset dismiss when user plays from main player */
+        ['bride', 'groom'].forEach(function(key) {
+            var p = panels[key];
+            if (!p) return;
+            p.playBtn.addEventListener('click', function() {
+                mpDismissed = false;
+            });
+        });
+    }
+})();
 
 function showError(msg) {
     // Simple accessible alert instead of native alert for better UX
