@@ -2056,19 +2056,52 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     document.getElementById('dcPrev').addEventListener('click', function() { goTo(cur - 1); });
     dotsEl.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx); }); });
 
-    track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; isDrag = true; }, { passive: true });
+    var trackW = function() { return track.parentElement.offsetWidth || track.offsetWidth; };
+
+    /* ── Touch: live drag + snap ── */
+    track.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX; isDrag = true;
+        track.classList.add('dragging');
+    }, { passive: true });
+    track.addEventListener('touchmove', function(e) {
+        if (!isDrag) return;
+        var dx = e.touches[0].clientX - startX;
+        var base = -(cur * 100);
+        var pct = (dx / trackW()) * 100;
+        track.style.transform = 'translateX(' + (base + pct) + '%)';
+    }, { passive: true });
     track.addEventListener('touchend', function(e) {
         if (!isDrag) return; isDrag = false;
-        const dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 48) goTo(dx < 0 ? cur + 1 : cur - 1);
+        track.classList.remove('dragging');
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 48) { goTo(dx < 0 ? cur + 1 : cur - 1); }
+        else { goTo(cur); }
     }, { passive: true });
-    track.addEventListener('mousedown',  function(e) { startX = e.clientX; isDrag = true;  track.classList.add('dragging'); });
-    track.addEventListener('mouseup',    function(e) {
-        if (!isDrag) return; isDrag = false; track.classList.remove('dragging');
-        const dx = e.clientX - startX;
-        if (Math.abs(dx) > 48) goTo(dx < 0 ? cur + 1 : cur - 1);
+
+    /* ── Mouse: live drag + snap ── */
+    track.addEventListener('mousedown', function(e) {
+        startX = e.clientX; isDrag = true;
+        track.classList.add('dragging');
     });
-    track.addEventListener('mouseleave', function() { isDrag = false; track.classList.remove('dragging'); });
+    track.addEventListener('mousemove', function(e) {
+        if (!isDrag) return;
+        var dx = e.clientX - startX;
+        var base = -(cur * 100);
+        var pct = (dx / trackW()) * 100;
+        track.style.transform = 'translateX(' + (base + pct) + '%)';
+    });
+    track.addEventListener('mouseup', function(e) {
+        if (!isDrag) return; isDrag = false;
+        track.classList.remove('dragging');
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 48) { goTo(dx < 0 ? cur + 1 : cur - 1); }
+        else { goTo(cur); }
+    });
+    track.addEventListener('mouseleave', function() {
+        if (!isDrag) return; isDrag = false;
+        track.classList.remove('dragging');
+        goTo(cur);
+    });
 })();
 
 /* ── Swatch Popup ────────────────────────────────────────────── */
@@ -2082,6 +2115,8 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     let hideTimer;
 
     function isMobile() { return window.matchMedia('(max-width:600px)').matches; }
+
+    var showTime = 0;
 
     function show(swatch) {
         const c      = swatch.querySelector('.swatch-c');
@@ -2108,10 +2143,11 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
 
         popup.classList.add('sp-visible');
         popup.removeAttribute('aria-hidden');
-        if (isMobile()) overlay.classList.add('sp-visible');
+        if (isMobile()) { overlay.classList.add('sp-visible'); showTime = Date.now(); }
     }
 
     function hide() {
+        if (isMobile() && Date.now() - showTime < 350) return;
         popup.classList.remove('sp-visible');
         overlay.classList.remove('sp-visible');
         popup.setAttribute('aria-hidden', 'true');
@@ -2124,7 +2160,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         c.addEventListener('click', function(e) {
             if (!isMobile()) return;
             e.stopPropagation();
-            popup.classList.contains('sp-visible') ? hide() : show(sw);
+            show(sw);
         });
     });
 
