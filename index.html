@@ -1114,6 +1114,14 @@
         .consents input { width: 18px; height: 18px; min-width: 18px; margin-top: 2px; accent-color: var(--green); cursor: pointer; }
 
         .btn-submit { width: 100%; justify-content: center; border-radius: 12px; padding: 1.1rem; font-size: 0.95rem; }
+        .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+        .btn-submit .btn-spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,250,246,0.3); border-top-color: var(--white);
+            border-radius: 50%; animation: spin 0.6s linear infinite;
+            margin-right: 0.5rem; vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         /* companions */
         @keyframes companionIn {
@@ -1660,6 +1668,13 @@
                Если вы хотите порадовать нас чем-то материальным — денежный конверт станет идеальным выбором.
                Он поможет нам создать уютный семейный дом и воплотить наши мечты.</p>
         </div>
+
+        <div class="no-kids reveal" role="note" style="margin-top:1.5rem;">
+            <span class="no-kids-ico" aria-hidden="true">🌸</span>
+            <p><strong>Пожалуйста, без цветов!</strong> Сразу после свадьбы мы отправляемся
+               в путешествие, и цветы, к сожалению, не дождутся нашего возвращения.
+               Лучший подарок — ваше присутствие и тёплые слова!</p>
+        </div>
     </div>
 </section>
 
@@ -1750,7 +1765,7 @@
                 <div class="consents" role="group" aria-label="Согласия">
                     <label>
                         <input type="checkbox" id="readInvite" name="readInvite" required>
-                        <span>Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей и программа мероприятия *</span>
+                        <span>Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей, без цветов и программа мероприятия *</span>
                     </label>
                     <label>
                         <input type="checkbox" id="dataConsent" name="dataConsent" required>
@@ -1925,6 +1940,9 @@
 <script>
 'use strict';
 
+/* ── RSVP Backend ────────────────────────────────────────────── */
+const RSVP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwF-bB62uqJP-GnbXW58SUhfUKDUCIWQA-4YVyooCXNLx2s8-1nENQVfacDF2NKULAE/exec';  // URL Google Apps Script web app (вставить после деплоя)
+
 /* ── Navbar scroll + mobile burger ───────────────────────────── */
 const navbar  = document.getElementById('navbar');
 const navLinks = document.getElementById('navLinks');
@@ -2033,9 +2051,45 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         ? 'Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день! 🥂'
         : 'Ваш ответ принят. Нам очень жаль, что вы не сможете быть с нами, но мы ценим, что вы нашли время ответить. 💌';
 
-    document.getElementById('successMsg').textContent = successMsg;
-    this.style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+    var submitBtn = this.querySelector('.btn-submit');
+    var originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="btn-spinner"></span>Отправляем...';
+
+    var formData = {
+        name: name,
+        attendance: attendance.value,
+        transport: transportLabel,
+        drinks: drinks || 'не указано',
+        comment: comment || ''
+    };
+
+    var form = this;
+
+    function showSuccess() {
+        document.getElementById('successMsg').textContent = successMsg;
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+    }
+
+    if (!RSVP_SCRIPT_URL) {
+        showSuccess();
+        return;
+    }
+
+    fetch(RSVP_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(formData)
+    })
+    .then(function() { showSuccess(); })
+    .catch(function(err) {
+        console.error('RSVP submit error:', err);
+        showSuccess();
+    })
+    .finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+    });
 });
 
 /* ── Dresscode Carousel ──────────────────────────────────────── */
