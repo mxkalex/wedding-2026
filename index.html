@@ -163,6 +163,45 @@
         .btn-tg:hover { background: #1a93cc; }
 
         /* ============================================================
+           SPLASH OVERLAY
+        ============================================================ */
+        #splash {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--white);
+            transition: opacity 0.8s ease;
+        }
+        #splash.fade-out { opacity: 0; pointer-events: none; }
+        .splash-content { text-align: center; }
+        .splash-text {
+            font-family: var(--font-h); font-style: italic;
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            color: var(--green); opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        .splash-text--sub {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-light);
+            animation-delay: 0.5s;
+        }
+        .splash-loader {
+            display: flex; gap: 0.5rem; justify-content: center;
+            margin-top: 2rem; opacity: 0;
+            animation: fadeIn 0.6s ease 1.8s forwards;
+        }
+        .splash-loader span {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--pink);
+            animation: splashPulse 1.2s ease-in-out infinite;
+        }
+        .splash-loader span:nth-child(2) { animation-delay: 0.2s; }
+        .splash-loader span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(0.6); opacity: 0.4; }
+            50%      { transform: scale(1);   opacity: 1; }
+        }
+
+        /* ============================================================
            HERO
         ============================================================ */
         #hero {
@@ -405,7 +444,7 @@
         }
         .dc-icon  { font-size: 2.5rem; margin-bottom: 0.6rem; display: block; }
         .dc-card-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; }
-        @media (max-width: 520px) { .dc-card-sections { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .dc-card-sections { grid-template-columns: 1fr; } }
         .dc-section {
             padding: 1.25rem; background: var(--beige-pale); border-radius: 12px;
             display: flex; flex-direction: column;
@@ -448,10 +487,7 @@
             display: flex;
             transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: transform;
-            cursor: grab;
-            user-select: none;
         }
-        .dc-carousel-track.dragging { cursor: grabbing; transition: none; }
         .dc-slide { min-width: 100%; }
         .dc-slide-rules { padding: 2rem; }
         .dc-slide-photo {
@@ -716,6 +752,7 @@
         .ap-btn svg { display: block; }
 
         .ap-btn--prev, .ap-btn--next { width: 36px; height: 36px; }
+        .ap-btn--next svg, .mp-btn--next svg { transform: scaleX(-1); }
         .ap-btn--play {
             width: 52px; height: 52px;
             background: var(--green);
@@ -863,7 +900,8 @@
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 156, 156, 0.15);
             transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1);
+            transition: transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1),
+                        background 0.5s ease, border-color 0.5s ease;
         }
         .mp-bar.visible {
             transform: translateY(0);
@@ -1030,6 +1068,35 @@
             .mp-volume { display: none; }
             .mp-controls { gap: 0.2rem; }
         }
+
+        /* ── Mini-player theme: Bride (pink) ── */
+        .mp-bar.mp-theme-bride {
+            background: rgba(180, 70, 90, 0.88);
+            border-top-color: rgba(255, 180, 180, 0.35);
+        }
+        .mp-theme-bride .mp-btn--play { background: var(--white); color: #a04060; }
+        .mp-theme-bride .mp-btn--play:hover { background: #fff5f5; }
+        .mp-theme-bride .mp-progress-fill { background: var(--white); }
+        .mp-theme-bride .mp-avatar { border-color: var(--white); }
+        .mp-theme-bride .mp-vol-slider::-webkit-slider-thumb { background: var(--white); }
+
+        /* ── Mini-player theme: Couple (white/cream) ── */
+        .mp-bar.mp-theme-couple {
+            background: rgba(255, 250, 246, 0.92);
+            border-top-color: rgba(222, 177, 146, 0.35);
+        }
+        .mp-theme-couple .mp-title,
+        .mp-theme-couple .mp-btn { color: var(--green); }
+        .mp-theme-couple .mp-playlist-label { color: var(--text-light); }
+        .mp-theme-couple .mp-btn--play { background: var(--green); color: var(--white); }
+        .mp-theme-couple .mp-btn--play:hover { background: var(--green-light); }
+        .mp-theme-couple .mp-progress-fill { background: var(--green); }
+        .mp-theme-couple .mp-progress-bar { background: rgba(24, 74, 0, 0.12); }
+        .mp-theme-couple .mp-avatar { border-color: var(--beige); }
+        .mp-theme-couple .mp-btn--close { color: var(--text-light); }
+        .mp-theme-couple .mp-btn--close:hover { color: var(--green); }
+        .mp-theme-couple .mp-vol-slider::-webkit-slider-thumb { background: var(--green); }
+        .mp-theme-couple .mp-vol-slider { background: rgba(24, 74, 0, 0.15); }
 
         /* ============================================================
            RSVP
@@ -1283,6 +1350,17 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════ SPLASH ═══════════════════════════════════ -->
+<div id="splash" aria-hidden="true">
+    <div class="splash-content">
+        <p class="splash-text">Дорогой друг!</p>
+        <p class="splash-text splash-text--sub">Мы к тебе с приглашением!</p>
+        <div class="splash-loader">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</div>
+
 <!-- ═══════════════════════════════════════ NAVBAR ══════════════════════════════════ -->
 <nav id="navbar" role="navigation" aria-label="Основная навигация">
     <a href="#hero" class="nav-logo">А &amp; А</a>
@@ -1312,9 +1390,9 @@
         <div class="hero-ring-badge" aria-hidden="true">💍</div>
     </div>
 
-    <span class="label">Свадебное приглашение</span>
-    <h1 class="hero-names">Александр <span class="hero-amp">&amp;</span> Анастасия</h1>
-    <p class="hero-sub">С любовью приглашаем вас разделить этот особенный день</p>
+    <span class="label">Приглашаем вас на свадьбу</span>
+    <h1 class="hero-names">Александра <span class="hero-amp">&amp;</span> Анастасии</h1>
+    <p class="hero-sub">С любовью и нетерпением ждём вас</p>
 
     <div class="hero-date" aria-label="Дата свадьбы: 22 августа 2026 года">
         <div class="hero-date-part">
@@ -1341,7 +1419,7 @@
 
 <!-- ═══════════════════════════════════════ MUSIC ═══════════════════════════════════ -->
 <section id="music" aria-labelledby="musicHeading">
-    <div class="music-bg" id="musicBg" aria-hidden="true"></div>
+    <div class="music-bg active" id="musicBg" aria-hidden="true" style="background-image:url(плейлист/аватарки%20для%20плейлиста/ourvibe.jpg)"></div>
     <div class="container">
         <div class="sec-header reveal">
             <span class="label">Музыка</span>
@@ -1357,6 +1435,10 @@
                     role="tab" aria-selected="false" aria-controls="playlistGroom" id="tab-groom" tabindex="-1">
                 <span class="music-tab-icon" aria-hidden="true">&#9834;</span> Вайб жениха
             </button>
+            <button class="music-tab" data-playlist="couple" type="button"
+                    role="tab" aria-selected="false" aria-controls="playlistCouple" id="tab-couple" tabindex="-1">
+                <span class="music-tab-icon" aria-hidden="true">&#9829;</span> Вайб пары
+            </button>
         </div>
 
         <div class="music-player reveal">
@@ -1367,7 +1449,7 @@
                 </div>
                 <div class="ap-controls">
                     <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
@@ -1395,7 +1477,7 @@
                 </div>
                 <div class="ap-controls">
                     <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
@@ -1414,6 +1496,34 @@
                     <span class="ap-time ap-time--duration">0:00</span>
                 </div>
                 <ol class="ap-tracklist" aria-label="Плейлист Александра"></ol>
+            </div>
+
+            <!-- Плейлист пары -->
+            <div class="ap-panel" id="playlistCouple" role="tabpanel" aria-labelledby="tab-couple">
+                <div class="ap-now-playing">
+                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                </div>
+                <div class="ap-controls">
+                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                    </button>
+                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                </div>
+                <div class="ap-progress">
+                    <span class="ap-time ap-time--current">0:00</span>
+                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="ap-progress-fill"></div>
+                        <div class="ap-progress-thumb"></div>
+                    </div>
+                    <span class="ap-time ap-time--duration">0:00</span>
+                </div>
+                <ol class="ap-tracklist" aria-label="Плейлист пары"></ol>
             </div>
         </div>
     </div>
@@ -1713,57 +1823,62 @@
                     </div>
                 </div>
 
-                <!-- Трансфер -->
-                <div class="form-group">
-                    <span class="form-label">Как вы планируете добраться? *</span>
-                    <div class="no-kids" style="margin-bottom:0.75rem;">
-                        <span class="no-kids-ico">🚌</span>
-                        <p>Мы организуем <strong>трансфер</strong> для гостей. Если хотите воспользоваться — укажите ниже, и мы свяжемся с вами с деталями.</p>
+                <!-- Блок для тех, кто придёт (скрывается при "не смогу") -->
+                <div id="rsvpYesBlock" style="display:none;">
+                    <!-- Трансфер -->
+                    <div class="form-group">
+                        <span class="form-label">Как вы планируете добраться? *</span>
+                        <div class="no-kids" style="margin-bottom:0.75rem;">
+                            <span class="no-kids-ico">🚌</span>
+                            <p>Мы организуем <strong>трансфер</strong> для гостей. Если хотите воспользоваться — укажите ниже, и мы свяжемся с вами с деталями.</p>
+                        </div>
+                        <div class="radio-group" role="radiogroup" aria-label="Способ прибытия">
+                            <label>
+                                <input type="radio" name="transport" value="own_car">
+                                <span>🚗&nbsp; На своей машине</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="transport" value="transfer">
+                                <span>🚌&nbsp; Воспользуюсь организованным трансфером</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="radio-group" role="radiogroup" aria-label="Способ прибытия">
-                        <label>
-                            <input type="radio" name="transport" value="own_car">
-                            <span>🚗&nbsp; На своей машине</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="transport" value="transfer">
-                            <span>🚌&nbsp; Воспользуюсь организованным трансфером</span>
-                        </label>
+
+                    <hr class="divider">
+
+                    <!-- Напитки -->
+                    <div class="form-group">
+                        <span class="form-label">Предпочтения по напиткам</span>
+                        <div class="check-group drinks-grid" role="group" aria-label="Выбор напитков">
+                            <label><input type="checkbox" name="drinks" value="champagne"><span>🥂&nbsp; Шампанское</span></label>
+                            <label><input type="checkbox" name="drinks" value="wine_red"><span>🍷&nbsp; Вино красное</span></label>
+                            <label><input type="checkbox" name="drinks" value="wine_white"><span>🍾&nbsp; Вино белое</span></label>
+                            <label><input type="checkbox" name="drinks" value="beer"><span>🍺&nbsp; Пиво</span></label>
+                            <label><input type="checkbox" name="drinks" value="cocktails"><span>🍹&nbsp; Коктейли</span></label>
+                            <label><input type="checkbox" name="drinks" value="soft"><span>🧃&nbsp; Сок / Безалкогольное</span></label>
+                            <label><input type="checkbox" name="drinks" value="other" id="drinksOther"><span>✏️&nbsp; Другое</span></label>
+                        </div>
+                        <input type="text" id="drinksOtherText" name="drinksOtherText" placeholder="Укажите ваш напиток..." style="display:none; margin-top:0.6rem;">
+                    </div>
+
+                    <hr class="divider">
+
+                    <!-- Нет детей -->
+                    <div class="no-kids" role="note">
+                        <span class="no-kids-ico" aria-hidden="true">👶</span>
+                        <p><strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!</p>
                     </div>
                 </div>
 
-                <hr class="divider">
-
-                <!-- Напитки -->
-                <div class="form-group">
-                    <span class="form-label">Предпочтения по напиткам</span>
-                    <div class="check-group drinks-grid" role="group" aria-label="Выбор напитков">
-                        <label><input type="checkbox" name="drinks" value="champagne"><span>🥂&nbsp; Шампанское</span></label>
-                        <label><input type="checkbox" name="drinks" value="wine_red"><span>🍷&nbsp; Вино красное</span></label>
-                        <label><input type="checkbox" name="drinks" value="wine_white"><span>🍾&nbsp; Вино белое</span></label>
-                        <label><input type="checkbox" name="drinks" value="beer"><span>🍺&nbsp; Пиво</span></label>
-                        <label><input type="checkbox" name="drinks" value="cocktails"><span>🍹&nbsp; Коктейли</span></label>
-                        <label><input type="checkbox" name="drinks" value="soft"><span>🧃&nbsp; Сок / Безалкогольное</span></label>
-                    </div>
-                </div>
-
-                <!-- Комментарий -->
+                <!-- Комментарий (всегда виден) -->
                 <div class="form-group">
                     <label class="form-label" for="comment">Комментарий / пожелания</label>
                     <textarea id="comment" name="comment" placeholder="Аллергии, особые пожелания или просто тёплые слова..."></textarea>
                 </div>
 
-                <hr class="divider">
-
-                <!-- Нет детей -->
-                <div class="no-kids" role="note">
-                    <span class="no-kids-ico" aria-hidden="true">👶</span>
-                    <p><strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!</p>
-                </div>
-
                 <!-- Соглашения -->
                 <div class="consents" role="group" aria-label="Согласия">
-                    <label>
+                    <label id="readInviteLabel">
                         <input type="checkbox" id="readInvite" name="readInvite" required>
                         <span>Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей, без цветов и программа мероприятия *</span>
                     </label>
@@ -1864,7 +1979,7 @@
                 <li><a href="#dresscode">Дресс-код</a></li>
                 <li><a href="#gifts">Подарки</a></li>
                 <li><a href="#music">Музыка</a></li>
-                <li><a href="#rsvp">RSVP</a></li>
+                <li><a href="#rsvp">Участие</a></li>
                 <li><a href="#contacts">Контакты</a></li>
             </ul>
         </nav>
@@ -1904,7 +2019,7 @@
     </div>
     <div class="mp-controls">
         <button class="mp-btn mp-btn--prev" id="mpPrev" type="button" aria-label="Предыдущий трек">
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
         </button>
         <button class="mp-btn mp-btn--play" id="mpPlay" type="button" aria-label="Воспроизвести">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mp-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
@@ -1939,6 +2054,20 @@
 <!-- ═══════════════════════════════════════ SCRIPTS ══════════════════════════════════ -->
 <script>
 'use strict';
+
+/* ── Splash screen ── */
+(function() {
+    var splash = document.getElementById('splash');
+    if (!splash) return;
+    document.body.style.overflow = 'hidden';
+    setTimeout(function() {
+        splash.classList.add('fade-out');
+        document.body.style.overflow = '';
+        splash.addEventListener('transitionend', function() {
+            splash.remove();
+        });
+    }, 3500);
+})();
 
 /* ── RSVP Backend ────────────────────────────────────────────── */
 const RSVP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwF-bB62uqJP-GnbXW58SUhfUKDUCIWQA-4YVyooCXNLx2s8-1nENQVfacDF2NKULAE/exec';  // URL Google Apps Script web app (вставить после деплоя)
@@ -2012,13 +2141,40 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+/* ── RSVP form: conditional fields ────────────────────────────── */
+(function() {
+    var yesBlock = document.getElementById('rsvpYesBlock');
+    var readInvLabel = document.getElementById('readInviteLabel');
+    var readInvInput = document.getElementById('readInvite');
+    var drinksOtherCb = document.getElementById('drinksOther');
+    var drinksOtherText = document.getElementById('drinksOtherText');
+
+    document.querySelectorAll('input[name="attendance"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            var coming = this.value === 'yes';
+            yesBlock.style.display = coming ? '' : 'none';
+            readInvLabel.style.display = coming ? '' : 'none';
+            if (!coming) {
+                readInvInput.checked = false;
+                readInvInput.required = false;
+            } else {
+                readInvInput.required = true;
+            }
+        });
+    });
+
+    drinksOtherCb.addEventListener('change', function() {
+        drinksOtherText.style.display = this.checked ? '' : 'none';
+        if (!this.checked) drinksOtherText.value = '';
+    });
+})();
+
 /* ── RSVP form ───────────────────────────────────────────────── */
 document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const name       = document.getElementById('fullName').value.trim();
     const attendance = this.querySelector('input[name="attendance"]:checked');
-    const readInv    = document.getElementById('readInvite').checked;
     const dataCons   = document.getElementById('dataConsent').checked;
 
     if (!name) {
@@ -2030,7 +2186,10 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         showError('Пожалуйста, укажите, придёте ли вы на свадьбу.');
         return;
     }
-    if (!readInv) {
+
+    const coming = attendance.value === 'yes';
+
+    if (coming && !document.getElementById('readInvite').checked) {
         showError('Пожалуйста, подтвердите, что прочитали приглашение.');
         return;
     }
@@ -2040,9 +2199,15 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     }
 
     const transport = this.querySelector('input[name="transport"]:checked');
-    const drinks  = [...this.querySelectorAll('input[name="drinks"]:checked')].map(c => c.value).join(', ');
+    var drinksList = [...this.querySelectorAll('input[name="drinks"]:checked')]
+        .filter(function(c) { return c.value !== 'other'; })
+        .map(function(c) { return c.value; });
+    var otherDrink = document.getElementById('drinksOtherText').value.trim();
+    if (document.getElementById('drinksOther').checked && otherDrink) {
+        drinksList.push(otherDrink);
+    }
+    const drinks = drinksList.join(', ');
     const comment = document.getElementById('comment').value.trim();
-    const coming  = attendance.value === 'yes';
     const transportLabel = transport
         ? (transport.value === 'transfer' ? 'Трансфер' : 'Своя машина')
         : 'не указано';
@@ -2094,68 +2259,43 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
 
 /* ── Dresscode Carousel ──────────────────────────────────────── */
 (function() {
-    const track = document.getElementById('dcTrack');
+    var track = document.getElementById('dcTrack');
     if (!track) return;
-    const dotsEl = document.querySelectorAll('#dcDots .dc-dot');
-    const total  = dotsEl.length;
-    let cur = 0, startX = 0, isDrag = false;
+
+    /* Mobile (<=768px): split rules slide into Ladies / Gentlemen */
+    if (window.innerWidth <= 768) {
+        var rulesSlide = track.querySelector('.dc-slide-rules');
+        if (rulesSlide) {
+            var sections = rulesSlide.querySelectorAll('.dc-section');
+            if (sections.length === 2) {
+                var gentSlide = document.createElement('div');
+                gentSlide.className = 'dc-slide dc-slide-rules';
+                gentSlide.style.padding = '1.25rem';
+                gentSlide.appendChild(sections[1]);
+                track.insertBefore(gentSlide, rulesSlide.nextSibling);
+                var dotsContainer = document.getElementById('dcDots');
+                var newDot = document.createElement('div');
+                newDot.className = 'dc-dot';
+                dotsContainer.appendChild(newDot);
+            }
+        }
+    }
+
+    /* Re-query dots after potential mobile split */
+    var dots = document.querySelectorAll('#dcDots .dc-dot');
+    var total = dots.length;
+    dots.forEach(function(d, i) { d.dataset.idx = i; });
+    var cur = 0;
 
     function goTo(n) {
         cur = ((n % total) + total) % total;
         track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-        dotsEl.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
     }
 
     document.getElementById('dcNext').addEventListener('click', function() { goTo(cur + 1); });
     document.getElementById('dcPrev').addEventListener('click', function() { goTo(cur - 1); });
-    dotsEl.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx); }); });
-
-    var trackW = function() { return track.parentElement.offsetWidth || track.offsetWidth; };
-
-    /* ── Touch: live drag + snap ── */
-    track.addEventListener('touchstart', function(e) {
-        startX = e.touches[0].clientX; isDrag = true;
-        track.classList.add('dragging');
-    }, { passive: true });
-    track.addEventListener('touchmove', function(e) {
-        if (!isDrag) return;
-        var dx = e.touches[0].clientX - startX;
-        var base = -(cur * 100);
-        var pct = (dx / trackW()) * 100;
-        track.style.transform = 'translateX(' + (base + pct) + '%)';
-    }, { passive: true });
-    track.addEventListener('touchend', function(e) {
-        if (!isDrag) return; isDrag = false;
-        track.classList.remove('dragging');
-        var dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 48) { goTo(dx < 0 ? cur + 1 : cur - 1); }
-        else { goTo(cur); }
-    }, { passive: true });
-
-    /* ── Mouse: live drag + snap ── */
-    track.addEventListener('mousedown', function(e) {
-        startX = e.clientX; isDrag = true;
-        track.classList.add('dragging');
-    });
-    track.addEventListener('mousemove', function(e) {
-        if (!isDrag) return;
-        var dx = e.clientX - startX;
-        var base = -(cur * 100);
-        var pct = (dx / trackW()) * 100;
-        track.style.transform = 'translateX(' + (base + pct) + '%)';
-    });
-    track.addEventListener('mouseup', function(e) {
-        if (!isDrag) return; isDrag = false;
-        track.classList.remove('dragging');
-        var dx = e.clientX - startX;
-        if (Math.abs(dx) > 48) { goTo(dx < 0 ? cur + 1 : cur - 1); }
-        else { goTo(cur); }
-    });
-    track.addEventListener('mouseleave', function() {
-        if (!isDrag) return; isDrag = false;
-        track.classList.remove('dragging');
-        goTo(cur);
-    });
+    dots.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx); }); });
 })();
 
 /* ── Swatch Popup ────────────────────────────────────────────── */
@@ -2246,6 +2386,9 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041d\u0430 \u043a\u0440\u0430\u044e', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041d\u0430 \u043a\u0440\u0430\u044e (\u041f\u043e\u0441\u043b\u0435\u0434\u043d\u0438\u044f \u0430\u0440\u0438\u044f \u0422\u043e\u0434\u0434\u0430).m4a' },
             { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041f\u0430\u043d\u0438\u043a\u0430 \u0432 \u0441\u0435\u043b\u0435', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u041f\u0430\u043d\u0438\u043a\u0430 \u0432 \u0441\u0435\u043b\u0435.m4a' },
             { title: '\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u0421\u0447\u0430\u0441\u0442\u044c\u0435', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u0436\u0435\u043d\u0438\u0445/\u041a\u043e\u0440\u043e\u043b\u044c \u0438 \u0428\u0443\u0442 \u2014 \u0421\u0447\u0430\u0441\u0442\u044c\u0435_ (\u0410\u0440\u0438\u044f \u0422\u043e\u0434\u0434\u0430).m4a' }
+        ],
+        couple: [
+            { title: 'PLC \u2013 \u041d\u0430\u0432\u044b\u043b\u0435\u0442', src: '\u043f\u043b\u0435\u0439\u043b\u0438\u0441\u0442/\u043e\u0431\u0449\u0438\u0439 \u0432\u0430\u0439\u0431/PLC - \u041d\u0430\u0432\u044b\u043b\u0435\u0442.mp3' }
         ]
     };
 
@@ -2264,6 +2407,9 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             'music_back_logo/Король и Шут.jpg',
             'music_back_logo/Король и Шут.jpg',
             'music_back_logo/Король и Шут.jpg'
+        ],
+        couple: [
+            'music_back_logo/PLC.jpg'
         ]
     };
     var musicBgEl = document.getElementById('musicBg');
@@ -2271,7 +2417,8 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     var activePlaylist = 'bride';
     var pState = {
         bride: { index: 0, time: 0, wasPlaying: false, loaded: false },
-        groom: { index: 0, time: 0, wasPlaying: false, loaded: false }
+        groom: { index: 0, time: 0, wasPlaying: false, loaded: false },
+        couple: { index: 0, time: 0, wasPlaying: false, loaded: false }
     };
 
     var audio = new Audio();
@@ -2279,8 +2426,9 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
 
     /* ── DOM cache per panel ── */
     var panels = {};
-    ['bride', 'groom'].forEach(function(key) {
-        var el = document.getElementById(key === 'bride' ? 'playlistBride' : 'playlistGroom');
+    var PANEL_IDS = { bride: 'playlistBride', groom: 'playlistGroom', couple: 'playlistCouple' };
+    Object.keys(PANEL_IDS).forEach(function(key) {
+        var el = document.getElementById(PANEL_IDS[key]);
         if (!el) return;
         panels[key] = {
             root: el,
@@ -2318,7 +2466,8 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     var mpDismissed = false;
     var MP_META = {
         bride: { label: 'Невеста', img: 'плейлист/аватарки для плейлиста/wifey.jpg' },
-        groom: { label: 'Жених', img: 'плейлист/аватарки для плейлиста/husband.jpg' }
+        groom: { label: 'Жених', img: 'плейлист/аватарки для плейлиста/husband.jpg' },
+        couple: { label: 'Вайб пары', img: 'плейлист/аватарки для плейлиста/ourvibe.jpg' }
     };
 
     /* ── Helpers ── */
@@ -2340,7 +2489,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     function getPanel() { return panels[activePlaylist]; }
 
     /* ── Render track lists ── */
-    ['bride', 'groom'].forEach(function(key) {
+    Object.keys(PLAYLISTS).forEach(function(key) {
         var p = panels[key];
         if (!p) return;
         var html = '';
@@ -2376,6 +2525,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
             mpTitle.textContent = PLAYLISTS[key][idx].title;
             if (mpPlaylistLabel) mpPlaylistLabel.textContent = MP_META[key].label;
             if (mpAvatarImg) mpAvatarImg.src = encodePath(MP_META[key].img);
+            applyMpTheme(key);
         }
     }
 
@@ -2405,6 +2555,13 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         p.timeDur.textContent = fmtTime(dur);
         p.bar.setAttribute('aria-valuenow', Math.round(pct));
         p.bar.setAttribute('aria-valuetext', fmtTime(cur) + ' \u0438\u0437 ' + fmtTime(dur));
+    }
+
+    /* ── Mini-player theme ── */
+    function applyMpTheme(key) {
+        if (!mpEl) return;
+        mpEl.classList.remove('mp-theme-bride', 'mp-theme-groom', 'mp-theme-couple');
+        if (key !== 'groom') mpEl.classList.add('mp-theme-' + key);
     }
 
     /* ── Load & play ── */
@@ -2606,7 +2763,10 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
 
     tabsArr.forEach(function(tab) {
         tab.addEventListener('click', function() {
-            activateTab(tab.getAttribute('data-playlist'));
+            var key = tab.getAttribute('data-playlist');
+            activateTab(key);
+            var idx = pState[key].loaded ? pState[key].index : 0;
+            loadTrack(key, idx, true);
         });
     });
 
@@ -2692,11 +2852,13 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         /* Avatar click — switch playlist */
         mpAvatar.addEventListener('click', function() {
             var wasPlaying = !audio.paused;
-            var newKey = activePlaylist === 'bride' ? 'groom' : 'bride';
+            var plOrder = ['bride', 'groom', 'couple'];
+            var newKey = plOrder[(plOrder.indexOf(activePlaylist) + 1) % plOrder.length];
             activateTab(newKey);
-            /* Update mini-player labels */
+            /* Update mini-player labels + theme */
             mpPlaylistLabel.textContent = MP_META[newKey].label;
             mpAvatarImg.src = encodePath(MP_META[newKey].img);
+            applyMpTheme(newKey);
 
             if (pState[newKey].loaded) {
                 mpTitle.textContent = PLAYLISTS[newKey][pState[newKey].index].title;

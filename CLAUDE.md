@@ -31,7 +31,8 @@ project 1/
 │   ├── русская душа.jpg              # РУССКАЯ ДУША
 │   ├── DDT.png                       # ДДТ
 │   ├── Король и Шут.jpg              # КиШ
-│   └── Фамилия.png                   # Дайте Танк!
+│   ├── Фамилия.png                   # Дайте Танк!
+│   └── PLC.jpg                       # PLC (Вайб пары)
 ├── дресскод/                         # визуалы для секции дресс-кода
 │   ├── 1х1 женский образ оливковый.png
 │   ├── 1х1 женский образ розовый.png
@@ -46,7 +47,9 @@ project 1/
 └── плейлист/
     ├── аватарки для плейлиста/       # фото для мини-плеера
     │   ├── wifey.jpg                 # аватар невесты
-    │   └── husband.jpg               # аватар жениха
+    │   ├── husband.jpg               # аватар жениха
+    │   └── ourvibe.jpg               # аватар пары
+    ├── PLC - Навылет.mp3             # трек пары (Вайб пары)
     ├── невеста/                      # 5 треков (.m4a) — SQWOZ BAB, Монеточка и др.
     │   ├── SQWOZ BAB – BAZA (Official audio).m4a
     │   ├── SQWOZ BAB — TOKYO (prod. DJ AUX) (Official audio).m4a
@@ -69,8 +72,9 @@ project 1/
 
 | ID | Название | Фон |
 |----|----------|-----|
-| `#hero` | Герой с фото пары | gradient green |
-| `#music` | «Включи свой вайб» — аудиоплеер (два плейлиста) | beige-pale + blur фон артиста |
+| splash | Splash overlay: «Дорогой друг!» → fade-out через 3.5с | cream white |
+| `#hero` | «Приглашаем вас на свадьбу Александра & Анастасии» | gradient green |
+| `#music` | «Включи свой вайб» — аудиоплеер (три плейлиста) | beige-pale + blur фон артиста |
 | `#details` | Дата, время, место, карты | white |
 | `#program` | Таймлайн программы дня | gradient green |
 | `#dresscode` | Дресс-код | beige-pale + blur фон образа |
@@ -82,6 +86,12 @@ project 1/
 ---
 
 ## Реализованные компоненты
+
+### Splash-экран
+Полноэкранный overlay при загрузке сайта: «Дорогой друг! Мы к тебе с приглашением!»
+- **CSS**: `#splash` (position fixed, z-index 9999), `.splash-text`, `.splash-loader`
+- **Анимация**: текст fadeInUp → пульсирующие точки → fade-out через 3.5с → удаление из DOM
+- **JS IIFE**: блокирует скролл (`overflow: hidden`) на время splash
 
 ### Карусель дресс-кода (`#dresscode`)
 5 слайдов: правила → 👗 → 🤵 → 👗 → 🤵 → (петля обратно на правила).
@@ -104,11 +114,11 @@ project 1/
 - Данные пока **никуда не отправляются** — нужно подключить бэкенд/форму (см. план ниже)
 
 ### Аудиоплеер (`#music`)
-Кастомный HTML5 аудиоплеер, два плейлиста (невеста/жених), переключение табами.
-- **Архитектура**: один `Audio` объект, два состояния (`pState.bride` / `pState.groom`), при переключении табов музыка останавливается, состояние сохраняется
+Кастомный HTML5 аудиоплеер, три плейлиста (невеста/жених/пара), переключение табами.
+- **Архитектура**: один `Audio` объект, три состояния (`pState.bride` / `pState.groom` / `pState.couple`), при переключении табов музыка останавливается, состояние сохраняется
 - **CSS**: все классы с префиксом `ap-` (audio player): `.ap-panel`, `.ap-controls`, `.ap-btn--play/prev/next`, `.ap-progress-bar`, `.ap-tracklist`, `.ap-track`, `.ap-eq` (анимированный эквалайзер)
 - **JS IIFE**: `PLAYLISTS` объект с массивами `{ title, src }`, `panels` DOM-кэш, функции `loadTrack()`, `activateTab()`, `seek()`
-- **Файлы**: `плейлист/невеста/*.m4a` (5 шт.) и `плейлист/жених/*.m4a` (5 шт.)
+- **Файлы**: `плейлист/невеста/*.m4a` (5 шт.), `плейлист/жених/*.m4a` (5 шт.), `плейлист/PLC - Навылет.mp3` (1 шт.)
 - **Кириллица в путях**: `encodePath()` = `split('/').map(encodeURIComponent).join('/')`
 - **A11y**: WAI-ARIA tablist, `role="slider"` на progress bar с `tabindex="0"` и keyboard seek (±5сек), `aria-live="polite"` на track title, `focus-visible` на всех кнопках, `aria-valuetext` на слайдере
 - **Фон секции**: `.music-bg` (#musicBg) — размытое фото артиста/группы (blur 45px, opacity 0.3), меняется при смене трека через `TRACK_BG` маппинг в JS
@@ -117,8 +127,9 @@ project 1/
 ### Мини-плеер (sticky bottom bar)
 Полупрозрачная фиксированная панель внизу экрана, появляется при воспроизведении.
 - **CSS**: все классы с префиксом `mp-` (mini player): `.mp-bar`, `.mp-avatar`, `.mp-info`, `.mp-controls`, `.mp-btn`, `.mp-volume`
-- **Фон**: `rgba(13,42,0,0.88)` + `backdrop-filter: blur(20px)`, z-index 990
-- **Слева**: аватар-кнопка с фото (`wifey.jpg` / `husband.jpg` из `плейлист/аватарки для плейлиста/`), клик переключает плейлист
+- **Фон**: по умолчанию `rgba(13,42,0,0.88)` (зелёный/жених) + `backdrop-filter: blur(20px)`, z-index 990
+- **Цветовые темы**: `.mp-theme-bride` (розовый), без класса (зелёный/жених, дефолт), `.mp-theme-couple` (белый/кремовый с тёмным текстом). Применяются через `applyMpTheme(key)`, плавный transition 0.5s
+- **Слева**: аватар-кнопка с фото (`wifey.jpg` / `husband.jpg` / `ourvibe.jpg`), клик циклит плейлисты: bride → groom → couple → bride
 - **Центр**: название трека (`aria-live="polite"`) + тонкий progress bar (click + touch drag seeking)
 - **Справа**: prev/play/next + volume slider + mute toggle + close (×)
 - **Логика dismiss**: кнопка close ставит `mpDismissed=true` и скрывает бар; автосмена трека (`ended`) не возвращает его; только явное взаимодействие с play/плеером сбрасывает dismiss
