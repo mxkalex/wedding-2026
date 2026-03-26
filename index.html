@@ -567,7 +567,8 @@
             opacity: 1; pointer-events: auto;
             transform: scale(1) translateY(0);
         }
-        .sp-img { width: 100%; height: auto; object-fit: contain; display: none; }
+        .sp-img { width: 100%; height: auto; object-fit: contain; display: none; opacity: 0; transition: opacity 0.18s ease; }
+        .sp-img.sp-loaded { opacity: 1; }
         .sp-img-placeholder {
             width: 100%; height: 180px;
             display: flex; align-items: center; justify-content: center;
@@ -2285,17 +2286,61 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     var dots = document.querySelectorAll('#dcDots .dc-dot');
     var total = dots.length;
     dots.forEach(function(d, i) { d.dataset.idx = i; });
-    var cur = 0;
 
-    function goTo(n) {
-        cur = ((n % total) + total) % total;
-        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-        dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+    /* ── Infinite loop: clone first & last slides ── */
+    var slides = Array.from(track.children);
+    var firstClone = slides[0].cloneNode(true);
+    var lastClone  = slides[slides.length - 1].cloneNode(true);
+    firstClone.setAttribute('aria-hidden', 'true');
+    lastClone.setAttribute('aria-hidden', 'true');
+    track.appendChild(firstClone);
+    track.insertBefore(lastClone, track.firstChild);
+
+    /* pos: 0 = lastClone, 1…total = real slides, total+1 = firstClone */
+    var pos = 1;
+    var animating = false;
+
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-100%)';
+    void track.offsetWidth;
+    track.style.transition = 'transform 0.48s cubic-bezier(0.4, 0, 0.2, 1)';
+
+    function updateDots() {
+        var idx = ((pos - 1) % total + total) % total;
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
     }
 
-    document.getElementById('dcNext').addEventListener('click', function() { goTo(cur + 1); });
-    document.getElementById('dcPrev').addEventListener('click', function() { goTo(cur - 1); });
-    dots.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx); }); });
+    function goTo(n) {
+        if (animating) return;
+        animating = true;
+        pos = n;
+        track.style.transform = 'translateX(-' + (pos * 100) + '%)';
+        updateDots();
+    }
+
+    track.addEventListener('transitionend', function(e) {
+        if (e.target !== track) return;
+        animating = false;
+        if (pos === 0) {
+            track.style.transition = 'none';
+            pos = total;
+            track.style.transform = 'translateX(-' + (pos * 100) + '%)';
+            void track.offsetWidth;
+            track.style.transition = 'transform 0.48s cubic-bezier(0.4, 0, 0.2, 1)';
+        } else if (pos === total + 1) {
+            track.style.transition = 'none';
+            pos = 1;
+            track.style.transform = 'translateX(-100%)';
+            void track.offsetWidth;
+            track.style.transition = 'transform 0.48s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+    });
+
+    document.getElementById('dcNext').addEventListener('click', function() { goTo(pos + 1); });
+    document.getElementById('dcPrev').addEventListener('click', function() { goTo(pos - 1); });
+    dots.forEach(function(d) { d.addEventListener('click', function() { goTo(+d.dataset.idx + 1); }); });
+
+    updateDots();
 })();
 
 /* ── Swatch Popup ────────────────────────────────────────────── */
@@ -2308,6 +2353,13 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     if (!popup) return;
     let hideTimer;
 
+    /* Предзагрузка всех картинок палитры */
+    var preloaded = {};
+    document.querySelectorAll('.swatch-c[data-ref]').forEach(function(c) {
+        var s = c.dataset.ref;
+        if (s) { var i = new Image(); i.src = s; preloaded[s] = i; }
+    });
+
     function isMobile() { return window.matchMedia('(max-width:600px)').matches; }
 
     var showTime = 0;
@@ -2319,7 +2371,30 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         caption.textContent = label;
 
         if (imgSrc) {
-            img.src = imgSrc; img.style.display = 'block'; ph.style.display = 'none';
+            /* Скрываем старое, показываем цветной плейсхолдер */
+            img.style.display = 'none';
+            img.classList.remove('sp-loaded');
+            ph.style.background = c.style.background;
+            ph.style.display = 'flex';
+
+            var pre = preloaded[imgSrc];
+            if (pre && pre.complete && pre.naturalWidth > 0) {
+                /* Уже в кеше — показываем сразу */
+                img.src = imgSrc;
+                ph.style.display = 'none';
+                img.style.display = 'block';
+                void img.offsetWidth;
+                img.classList.add('sp-loaded');
+            } else {
+                /* Ещё грузится — покажем по onload */
+                img.onload = function() {
+                    ph.style.display = 'none';
+                    img.style.display = 'block';
+                    void img.offsetWidth;
+                    img.classList.add('sp-loaded');
+                };
+                img.src = imgSrc;
+            }
         } else {
             ph.style.background = c.style.background;
             ph.style.display = 'flex'; img.style.display = 'none';
