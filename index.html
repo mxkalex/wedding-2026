@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Александр &amp; Анастасия · 22.08.2026</title>
     <meta name="description" content="Свадебное приглашение Александра и Анастасии — 22 августа 2026, Зелёная усадьба, Чувашская Республика">
+    <meta name="theme-color" content="#184A00">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Свадьба Александра & Анастасии · 22.08.2026">
+    <meta property="og:description" content="Приглашаем на свадьбу! 22 августа 2026, Зелёная усадьба, Чувашская Республика">
+    <meta property="og:image" content="https://mxkalex.github.io/wedding-2026/first%20photo.png">
+    <meta property="og:url" content="https://mxkalex.github.io/wedding-2026/">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:site_name" content="Свадьба Александра &amp; Анастасии">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -224,23 +233,23 @@
 
         .hero-photo-wrap {
             position: relative; margin-bottom: 2.5rem;
-            width: 100%; max-width: 860px;
+            width: 100%; max-width: 480px;
             animation: fadeIn 1s ease 0.2s both;
         }
         .hero-photo, .hero-initials {
             width: 100%;
-            height: clamp(300px, 60vw, 520px);
             border-radius: 20px;
             box-shadow: 0 16px 60px rgba(222,177,146,0.5);
         }
-        .hero-photo    { object-fit: cover; object-position: center top; }
+        .hero-photo    { height: auto; display: block; }
         .hero-initials {
             display: none; align-items: center; justify-content: center;
+            height: clamp(300px, 60vw, 520px);
             background: linear-gradient(135deg, var(--beige-light), var(--pink-light));
             font-family: var(--font-h); font-size: 5rem; color: var(--green); font-style: italic;
         }
         @media (max-width: 600px) {
-            .hero-photo, .hero-initials { height: clamp(260px, 80vw, 360px); }
+            .hero-initials { height: clamp(260px, 80vw, 360px); }
         }
         .hero-ring-badge {
             position: absolute; bottom: 14px; right: 14px;
@@ -1287,6 +1296,19 @@
         .cd-num   { font-family: var(--font-h); font-size: 2.9rem; color: var(--white); line-height: 1; display: block; }
         .cd-sep   { font-family: var(--font-h); font-size: 2.4rem; color: var(--pink); align-self: flex-start; line-height: 1; margin-top: 4px; }
         .cd-unit-lbl { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,250,246,0.38); margin-top: 0.3rem; }
+        .cal-wrap { text-align: center; margin-top: 2rem; }
+        .cal-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.85rem 2.4rem; border-radius: 50px; border: none; cursor: pointer;
+            background: var(--pink); color: var(--green);
+            font-family: var(--font-b); font-weight: 700; font-size: 0.78rem;
+            letter-spacing: 0.11em; text-transform: uppercase;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .cal-btn:hover { background: var(--pink-dark); transform: translateY(-2px); }
+        .cal-btn:focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+        .cal-btn:active { transform: translateY(0); }
+        .cal-btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
         .footer-main {
             max-width: 1100px; margin: 0 auto;
@@ -1382,7 +1404,7 @@
 <!-- ═══════════════════════════════════════ HERO ════════════════════════════════════ -->
 <section id="hero">
     <div class="hero-photo-wrap">
-        <img src="./photo_2026-03-20_13-22-30.jpg"
+        <img src="./first photo.png"
              alt="Александр и Анастасия"
              class="hero-photo"
              id="heroPhoto"
@@ -1965,6 +1987,12 @@
                 <div class="cd-unit-lbl">секунд</div>
             </div>
         </div>
+        <div class="cal-wrap">
+            <button class="cal-btn" id="calBtn" aria-label="Сохранить дату свадьбы в календарь">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                Сохранить в календарь
+            </button>
+        </div>
     </div>
 
     <div class="footer-main">
@@ -2119,7 +2147,7 @@ reveals.forEach((el, i) => {
 function pad(n) { return String(n).padStart(2, '0'); }
 
 function updateCountdown() {
-    const target = new Date('2026-08-22T15:30:00');
+    const target = new Date('2026-08-22T15:30:00+03:00');
     const diff = target - Date.now();
 
     if (diff <= 0) {
@@ -2141,6 +2169,41 @@ function updateCountdown() {
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+/* ── Save to Calendar (.ics) ─────────────────────────────────── */
+document.getElementById('calBtn').addEventListener('click', function() {
+    var now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+    var ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Wedding//RU',
+        'BEGIN:VEVENT',
+        'UID:wedding-20260822@mxkalex.github.io',
+        'DTSTAMP:' + now,
+        'DTSTART:20260822T123000Z',
+        'DTEND:20260822T205900Z',
+        'SUMMARY:Свадьба Александра и Анастасии',
+        'LOCATION:Зелёная усадьба\\, д. Кадикасы\\, ул. Пушкина 33\\, Чувашская Республика',
+        'DESCRIPTION:Сбор гостей в 15:30\\nЦеремония в 16:00\\n\\nhttps://mxkalex.github.io/wedding-2026/',
+        'BEGIN:VALARM',
+        'TRIGGER:-P1D',
+        'ACTION:DISPLAY',
+        'DESCRIPTION:Завтра свадьба Александра и Анастасии!',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+
+    var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'wedding-2026-08-22.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
 
 /* ── RSVP form: conditional fields ────────────────────────────── */
 (function() {
@@ -2687,7 +2750,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     });
 
     /* ── Control buttons (event delegation) ── */
-    ['bride', 'groom'].forEach(function(key) {
+    ['bride', 'groom', 'couple'].forEach(function(key) {
         var p = panels[key];
         if (!p) return;
 
@@ -2742,7 +2805,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     });
 
     /* ── Progress bar seeking ── */
-    ['bride', 'groom'].forEach(function(key) {
+    ['bride', 'groom', 'couple'].forEach(function(key) {
         var p = panels[key];
         if (!p) return;
 
@@ -3011,7 +3074,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         }, { passive: true });
 
         /* Also reset dismiss when user plays from main player */
-        ['bride', 'groom'].forEach(function(key) {
+        ['bride', 'groom', 'couple'].forEach(function(key) {
             var p = panels[key];
             if (!p) return;
             p.playBtn.addEventListener('click', function() {
