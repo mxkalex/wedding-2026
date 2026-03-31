@@ -20,10 +20,17 @@
 
 ```
 project 1/
-├── index.html                        # весь сайт (единый файл)
-├── photo_2026-03-20_13-22-30.jpg     # фото пары (hero)
+├── index.html                        # весь сайт (единый файл, ~3150 строк)
+├── first photo.png                   # фото пары (hero, портретное 759×1139px)
 ├── venue.jpg                         # фото площадки
 ├── CLAUDE.md                         # этот файл
+├── dress_code_background.jpg         # blur-фон секции дресс-кода
+├── Plan_dnya_background.jpg          # blur-фон секции «План дня»
+├── wishlist_background.jpg           # blur-фон секции «Вишлист»
+├── maps_logo/                        # логотипы сервисов карт
+│   ├── 2gis.webp
+│   ├── Google_Maps_Logo_2020.svg.png
+│   └── Yandex_Maps_icon.svg.png
 ├── music_back_logo/                  # фоны секции музыки (по артисту/треку)
 │   ├── sqwzbab.jpg                   # SQWOZ BAB
 │   ├── tokyo.webp                    # Tokyo Drift
@@ -40,7 +47,7 @@ project 1/
 │   ├── 1х1 образ бежевый.png
 │   ├── 1х1 образ зелёный.png
 │   ├── 1х1 образ песочный.png
-│   ├── женский образ 1.png           # карусель + фон секции (blur)
+│   ├── женский образ 1.png           # карусель
 │   ├── женский образ 2.png
 │   ├── мужской образ 1.png
 │   └── мужской образ 2.png
@@ -65,8 +72,6 @@ project 1/
         └── Король и Шут — Счастье_ (Ария Тодда).m4a
 ```
 
-Фото для карусели дресс-кода и попапов палитры — **добавлены** из папки `дресскод/`.
-
 ---
 
 ## Структура страницы (секции в порядке)
@@ -76,13 +81,13 @@ project 1/
 | splash | Splash overlay: «Дорогой друг!» → fade-out через 3.5с | cream white |
 | `#hero` | «Приглашаем вас на свадьбу Александра & Анастасии» | gradient green |
 | `#music` | «Включи свой вайб» — аудиоплеер (три плейлиста) | beige-pale + blur фон артиста |
-| `#details` | Дата, время, место, карты | white |
-| `#program` | Таймлайн программы дня | gradient green |
-| `#dresscode` | Дресс-код | beige-pale + blur фон образа |
-| `#gifts` | Подарки (только конверт) | white |
+| `#details` | Дата, время, место, карты (логотипы 2GIS/Яндекс/Google) | white |
+| `#program` | Таймлайн программы дня | gradient green + blur фото (`Plan_dnya_background.jpg`) |
+| `#dresscode` | Дресс-код | beige-pale + blur фото (`dress_code_background.jpg`) |
+| `#gifts` | Подарки (только конверт) | white + blur фото (`wishlist_background.jpg`) |
 | `#rsvp` | Анкета гостя | pink-light→beige-pale |
 | `#contacts` | Контакты + Telegram-чат | green |
-| `footer` | Обратный отсчёт + навигация | #0d2a00 |
+| `footer` | Обратный отсчёт + «Сохранить в календарь» + навигация | #0d2a00 |
 
 ---
 
@@ -94,13 +99,19 @@ project 1/
 - **Анимация**: текст fadeInUp → пульсирующие точки → fade-out через 3.5с → удаление из DOM
 - **JS IIFE**: блокирует скролл (`overflow: hidden`) на время splash
 
+### Hero-фото
+- **Фото**: `first photo.png` — портретное (759×1139px), отображается вертикально полностью
+- **CSS**: `.hero-photo-wrap` max-width 480px, `.hero-photo` height: auto (no crop), border-radius 20px
+- **Fallback**: `.hero-initials` (инициалы А&А) — скрыт через `display: none`
+
 ### Карусель дресс-кода (`#dresscode`)
 Десктоп: 5 слайдов (правила → 4 фото). Мобильный (<=768px): 6 слайдов (Дамы → Джентльмены → 4 фото).
 - **Навигация**: только кнопки `‹ ›` и точки-индикаторы (свайп/drag **убраны**)
 - **Мобильный split**: JS динамически разделяет слайд правил на два (Дамы / Джентльмены) и добавляет 6-ю точку
 - JS IIFE: `#dcTrack`, `#dcPrev`, `#dcNext`, `#dcDots`
 - Все 4 фото-слайда заполнены из `дресскод/{женский,мужской} образ {1,2}.png`
-- **Фон секции**: `.dc-bg` — `женский образ 1.png` в сильном блюре (60px), opacity 0.15
+- **Фон секции**: `.dc-bg` — `dress_code_background.jpg` в blur 40px, opacity 0.25
+- **Кнопки**: glassmorphism 44×44px, spring-анимация hover, pill-dot индикаторы (width transition)
 
 ### Попап цветовой палитры (`.swatches`)
 - Desktop: hover на `.swatch-c` → попап рядом со свотчем
@@ -111,6 +122,7 @@ project 1/
 ### RSVP форма (`#rsvp`)
 - Поля: имя, присутствие (да/нет), транспорт, напитки, комментарий
 - **Попутчики удалены** — поля и JS убраны полностью
+- **Напитки**: сетка 2 колонки, кнопка «Другое» на всю ширину (`grid-column: 1 / -1`), placeholder: «Кстати, будет самогон, но вы не стесняйтесь, пишите»
 - Валидация на клиенте, success-state без перезагрузки
 - **Бэкенд**: Google Apps Script Web App -> Google Sheets + Telegram-уведомление жениху (файл `apps-script.js`)
 
@@ -123,6 +135,7 @@ project 1/
 - **Кириллица в путях**: `encodePath()` = `split('/').map(encodeURIComponent).join('/')`
 - **A11y**: WAI-ARIA tablist, `role="slider"` на progress bar с `tabindex="0"` и keyboard seek (±5сек), `aria-live="polite"` на track title, `focus-visible` на всех кнопках, `aria-valuetext` на слайдере
 - **Фон секции**: `.music-bg` (#musicBg) — по умолчанию `ourvibe.jpg` (фото пары) в blur 45px, opacity 0.3. При воспроизведении трека заменяется на фото артиста/группы через `TRACK_BG` маппинг в JS
+- **Play-кнопка**: gradient + pulse ring анимация (`@keyframes playPulse`) при воспроизведении (класс `.playing`)
 - Чтобы добавить/убрать треки: отредактировать массив `PLAYLISTS` и `TRACK_BG` в JS IIFE "Music audio player"
 
 ### Мини-плеер (sticky bottom bar)
@@ -136,9 +149,39 @@ project 1/
 - **Логика dismiss**: кнопка close ставит `mpDismissed=true` и скрывает бар; автосмена трека (`ended`) не возвращает его; только явное взаимодействие с play/плеером сбрасывает dismiss
 - **`#scrollTop`** автоматически поднимается на 60px через CSS-selector `.mp-bar.visible ~ #scrollTop`
 
+### Кнопка «Сохранить в календарь» (footer)
+- `.cal-btn` — gradient shimmer, скачивает `.ics` файл (vCalendar)
+- Событие: 22.08.2026, 15:30–23:59 MSK, место + ссылка на сайт
+- VALARM за 1 день до свадьбы
+- JS: Blob + URL.createObjectURL + скрытый `<a>` download
+
 ### Вишлист (`#gifts`)
 - Карточки жениха и невесты **удалены**
 - Остался только блок «Денежный конверт»
+- **Фон**: `.gifts-bg` — `wishlist_background.jpg` в blur 40px, opacity 0.2
+
+### «Как добраться» (`#details`)
+- Кнопки 2GIS / Яндекс.Карты / Google Maps с **логотипами** (`.map-btn-logo` 18×18px из `maps_logo/`)
+
+### Обратный отсчёт (footer)
+- Считает до 22.08.2026 15:30 **MSK** (`+03:00`)
+- Дни / часы / минуты / секунды
+
+---
+
+## Дизайн кнопок (обновлён 2026-03-28)
+
+Все кнопки прошли полный редизайн:
+- **CTA (.btn)**: gradient backgrounds, shimmer hover (`::after translateX`), spring animation (`cubic-bezier(0.34, 1.56, 0.64, 1)`), colored box-shadows, `isolation: isolate`
+- **Варианты**: `.btn-green` (gradient green), `.btn-outline` (border), `.btn-pink` (gradient pink), `.btn-tg` (Telegram blue)
+- **Карусель (.dc-nav-btn)**: glassmorphism `backdrop-filter: blur(12px)`, 44×44px, spring hover + scale
+- **Карусель dots (.dc-dot)**: pill-shape, active = width 28px (ease-out)
+- **Audio tabs (.ap-tab)**: glass effect + gradient active state
+- **Play (.ap-btn--play)**: gradient + pulse ring `@keyframes playPulse` при воспроизведении
+- **RSVP submit (.btn-submit)**: gradient slide (`background-position`), shimmer отключён
+- **Calendar (.cal-btn)**: gradient shimmer
+- **Scroll-to-top (#scrollTop)**: gradient + spring hover
+- **`prefers-reduced-motion`**: глобальный блок для accessibility
 
 ---
 
@@ -180,9 +223,11 @@ project 1/
 ## Motion & Hover
 
 - Hover на карточках: spring cubic-bezier `(0.34, 1.45, 0.64, 1)` для transform.
+- Кнопки: spring `(0.34, 1.56, 0.64, 1)` + shimmer `::after`.
 - Анимации появления: `IntersectionObserver` + CSS `opacity/translateY`, каскадные `animation-delay`.
 - Одна срежиссированная анимация при загрузке лучше пяти случайных.
 - `backdrop-filter: blur()` на картах поверх фона — глубина без тяжести.
+- `@media (prefers-reduced-motion: reduce)` — все анимации/transitions урезаны.
 
 ---
 
@@ -190,10 +235,10 @@ project 1/
 
 | Элемент | Правило |
 |---------|---------|
-| Кнопки | `border-radius: 50px`, uppercase, `letter-spacing: 0.11em` |
+| Кнопки | `border-radius: 50px`, uppercase, `letter-spacing: 0.11em`, gradient + shimmer |
 | Карточки | `border-radius: 16px`, `box-shadow` мягкая зелёная |
 | Формы | `border-radius: 10px`, `accent-color: var(--green)` |
-| Секции | чередовать белый / beige-pale / green / pink-light |
+| Секции | чередовать белый / beige-pale / green / pink-light, blur-фон фото |
 
 ---
 
@@ -204,19 +249,44 @@ project 1/
 
 ---
 
+## Head: meta-теги
+
+```html
+<meta name="theme-color" content="#184A00">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Свадьба Александра & Анастасии · 22.08.2026">
+<meta property="og:description" content="Приглашаем на свадьбу! 22 августа 2026, Зелёная усадьба, Чувашская Республика">
+<meta property="og:image" content="https://mxkalex.github.io/wedding-2026/first%20photo.png">
+<meta property="og:url" content="https://mxkalex.github.io/wedding-2026/">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" href="data:image/svg+xml,..."> <!-- эмодзи 💍 -->
+```
+
+---
+
 ## Что ещё не сделано / план
 
 - [x] **Добавить фото** в карусель дресс-кода — готово (`дресскод/*.png`)
 - [x] **Добавить фото** в попапы палитры — готово (`дресскод/1х1 *.png`)
 - [x] **Подключить RSVP** — Google Apps Script -> Google Sheets + Telegram-уведомление (apps-script.js)
-- [x] **Публикация** — задеплоено на GitHub Pages: https://mxkalex.github.io/wedding-2026/
+- [x] **Публикация** — задеплоено на GitHub Pages
+- [x] **OG meta tags** — Telegram/WhatsApp/VK превью
+- [x] **Favicon** — inline SVG с 💍
+- [x] **Theme-color** — #184A00 для мобильных браузеров
+- [x] **Countdown timezone** — +03:00 MSK
+- [x] **Кнопка «Сохранить в календарь»** — .ics скачивание
+- [x] **Fix couple playlist** — кнопки play/prev/next для «Вайб пары»
+- [x] **Hero photo** — портретный формат, полное отображение
+- [x] **Редизайн кнопок** — gradient, shimmer, spring, glassmorphism, pulse ring
+- [x] **Blur-фоны секций** — dresscode, program, gifts (фото на весь фон)
+- [x] **Логотипы карт** — 2GIS/Яндекс/Google вместо эмодзи
+- [x] **«Другое» в напитках** — на всю ширину + юмористический placeholder
 
 ### Идеи для будущих секций (из research)
 - **«Наша история»** — вертикальный таймлайн с фото: знакомство → пара → предложение
 - **Фотогалерея** — masonry grid или слайдер с фото пары
 - **Встроенная карта** — Yandex Maps embed в `#details`
 - **FAQ** — аккордеон с ответами на частые вопросы гостей
-- **«Сохранить в календарь»** — кнопка для Google Calendar / .ics
 - **Запрос трека** — поле в RSVP: «Какую песню хотите услышать?»
 - **Размещение** — карточки ближайших гостиниц (для иногородних)
 

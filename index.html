@@ -16,7 +16,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Lato:wght@300;400;700&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
            VARIABLES & RESET
@@ -39,6 +39,10 @@
             --tr:          0.3s cubic-bezier(0.4,0,0.2,1);
             --font-h:      'Cormorant Garamond', Georgia, serif;
             --font-b:      'Lato', sans-serif;
+        }
+        html[lang="zh"] { --font-b: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+        html[lang="zh"] h1, html[lang="zh"] h2, html[lang="zh"] h3, html[lang="zh"] h4 {
+            font-family: 'Noto Sans SC', 'PingFang SC', serif;
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html  { scroll-behavior: smooth; }
@@ -137,6 +141,32 @@
             .nav-links.open { transform: none; }
             .nav-links a { font-size: 1rem; }
             .nav-burger { display: flex; }
+        }
+
+        /* ============================================================
+           LANGUAGE TOGGLE
+        ============================================================ */
+        .lang-toggle {
+            font-family: 'Noto Sans SC', var(--font-b);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 0.4rem 0.9rem;
+            border: 1.5px solid var(--green);
+            border-radius: 50px; background: transparent; color: var(--green);
+            cursor: pointer;
+            transition: background var(--tr), color var(--tr), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            margin-left: 0.5rem;
+        }
+        .lang-toggle:hover {
+            background: var(--green); color: var(--white);
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            .lang-toggle {
+                position: fixed; top: 1rem; right: 3.5rem;
+                z-index: 1001;
+            }
         }
 
         /* ============================================================
@@ -248,6 +278,12 @@
         @keyframes splashPulse {
             0%, 100% { transform: scale(0.6); opacity: 0.4; }
             50%      { transform: scale(1);   opacity: 1; }
+        }
+        .splash-lang {
+            transition: opacity 0.6s ease;
+        }
+        .splash-lang--zh .splash-text {
+            font-family: 'Noto Sans SC', sans-serif;
         }
 
         /* ============================================================
@@ -1534,8 +1570,14 @@
 <!-- ═══════════════════════════════════════ SPLASH ═══════════════════════════════════ -->
 <div id="splash" aria-hidden="true">
     <div class="splash-content">
-        <p class="splash-text">Дорогой друг!</p>
-        <p class="splash-text splash-text--sub">Мы к тебе с приглашением!</p>
+        <div class="splash-lang splash-lang--ru">
+            <p class="splash-text" data-i18n="splash.greeting">Дорогой друг!</p>
+            <p class="splash-text splash-text--sub" data-i18n="splash.sub">Мы к тебе с приглашением!</p>
+        </div>
+        <div class="splash-lang splash-lang--zh" style="display:none;">
+            <p class="splash-text" data-i18n="splash.greeting">亲爱的朋友！</p>
+            <p class="splash-text splash-text--sub" data-i18n="splash.sub">我们向您发出邀请！</p>
+        </div>
         <div class="splash-loader">
             <span></span><span></span><span></span>
         </div>
@@ -1543,18 +1585,19 @@
 </div>
 
 <!-- ═══════════════════════════════════════ NAVBAR ══════════════════════════════════ -->
-<nav id="navbar" role="navigation" aria-label="Основная навигация">
-    <a href="#hero" class="nav-logo">А &amp; А</a>
+<nav id="navbar" role="navigation" data-i18n-aria="aria.nav" aria-label="Основная навигация">
+    <a href="#hero" class="nav-logo" data-i18n="nav.logo">А &amp; А</a>
     <ul class="nav-links" id="navLinks">
-        <li><a href="#details"   onclick="closeNav()">Место</a></li>
-        <li><a href="#program"   onclick="closeNav()">Программа</a></li>
-        <li><a href="#dresscode" onclick="closeNav()">Дресс-код</a></li>
-        <li><a href="#gifts"     onclick="closeNav()">Подарки</a></li>
-        <li><a href="#music"     onclick="closeNav()">Музыка</a></li>
-        <li><a href="#rsvp"      onclick="closeNav()">Участие</a></li>
-        <li><a href="#contacts"  onclick="closeNav()">Контакты</a></li>
+        <li><a href="#details"   onclick="closeNav()" data-i18n="nav.details">Место</a></li>
+        <li><a href="#program"   onclick="closeNav()" data-i18n="nav.program">Программа</a></li>
+        <li><a href="#dresscode" onclick="closeNav()" data-i18n="nav.dresscode">Дресс-код</a></li>
+        <li><a href="#gifts"     onclick="closeNav()" data-i18n="nav.gifts">Подарки</a></li>
+        <li><a href="#music"     onclick="closeNav()" data-i18n="nav.music">Музыка</a></li>
+        <li><a href="#rsvp"      onclick="closeNav()" data-i18n="nav.rsvp">Участие</a></li>
+        <li><a href="#contacts"  onclick="closeNav()" data-i18n="nav.contacts">Контакты</a></li>
     </ul>
-    <div class="nav-burger" id="navBurger" onclick="toggleNav()" role="button" aria-label="Открыть меню" aria-expanded="false">
+    <button id="langToggle" class="lang-toggle" type="button" onclick="setLanguage(currentLang === 'ru' ? 'zh' : 'ru')" aria-label="Switch language">中文</button>
+    <div class="nav-burger" id="navBurger" onclick="toggleNav()" role="button" data-i18n-aria="aria.burger" aria-label="Открыть меню" aria-expanded="false">
         <span></span><span></span><span></span>
     </div>
 </nav>
@@ -1571,30 +1614,30 @@
         <div class="hero-ring-badge" aria-hidden="true">💍</div>
     </div>
 
-    <span class="label">Приглашаем вас на свадьбу</span>
-    <h1 class="hero-names">Александра <span class="hero-amp">&amp;</span> Анастасии</h1>
-    <p class="hero-sub">С любовью и нетерпением ждём вас</p>
+    <span class="label" data-i18n="hero.label">Приглашаем вас на свадьбу</span>
+    <h1 class="hero-names" data-i18n-html="hero.names">Александра <span class="hero-amp">&amp;</span> Анастасии</h1>
+    <p class="hero-sub" data-i18n="hero.sub">С любовью и нетерпением ждём вас</p>
 
-    <div class="hero-date" aria-label="Дата свадьбы: 22 августа 2026 года">
+    <div class="hero-date" data-i18n-aria="aria.hero_date" aria-label="Дата свадьбы: 22 августа 2026 года">
         <div class="hero-date-part">
             <div class="hero-date-num">22</div>
-            <div class="hero-date-lbl">день</div>
+            <div class="hero-date-lbl" data-i18n="hero.day">число</div>
         </div>
         <div class="hero-date-sep"></div>
         <div class="hero-date-part">
             <div class="hero-date-num">08</div>
-            <div class="hero-date-lbl">август</div>
+            <div class="hero-date-lbl" data-i18n="hero.month">август</div>
         </div>
         <div class="hero-date-sep"></div>
         <div class="hero-date-part">
             <div class="hero-date-num">2026</div>
-            <div class="hero-date-lbl">год</div>
+            <div class="hero-date-lbl" data-i18n="hero.year">год</div>
         </div>
     </div>
 
     <div class="hero-btns">
-        <a href="#rsvp"    class="btn btn-green">Подтвердить участие</a>
-        <a href="#program" class="btn btn-outline">Программа дня</a>
+        <a href="#rsvp"    class="btn btn-green" data-i18n="hero.btn_rsvp">Подтвердить участие</a>
+        <a href="#program" class="btn btn-outline" data-i18n="hero.btn_program">Программа дня</a>
     </div>
 </section>
 
@@ -1603,22 +1646,22 @@
     <div class="music-bg active" id="musicBg" aria-hidden="true" style="background-image:url(плейлист/аватарки%20для%20плейлиста/ourvibe.jpg)"></div>
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Музыка</span>
-            <h2 id="musicHeading">Включи свой вайб</h2>
+            <span class="label" data-i18n="music.label">Музыка</span>
+            <h2 id="musicHeading" data-i18n="music.heading">Включи свой вайб</h2>
         </div>
 
-        <div class="music-tabs reveal" role="tablist" aria-label="Плейлисты">
+        <div class="music-tabs reveal" role="tablist" data-i18n-aria="aria.playlists" aria-label="Плейлисты">
             <button class="music-tab active" data-playlist="bride" type="button"
                     role="tab" aria-selected="true" aria-controls="playlistBride" id="tab-bride">
-                <span class="music-tab-icon" aria-hidden="true">&#9825;</span> Вайб невесты
+                <span class="music-tab-icon" aria-hidden="true">&#9825;</span> <span data-i18n="music.tab.bride">Вайб невесты</span>
             </button>
             <button class="music-tab" data-playlist="groom" type="button"
                     role="tab" aria-selected="false" aria-controls="playlistGroom" id="tab-groom" tabindex="-1">
-                <span class="music-tab-icon" aria-hidden="true">&#9834;</span> Вайб жениха
+                <span class="music-tab-icon" aria-hidden="true">&#9834;</span> <span data-i18n="music.tab.groom">Вайб жениха</span>
             </button>
             <button class="music-tab" data-playlist="couple" type="button"
                     role="tab" aria-selected="false" aria-controls="playlistCouple" id="tab-couple" tabindex="-1">
-                <span class="music-tab-icon" aria-hidden="true">&#9829;</span> Вайб пары
+                <span class="music-tab-icon" aria-hidden="true">&#9829;</span> <span data-i18n="music.tab.couple">Вайб пары</span>
             </button>
         </div>
 
@@ -1626,85 +1669,85 @@
             <!-- Плейлист невесты -->
             <div class="ap-panel active" id="playlistBride" role="tabpanel" aria-labelledby="tab-bride">
                 <div class="ap-now-playing">
-                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                    <div class="ap-track-title" aria-live="polite" data-i18n="music.select">Выберите трек</div>
                 </div>
                 <div class="ap-controls">
-                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                    <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                    <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                    <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
                     <span class="ap-time ap-time--current">0:00</span>
-                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="ap-progress-bar" role="slider" tabindex="0" data-i18n-aria="aria.progress" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                         <div class="ap-progress-fill"></div>
                         <div class="ap-progress-thumb"></div>
                     </div>
                     <span class="ap-time ap-time--duration">0:00</span>
                 </div>
-                <ol class="ap-tracklist" aria-label="Плейлист Анастасии"></ol>
+                <ol class="ap-tracklist" data-i18n-aria="aria.pl_bride" aria-label="Плейлист Анастасии"></ol>
             </div>
 
             <!-- Плейлист жениха -->
             <div class="ap-panel" id="playlistGroom" role="tabpanel" aria-labelledby="tab-groom">
                 <div class="ap-now-playing">
-                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                    <div class="ap-track-title" aria-live="polite" data-i18n="music.select">Выберите трек</div>
                 </div>
                 <div class="ap-controls">
-                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                    <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                    <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                    <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
                     <span class="ap-time ap-time--current">0:00</span>
-                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="ap-progress-bar" role="slider" tabindex="0" data-i18n-aria="aria.progress" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                         <div class="ap-progress-fill"></div>
                         <div class="ap-progress-thumb"></div>
                     </div>
                     <span class="ap-time ap-time--duration">0:00</span>
                 </div>
-                <ol class="ap-tracklist" aria-label="Плейлист Александра"></ol>
+                <ol class="ap-tracklist" data-i18n-aria="aria.pl_groom" aria-label="Плейлист Александра"></ol>
             </div>
 
             <!-- Плейлист пары -->
-            <div class="ap-panel" id="playlistCouple" role="tabpanel" aria-labelledby="tab-couple">
+            <div class="ap-panel" id="playlistCouple" role="tabpanel" aria-labelledby="tab-couple" data-i18n-aria="aria.pl_couple">
                 <div class="ap-now-playing">
-                    <div class="ap-track-title" aria-live="polite">Выберите трек</div>
+                    <div class="ap-track-title" aria-live="polite" data-i18n="music.select">Выберите трек</div>
                 </div>
                 <div class="ap-controls">
-                    <button class="ap-btn ap-btn--prev" type="button" aria-label="Предыдущий трек">
+                    <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--play" type="button" aria-label="Воспроизвести">
+                    <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
-                    <button class="ap-btn ap-btn--next" type="button" aria-label="Следующий трек">
+                    <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
                     <span class="ap-time ap-time--current">0:00</span>
-                    <div class="ap-progress-bar" role="slider" tabindex="0" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="ap-progress-bar" role="slider" tabindex="0" data-i18n-aria="aria.progress" aria-label="Прогресс воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                         <div class="ap-progress-fill"></div>
                         <div class="ap-progress-thumb"></div>
                     </div>
                     <span class="ap-time ap-time--duration">0:00</span>
                 </div>
-                <ol class="ap-tracklist" aria-label="Плейлист пары"></ol>
+                <ol class="ap-tracklist" data-i18n-aria="aria.pl_couple" aria-label="Плейлист пары"></ol>
             </div>
         </div>
     </div>
@@ -1714,15 +1757,15 @@
 <section id="details">
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Детали события</span>
-            <h2>Дата, время и место</h2>
+            <span class="label" data-i18n="details.label">Детали события</span>
+            <h2 data-i18n="details.heading">Дата, время и место</h2>
         </div>
         <div class="details-grid">
             <div class="detail-card reveal">
                 <div class="detail-icon" aria-hidden="true">📅</div>
                 <div>
-                    <h3>Дата и время</h3>
-                    <p>Суббота, <strong>22 августа 2026</strong><br>
+                    <h3 data-i18n="details.date_h">Дата и время</h3>
+                    <p data-i18n-html="details.date_p">Суббота, <strong>22 августа 2026</strong><br>
                        Сбор гостей с <strong>15:30</strong><br>
                        Начало церемонии в <strong>16:00</strong></p>
                 </div>
@@ -1730,8 +1773,8 @@
             <div class="detail-card reveal">
                 <div class="detail-icon" aria-hidden="true">🌿</div>
                 <div>
-                    <h3>Место</h3>
-                    <p><strong>Зелёная усадьба</strong><br>
+                    <h3 data-i18n="details.place_h">Место</h3>
+                    <p data-i18n-html="details.place_p"><strong>Зелёная усадьба</strong><br>
                        Чувашская Республика,<br>
                        д. Кадикасы, ул. Пушкина, 33</p>
                 </div>
@@ -1739,8 +1782,8 @@
             <div class="detail-card full reveal">
                 <div class="detail-icon" aria-hidden="true">🗺️</div>
                 <div>
-                    <h3>Как добраться</h3>
-                    <p>Откройте маршрут в удобном приложении — мы будем вас ждать!</p>
+                    <h3 data-i18n="details.how_h">Как добраться</h3>
+                    <p data-i18n="details.how_p">Откройте маршрут в удобном приложении — мы будем вас ждать!</p>
                     <div class="map-btns">
                         <a href="https://2gis.ru/search/%D0%A7%D1%83%D0%B2%D0%B0%D1%88%D1%81%D0%BA%D0%B0%D1%8F+%D0%A0%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%2C+%D0%B4.+%D0%9A%D0%B0%D0%B4%D0%B8%D0%BA%D0%B0%D1%81%D1%8B%2C+%D1%83%D0%BB.+%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD%D0%B0%2C+33"
                            target="_blank" rel="noopener noreferrer" class="map-btn gis"><img src="maps_logo/2gis.webp" alt="" class="map-btn-logo"> 2GIS</a>
@@ -1760,16 +1803,16 @@
     <div class="program-bg" aria-hidden="true"></div>
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">22 августа 2026</span>
-            <h2>Программа дня</h2>
+            <span class="label" data-i18n="prog.label">22 августа 2026</span>
+            <h2 data-i18n="prog.heading">Программа дня</h2>
         </div>
         <div class="timeline">
             <div class="tl-item reveal">
                 <div class="tl-dot" aria-hidden="true"></div>
                 <div class="tl-content">
-                    <div class="tl-time">15:30 — 16:00</div>
-                    <h3>Сбор гостей</h3>
-                    <p>Встречаем дорогих гостей, наслаждаемся аперитивом и приятной атмосферой перед торжеством</p>
+                    <div class="tl-time" data-i18n="prog.t1_time">15:30 — 16:00</div>
+                    <h3 data-i18n="prog.t1_h">Сбор гостей</h3>
+                    <p data-i18n="prog.t1_p">Встречаем дорогих гостей, наслаждаемся аперитивом и приятной атмосферой перед торжеством</p>
                 </div>
                 <svg class="tl-sketch" width="68" height="72" viewBox="0 0 68 72" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M8 10 L18 10 L16 44 L10 44 Z" stroke="rgba(255,250,246,0.75)" stroke-width="1.8" fill="rgba(255,250,246,0.05)"/>
@@ -1790,9 +1833,9 @@
             <div class="tl-item reveal">
                 <div class="tl-dot" aria-hidden="true"></div>
                 <div class="tl-content">
-                    <div class="tl-time">16:00 — 17:00</div>
-                    <h3>Выездная церемония</h3>
-                    <p>Обмен клятвами и кольцами под открытым небом, совместная фотосессия с любимыми гостями</p>
+                    <div class="tl-time" data-i18n="prog.t2_time">16:00 — 17:00</div>
+                    <h3 data-i18n="prog.t2_h">Выездная церемония</h3>
+                    <p data-i18n="prog.t2_p">Обмен клятвами и кольцами под открытым небом, совместная фотосессия с любимыми гостями</p>
                 </div>
                 <svg class="tl-sketch" width="72" height="78" viewBox="0 0 72 78" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M12 54 L12 30 C12 14 60 14 60 30 L60 54" stroke="rgba(255,250,246,0.8)" stroke-width="1.9"/>
@@ -1808,9 +1851,9 @@
             <div class="tl-item reveal">
                 <div class="tl-dot" aria-hidden="true"></div>
                 <div class="tl-content">
-                    <div class="tl-time">17:00 — 22:00</div>
-                    <h3>Банкет</h3>
-                    <p>Праздничный ужин, тосты, живая музыка и танцы в кругу самых близких людей</p>
+                    <div class="tl-time" data-i18n="prog.t3_time">17:00 — 22:00</div>
+                    <h3 data-i18n="prog.t3_h">Банкет</h3>
+                    <p data-i18n="prog.t3_p">Праздничный ужин, тосты, живая музыка и танцы в кругу самых близких людей</p>
                 </div>
                 <svg class="tl-sketch" width="68" height="74" viewBox="0 0 68 74" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <line x1="14" y1="20" x2="14" y2="66" stroke="rgba(255,250,246,0.8)" stroke-width="1.8"/>
@@ -1835,38 +1878,38 @@
     <div class="dc-bg" aria-hidden="true"></div>
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Внешний вид</span>
-            <h2>Дресс-код</h2>
+            <span class="label" data-i18n="dc.label">Внешний вид</span>
+            <h2 data-i18n="dc.heading">Дресс-код</h2>
         </div>
         <div class="dc-grid">
             <div class="dc-text reveal">
-                <h3>Вечерний / торжественный стиль</h3>
-                <p>Мы будем рады, если вы выберете наряд в духе нашего торжества — элегантный и праздничный.</p>
-                <p>Предпочтительны оттенки из нашей цветовой палитры: нежный розовый, глубокий зелёный и тёплый бежевый.</p>
+                <h3 data-i18n="dc.style">Вечерний / торжественный стиль</h3>
+                <p data-i18n="dc.p1">Мы будем рады, если вы выберете наряд в духе нашего торжества — элегантный и праздничный.</p>
+                <p data-i18n="dc.p2">Предпочтительны оттенки из нашей цветовой палитры: нежный розовый, глубокий зелёный и тёплый бежевый.</p>
                 <div class="swatches" aria-label="Палитра дресс-кода">
                     <div class="swatch">
                         <div class="swatch-c" style="background:#FFCECE" title="Пудровый розовый" data-ref="дресскод/1х1 мужской образ пудровый.png"></div>
-                        <span>Пудровый</span>
+                        <span data-i18n="dc.powder">Пудровый</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-c" style="background:#FF9C9C" title="Розовый" data-ref="дресскод/1х1 женский образ розовый.png"></div>
-                        <span>Розовый</span>
+                        <span data-i18n="dc.pink">Розовый</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-c" style="background:#5e9640" title="Оливковый" data-ref="дресскод/1х1 женский образ оливковый.png"></div>
-                        <span>Оливковый</span>
+                        <span data-i18n="dc.olive">Оливковый</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-c" style="background:#184A00" title="Зелёный" data-ref="дресскод/1х1 образ зелёный.png"></div>
-                        <span>Зелёный</span>
+                        <span data-i18n="dc.green">Зелёный</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-c" style="background:#DEB192" title="Бежевый" data-ref="дресскод/1х1 образ бежевый.png"></div>
-                        <span>Бежевый</span>
+                        <span data-i18n="dc.beige">Бежевый</span>
                     </div>
                     <div class="swatch">
                         <div class="swatch-c" style="background:#F5DBBB" title="Песочный" data-ref="дресскод/1х1 образ песочный.png"></div>
-                        <span>Песочный</span>
+                        <span data-i18n="dc.sand">Песочный</span>
                     </div>
                 </div>
             </div>
@@ -1879,30 +1922,30 @@
                             <div class="dc-card-sections">
                                 <div class="dc-section">
                                     <div class="dc-section-title">
-                                        <span class="dc-icon" aria-hidden="true">👗</span> Дамы
+                                        <span class="dc-icon" aria-hidden="true">👗</span> <span data-i18n="dc.ladies">Дамы</span>
                                     </div>
                                     <ul class="dc-list">
-                                        <li><span>Вечернее или коктейльное платье</span></li>
-                                        <li><span>Элегантный брючный костюм</span></li>
-                                        <li><span>Оттенки из палитры бренда</span></li>
-                                        <li><span>Удобная обувь — будем танцевать!</span></li>
+                                        <li><span data-i18n="dc.l1">Вечернее или коктейльное платье</span></li>
+                                        <li><span data-i18n="dc.l2">Элегантный брючный костюм</span></li>
+                                        <li><span data-i18n="dc.l3">Оттенки из палитры бренда</span></li>
+                                        <li><span data-i18n="dc.l4">Удобная обувь — будем танцевать!</span></li>
                                     </ul>
-                                    <div class="dc-notice">
+                                    <div class="dc-notice" data-i18n-html="dc.notice_l">
                                         <strong>Просьба:</strong> чисто белый и айвори — только для невесты. Спасибо за понимание!
                                     </div>
                                 </div>
                                 <div class="dc-section">
                                     <div class="dc-section-title">
-                                        <span class="dc-icon" aria-hidden="true">🤵</span> Джентльмены
+                                        <span class="dc-icon" aria-hidden="true">🤵</span> <span data-i18n="dc.gents">Джентльмены</span>
                                     </div>
                                     <ul class="dc-list">
-                                        <li><span>Классический костюм-двойка или тройка</span></li>
-                                        <li><span>Смокинг приветствуется</span></li>
-                                        <li><span>Оттенки зелёного, бежевого, розового</span></li>
-                                        <li><span>Галстук или галстук-бабочка</span></li>
-                                        <li><span>Классические оксфорды или дерби</span></li>
+                                        <li><span data-i18n="dc.g1">Классический костюм-двойка или тройка</span></li>
+                                        <li><span data-i18n="dc.g2">Смокинг приветствуется</span></li>
+                                        <li><span data-i18n="dc.g3">Оттенки зелёного, бежевого, розового</span></li>
+                                        <li><span data-i18n="dc.g4">Галстук или галстук-бабочка</span></li>
+                                        <li><span data-i18n="dc.g5">Классические оксфорды или дерби</span></li>
                                     </ul>
-                                    <div class="dc-notice">
+                                    <div class="dc-notice" data-i18n-html="dc.notice_g">
                                         <strong>Просьба:</strong> полностью чёрный наряд не приветствуется — добавьте акцент в палитре бренда.
                                     </div>
                                 </div>
@@ -1951,20 +1994,20 @@
     <div class="gifts-bg" aria-hidden="true"></div>
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Подарки</span>
-            <h2>Вишлист</h2>
+            <span class="label" data-i18n="gifts.label">Подарки</span>
+            <h2 data-i18n="gifts.heading">Вишлист</h2>
         </div>
         <div class="gift-main reveal">
             <span class="gift-env" aria-hidden="true">💌</span>
-            <h3>Денежный конверт</h3>
-            <p>Самым желанным подарком для нас будет ваше присутствие и тёплые слова.
+            <h3 data-i18n="gifts.env_h">Денежный конверт</h3>
+            <p data-i18n="gifts.env_p">Самым желанным подарком для нас будет ваше присутствие и тёплые слова.
                Если вы хотите порадовать нас чем-то материальным — денежный конверт станет идеальным выбором.
                Он поможет нам создать уютный семейный дом и воплотить наши мечты.</p>
         </div>
 
         <div class="no-kids reveal" role="note" style="margin-top:1.5rem;">
             <span class="no-kids-ico" aria-hidden="true">🌸</span>
-            <p><strong>Пожалуйста, без цветов!</strong> Сразу после свадьбы мы отправляемся
+            <p data-i18n-html="gifts.noflowers">Пожалуйста, без цветов! Сразу после свадьбы мы отправляемся
                в путешествие, и цветы, к сожалению, не дождутся нашего возвращения.
                Лучший подарок — ваше присутствие и тёплые слова!</p>
         </div>
@@ -1976,10 +2019,10 @@
 <section id="rsvp">
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Анкета гостя</span>
-            <h2>Подтвердите участие</h2>
-            <div class="rsvp-deadline reveal" role="note">
-                ⏰&nbsp; Дедлайн для ответа: <strong>22 июля 2026</strong>
+            <span class="label" data-i18n="rsvp.label">Анкета гостя</span>
+            <h2 data-i18n="rsvp.heading">Подтвердите участие</h2>
+            <div class="rsvp-deadline reveal" role="note" data-i18n-html="rsvp.deadline">
+                ⏰&nbsp; Просим вас подтвердить участие до: <strong>22 июля 2026</strong>
             </div>
         </div>
 
@@ -1987,21 +2030,21 @@
             <form id="rsvpForm" novalidate>
                 <!-- ФИО -->
                 <div class="form-group">
-                    <label class="form-label" for="fullName">Ваше имя и фамилия *</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Иванова Мария Ивановна" required autocomplete="name">
+                    <label class="form-label" for="fullName" data-i18n="rsvp.name_lbl">Ваше имя и фамилия *</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Иванова Мария Ивановна" data-i18n-placeholder="rsvp.name_ph" required autocomplete="name">
                 </div>
 
                 <!-- Присутствие -->
                 <div class="form-group">
-                    <span class="form-label">Вы придёте на свадьбу? *</span>
+                    <span class="form-label" data-i18n="rsvp.attend_lbl">Вы придёте на свадьбу? *</span>
                     <div class="radio-group" role="radiogroup" aria-label="Присутствие">
                         <label>
                             <input type="radio" name="attendance" value="yes" required>
-                            <span>🥂&nbsp; Да, обязательно буду!</span>
+                            <span data-i18n="rsvp.yes">🥂&nbsp; Да, обязательно буду!</span>
                         </label>
                         <label>
                             <input type="radio" name="attendance" value="no">
-                            <span>😔&nbsp; К сожалению, не смогу</span>
+                            <span data-i18n="rsvp.no">😔&nbsp; К сожалению, не смогу</span>
                         </label>
                     </div>
                 </div>
@@ -2010,19 +2053,19 @@
                 <div id="rsvpYesBlock" style="display:none;">
                     <!-- Трансфер -->
                     <div class="form-group">
-                        <span class="form-label">Как вы планируете добраться? *</span>
+                        <span class="form-label" data-i18n="rsvp.transport_lbl">Как вы планируете добраться? *</span>
                         <div class="no-kids" style="margin-bottom:0.75rem;">
                             <span class="no-kids-ico">🚌</span>
-                            <p>Мы организуем <strong>трансфер</strong> для гостей. Если хотите воспользоваться — укажите ниже, и мы свяжемся с вами с деталями.</p>
+                            <p data-i18n="rsvp.transport_info">Мы организуем <strong>трансфер</strong> для гостей. Если хотите воспользоваться — укажите ниже, и мы свяжемся с вами с деталями.</p>
                         </div>
                         <div class="radio-group" role="radiogroup" aria-label="Способ прибытия">
                             <label>
                                 <input type="radio" name="transport" value="own_car">
-                                <span>🚗&nbsp; На своей машине</span>
+                                <span data-i18n="rsvp.own_car">🚗&nbsp; На своей машине</span>
                             </label>
                             <label>
                                 <input type="radio" name="transport" value="transfer">
-                                <span>🚌&nbsp; Воспользуюсь организованным трансфером</span>
+                                <span data-i18n="rsvp.transfer">🚌&nbsp; Воспользуюсь организованным трансфером</span>
                             </label>
                         </div>
                     </div>
@@ -2031,47 +2074,46 @@
 
                     <!-- Напитки -->
                     <div class="form-group">
-                        <span class="form-label">Предпочтения по напиткам</span>
+                        <span class="form-label" data-i18n="rsvp.drinks_lbl">Предпочтения по напиткам</span>
                         <div class="check-group drinks-grid" role="group" aria-label="Выбор напитков">
-                            <label><input type="checkbox" name="drinks" value="champagne"><span>🥂&nbsp; Шампанское</span></label>
-                            <label><input type="checkbox" name="drinks" value="wine_red"><span>🍷&nbsp; Вино красное</span></label>
-                            <label><input type="checkbox" name="drinks" value="wine_white"><span>🍾&nbsp; Вино белое</span></label>
-                            <label><input type="checkbox" name="drinks" value="beer"><span>🍺&nbsp; Пиво</span></label>
-                            <label><input type="checkbox" name="drinks" value="cocktails"><span>🍹&nbsp; Коктейли</span></label>
-                            <label><input type="checkbox" name="drinks" value="soft"><span>🧃&nbsp; Сок / Безалкогольное</span></label>
-                            <label class="drinks-other-label"><input type="checkbox" name="drinks" value="other" id="drinksOther"><span>✏️&nbsp; Другое</span></label>
+                            <label><input type="checkbox" name="drinks" value="champagne"><span data-i18n="rsvp.champagne">🥂&nbsp; Шампанское</span></label>
+                            <label><input type="checkbox" name="drinks" value="wine_red"><span data-i18n="rsvp.wine_red">🍷&nbsp; Вино красное</span></label>
+                            <label><input type="checkbox" name="drinks" value="wine_white"><span data-i18n="rsvp.wine_white">🍾&nbsp; Вино белое</span></label>
+                            <label><input type="checkbox" name="drinks" value="beer"><span data-i18n="rsvp.beer">🍺&nbsp; Пиво</span></label>
+                            <label><input type="checkbox" name="drinks" value="cocktails"><span data-i18n="rsvp.cocktails">🍹&nbsp; Коктейли</span></label>
+                            <label><input type="checkbox" name="drinks" value="soft"><span data-i18n="rsvp.soft">🧃&nbsp; Сок / Безалкогольное</span></label>
+                            <label class="drinks-other-label"><input type="checkbox" name="drinks" value="other" id="drinksOther"><span data-i18n="rsvp.other">✏️&nbsp; Другое</span></label>
                         </div>
-                        <input type="text" id="drinksOtherText" name="drinksOtherText" placeholder="Кстати, будет самогон, но вы не стесняйтесь, пишите" style="display:none; margin-top:0.6rem;">
+                        <input type="text" id="drinksOtherText" name="drinksOtherText" placeholder="Кстати, будет самогон, но вы не стесняйтесь, пишите" data-i18n-placeholder="rsvp.other_ph" style="display:none; margin-top:0.6rem;">
                     </div>
 
                     <hr class="divider">
 
                     <!-- Нет детей -->
-                    <div class="no-kids" role="note">
-                        <span class="no-kids-ico" aria-hidden="true">👶</span>
-                        <p><strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!</p>
+                    <div class="no-kids" role="note" data-i18n-html="rsvp.nokids">
+                        <strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!
                     </div>
                 </div>
 
                 <!-- Комментарий (всегда виден) -->
                 <div class="form-group">
-                    <label class="form-label" for="comment">Комментарий / пожелания</label>
-                    <textarea id="comment" name="comment" placeholder="Аллергии, особые пожелания или просто тёплые слова..."></textarea>
+                    <label class="form-label" for="comment" data-i18n="rsvp.comment_lbl">Комментарий / пожелания</label>
+                    <textarea id="comment" name="comment" placeholder="Аллергии, особые пожелания или просто тёплые слова..." data-i18n-placeholder="rsvp.comment_ph"></textarea>
                 </div>
 
                 <!-- Соглашения -->
                 <div class="consents" role="group" aria-label="Согласия">
                     <label id="readInviteLabel">
                         <input type="checkbox" id="readInvite" name="readInvite" required>
-                        <span>Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей, без цветов и программа мероприятия *</span>
+                        <span data-i18n="rsvp.consent_read">Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей, без цветов и программа мероприятия *</span>
                     </label>
                     <label>
                         <input type="checkbox" id="dataConsent" name="dataConsent" required>
-                        <span>Я даю согласие на обработку персональных данных в целях организации мероприятия *</span>
+                        <span data-i18n="rsvp.consent_data">Я даю согласие на обработку персональных данных в целях организации мероприятия *</span>
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-green btn-submit">
+                <button type="submit" class="btn btn-green btn-submit" data-i18n="rsvp.submit">
                     Отправить ответ ✉️
                 </button>
             </form>
@@ -2079,8 +2121,8 @@
             <!-- Success -->
             <div class="form-success" id="formSuccess" role="status" aria-live="polite">
                 <span class="suc-ico" aria-hidden="true">💐</span>
-                <h3>Спасибо!</h3>
-                <p id="successMsg">Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день!</p>
+                <h3 data-i18n="rsvp.thanks">Спасибо!</h3>
+                <p id="successMsg" data-i18n="rsvp.success">Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день!</p>
             </div>
         </div>
     </div>
@@ -2090,32 +2132,32 @@
 <section id="contacts">
     <div class="container">
         <div class="sec-header reveal">
-            <span class="label">Связь</span>
-            <h2>Контакты</h2>
+            <span class="label" data-i18n="cont.label">Связь</span>
+            <h2 data-i18n="cont.heading">Контакты</h2>
         </div>
-        <p class="sub">Есть вопросы? Свяжитесь с организатором или вступайте в свадебный чат!</p>
+        <p class="sub" data-i18n="cont.sub">Есть вопросы? Свяжитесь с организатором или вступайте в свадебный чат!</p>
 
         <div class="contact-grid">
             <div class="contact-card reveal">
                 <div class="contact-card-ico" aria-hidden="true">👩‍💼</div>
-                <h3>Алина</h3>
-                <span class="contact-role">Организатор свадьбы</span>
+                <h3 data-i18n="cont.alina">Алина</h3>
+                <span class="contact-role" data-i18n="cont.role_org">Организатор свадьбы</span>
                 <div class="contact-detail">📞 <a href="tel:+79523122505">+7 952 312-25-05</a></div>
                 <div class="contact-detail">✈️ <a href="https://t.me/alinalukiyanova" target="_blank" rel="noopener noreferrer">@alinalukiyanova</a></div>
             </div>
             <div class="contact-card reveal">
                 <div class="contact-card-ico" aria-hidden="true">💑</div>
-                <h3>Молодожёны</h3>
-                <span class="contact-role">Жених &amp; Невеста</span>
-                <div class="contact-detail">🤵 <a href="https://t.me/mxkalex" target="_blank" rel="noopener noreferrer">@mxkalex (жених)</a></div>
-                <div class="contact-detail">👰 <a href="https://t.me/mak_nast" target="_blank" rel="noopener noreferrer">@mak_nast (невеста)</a></div>
+                <h3 data-i18n="cont.couple">Молодожёны</h3>
+                <span class="contact-role" data-i18n="cont.role_couple">Жених &amp; Невеста</span>
+                <div class="contact-detail">🤵 <a href="https://t.me/mxkalex" target="_blank" rel="noopener noreferrer" data-i18n="cont.groom_link">@mxkalex (жених)</a></div>
+                <div class="contact-detail">👰 <a href="https://t.me/mak_nast" target="_blank" rel="noopener noreferrer" data-i18n="cont.bride_link">@mak_nast (невеста)</a></div>
             </div>
         </div>
 
         <div class="tg-cta reveal">
-            <h3>Свадебный чат</h3>
-            <p>Вступите в наш Telegram-чат, чтобы быть в курсе новостей, общаться с гостями и получать обновления</p>
-            <a href="https://t.me/+T_9RkXi6uXw5MDky" target="_blank" rel="noopener noreferrer" class="btn btn-tg">
+            <h3 data-i18n="cont.chat_h">Свадебный чат</h3>
+            <p data-i18n="cont.chat_p">Вступите в наш Telegram-чат, чтобы быть в курсе новостей, общаться с гостями и получать обновления</p>
+            <a href="https://t.me/+T_9RkXi6uXw5MDky" target="_blank" rel="noopener noreferrer" class="btn btn-tg" data-i18n="cont.chat_btn">
                 ✈️&nbsp; Вступить в чат
             </a>
         </div>
@@ -2125,55 +2167,55 @@
 <!-- ═══════════════════════════════════════ FOOTER ══════════════════════════════════ -->
 <footer>
     <div class="footer-countdown reveal" aria-label="Обратный отсчёт до свадьбы">
-        <span class="cd-lbl">До свадьбы осталось</span>
+        <span class="cd-lbl" data-i18n="ft.cd_label">До свадьбы осталось</span>
         <div class="cd-units">
             <div class="cd-unit">
                 <span class="cd-num" id="cd-days">—</span>
-                <div class="cd-unit-lbl">дней</div>
+                <div class="cd-unit-lbl" data-i18n="ft.days">дней</div>
             </div>
             <div class="cd-sep" aria-hidden="true">:</div>
             <div class="cd-unit">
                 <span class="cd-num" id="cd-hours">—</span>
-                <div class="cd-unit-lbl">часов</div>
+                <div class="cd-unit-lbl" data-i18n="ft.hours">часов</div>
             </div>
             <div class="cd-sep" aria-hidden="true">:</div>
             <div class="cd-unit">
                 <span class="cd-num" id="cd-minutes">—</span>
-                <div class="cd-unit-lbl">минут</div>
+                <div class="cd-unit-lbl" data-i18n="ft.minutes">минут</div>
             </div>
             <div class="cd-sep" aria-hidden="true">:</div>
             <div class="cd-unit">
                 <span class="cd-num" id="cd-seconds">—</span>
-                <div class="cd-unit-lbl">секунд</div>
+                <div class="cd-unit-lbl" data-i18n="ft.seconds">секунд</div>
             </div>
         </div>
         <div class="cal-wrap">
             <button class="cal-btn" id="calBtn" aria-label="Сохранить дату свадьбы в календарь">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-                Сохранить в календарь
+                <span data-i18n="ft.cal_btn">Сохранить в календарь</span>
             </button>
         </div>
     </div>
 
     <div class="footer-main">
         <div>
-            <div class="footer-brand-name">Александр &amp; Анастасия</div>
-            <p>22 августа 2026<br>Зелёная усадьба,<br>д. Кадикасы, Чувашская Республика</p>
+            <div class="footer-brand-name" data-i18n="ft.brand">Александр &amp; Анастасия</div>
+            <p data-i18n-html="ft.address">22 августа 2026<br>Зелёная усадьба,<br>д. Кадикасы, Чувашская Республика</p>
         </div>
         <nav class="footer-col" aria-label="Навигация в футере">
-            <h4>Навигация</h4>
+            <h4 data-i18n="ft.nav">Навигация</h4>
             <ul>
-                <li><a href="#details">Место и время</a></li>
-                <li><a href="#program">Программа</a></li>
-                <li><a href="#dresscode">Дресс-код</a></li>
-                <li><a href="#gifts">Подарки</a></li>
-                <li><a href="#music">Музыка</a></li>
-                <li><a href="#rsvp">Участие</a></li>
-                <li><a href="#contacts">Контакты</a></li>
+                <li><a href="#details" data-i18n="ft.nav.details">Место и время</a></li>
+                <li><a href="#program" data-i18n="ft.nav.program">Программа</a></li>
+                <li><a href="#dresscode" data-i18n="ft.nav.dresscode">Дресс-код</a></li>
+                <li><a href="#gifts" data-i18n="ft.nav.gifts">Подарки</a></li>
+                <li><a href="#music" data-i18n="ft.nav.music">Музыка</a></li>
+                <li><a href="#rsvp" data-i18n="ft.nav.rsvp">Участие</a></li>
+                <li><a href="#contacts" data-i18n="ft.nav.contacts">Контакты</a></li>
             </ul>
         </nav>
         <div class="footer-col">
-            <h4>Молодожёны</h4>
+            <h4 data-i18n="ft.couple">Молодожёны</h4>
             <div class="social-links">
                 <a href="https://t.me/mxkalex" target="_blank" rel="noopener noreferrer" class="social-link">
                     <span class="social-ico" aria-hidden="true">✈️</span> @mxkalex
@@ -2182,49 +2224,49 @@
                     <span class="social-ico" aria-hidden="true">✈️</span> @mak_nast
                 </a>
                 <a href="https://t.me/+T_9RkXi6uXw5MDky" target="_blank" rel="noopener noreferrer" class="social-link">
-                    <span class="social-ico" aria-hidden="true">💬</span> Свадебный чат
+                    <span class="social-ico" aria-hidden="true">💬</span> <span data-i18n="ft.chat">Свадебный чат</span>
                 </a>
             </div>
         </div>
     </div>
 
     <div class="footer-bottom">
-        <p>© 2026 Александр &amp; Анастасия — сделано с <span style="color:var(--pink)">♥</span></p>
-        <p>22.08.2026 · Зелёная усадьба</p>
+        <p data-i18n="ft.copy">© 2026 Александр &amp; Анастасия — сделано с <span style="color:var(--pink)">♥</span></p>
+        <p data-i18n="ft.venue">22.08.2026 · Зелёная усадьба</p>
     </div>
 </footer>
 
 <!-- ═══════════════════════════════════ MINI PLAYER ═══════════════════════════════ -->
 <div id="miniPlayer" class="mp-bar" aria-label="Мини-плеер" role="region">
-    <button class="mp-avatar" id="mpAvatar" type="button" aria-label="Переключить плейлист">
+    <button class="mp-avatar" id="mpAvatar" type="button" data-i18n-aria="aria.switch_pl">
         <img class="mp-avatar-img" id="mpAvatarImg" src="плейлист/аватарки для плейлиста/wifey.jpg" alt="Невеста">
     </button>
     <div class="mp-info">
-        <span class="mp-playlist-label" id="mpPlaylistLabel">Невеста</span>
+        <span class="mp-playlist-label" id="mpPlaylistLabel" data-i18n="mp.bride">Невеста</span>
         <div class="mp-title" id="mpTitle" aria-live="polite">Выберите трек</div>
         <div class="mp-progress-bar" id="mpProgressBar">
             <div class="mp-progress-fill" id="mpProgressFill"></div>
         </div>
     </div>
     <div class="mp-controls">
-        <button class="mp-btn mp-btn--prev" id="mpPrev" type="button" aria-label="Предыдущий трек">
+        <button class="mp-btn mp-btn--prev" id="mpPrev" type="button" data-i18n-aria="aria.prev">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
         </button>
-        <button class="mp-btn mp-btn--play" id="mpPlay" type="button" aria-label="Воспроизвести">
+        <button class="mp-btn mp-btn--play" id="mpPlay" type="button" data-i18n-aria="aria.play">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mp-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mp-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
         </button>
-        <button class="mp-btn mp-btn--next" id="mpNext" type="button" aria-label="Следующий трек">
+        <button class="mp-btn mp-btn--next" id="mpNext" type="button" data-i18n-aria="aria.next">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
         </button>
     </div>
     <div class="mp-volume">
-        <button class="mp-btn mp-btn--vol" id="mpVolBtn" type="button" aria-label="Громкость">
+        <button class="mp-btn mp-btn--vol" id="mpVolBtn" type="button" data-i18n-aria="aria.volume">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="mpVolIcon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.49 4.49 0 0 0 2.5-3.5zM14 3.23v2.06a7.007 7.007 0 0 1 0 13.42v2.06A9.003 9.003 0 0 0 14 3.23z"/></svg>
         </button>
-        <input type="range" class="mp-vol-slider" id="mpVolSlider" min="0" max="100" value="100" aria-label="Уровень громкости">
+        <input type="range" class="mp-vol-slider" id="mpVolSlider" min="0" max="100" value="100" data-i18n-aria="aria.vol_level">
     </div>
-    <button class="mp-btn mp-btn--close" id="mpClose" type="button" aria-label="Закрыть плеер">
+    <button class="mp-btn mp-btn--close" id="mpClose" type="button" data-i18n-aria="aria.close_player">
         <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
 </div>
@@ -2244,18 +2286,467 @@
 <script>
 'use strict';
 
+/* ── i18n ── */
+let currentLang = localStorage.getItem('wedding-lang') || 'ru';
+
+const TRANSLATIONS = {
+  ru: {
+    // Splash
+    'splash.greeting': 'Дорогой друг!',
+    'splash.sub': 'Мы к тебе с приглашением!',
+    // Nav
+    'nav.logo': 'А & А',
+    'nav.details': 'Место',
+    'nav.program': 'Программа',
+    'nav.dresscode': 'Дресс-код',
+    'nav.gifts': 'Подарки',
+    'nav.music': 'Музыка',
+    'nav.rsvp': 'Участие',
+    'nav.contacts': 'Контакты',
+    // Hero
+    'hero.label': 'Приглашаем вас на свадьбу',
+    'hero.names': 'Александра <span class="hero-amp">&amp;</span> Анастасии',
+    'hero.sub': 'С любовью и нетерпением ждём вас',
+    'hero.day': 'число',
+    'hero.month': 'август',
+    'hero.year': 'год',
+    'hero.btn_rsvp': 'Подтвердить участие',
+    'hero.btn_program': 'Программа дня',
+    // Music
+    'music.label': 'Музыка',
+    'music.heading': 'Включи свой вайб',
+    'music.tab.bride': 'Вайб невесты',
+    'music.tab.groom': 'Вайб жениха',
+    'music.tab.couple': 'Вайб пары',
+    'music.select': 'Выберите трек',
+    // Details
+    'details.label': 'Детали события',
+    'details.heading': 'Дата, время и место',
+    'details.date_h': 'Дата и время',
+    'details.date_p': 'Суббота, <strong>22 августа 2026</strong><br>Сбор гостей с <strong>15:30</strong><br>Начало церемонии в <strong>16:00</strong>',
+    'details.place_h': 'Место',
+    'details.place_p': '<strong>Зелёная усадьба</strong><br>Чувашская Республика,<br>д. Кадикасы, ул. Пушкина, 33',
+    'details.how_h': 'Как добраться',
+    'details.how_p': 'Откройте маршрут в удобном приложении — мы будем вас ждать!',
+    // Program
+    'prog.label': '22 августа 2026',
+    'prog.heading': 'Программа дня',
+    'prog.t1_time': '15:30 — 16:00',
+    'prog.t1_h': 'Сбор гостей',
+    'prog.t1_p': 'Встречаем дорогих гостей, наслаждаемся аперитивом и приятной атмосферой перед торжеством',
+    'prog.t2_time': '16:00 — 17:00',
+    'prog.t2_h': 'Выездная церемония',
+    'prog.t2_p': 'Обмен клятвами и кольцами под открытым небом, совместная фотосессия с любимыми гостями',
+    'prog.t3_time': '17:00 — 22:00',
+    'prog.t3_h': 'Банкет',
+    'prog.t3_p': 'Праздничный ужин, тосты, живая музыка и танцы в кругу самых близких людей',
+    // Dresscode
+    'dc.label': 'Внешний вид',
+    'dc.heading': 'Дресс-код',
+    'dc.style': 'Вечерний / торжественный стиль',
+    'dc.p1': 'Мы будем рады, если вы выберете наряд в духе нашего торжества — элегантный и праздничный.',
+    'dc.p2': 'Предпочтительны оттенки из нашей цветовой палитры: нежный розовый, глубокий зелёный и тёплый бежевый.',
+    'dc.powder': 'Пудровый',
+    'dc.pink': 'Розовый',
+    'dc.olive': 'Оливковый',
+    'dc.green': 'Зелёный',
+    'dc.beige': 'Бежевый',
+    'dc.sand': 'Песочный',
+    'dc.ladies': 'Дамы',
+    'dc.l1': 'Вечернее или коктейльное платье',
+    'dc.l2': 'Элегантный брючный костюм',
+    'dc.l3': 'Оттенки из палитры бренда',
+    'dc.l4': 'Удобная обувь — будем танцевать!',
+    'dc.notice_l': '<strong>Просьба:</strong> чисто белый и айвори — только для невесты. Спасибо за понимание!',
+    'dc.gents': 'Джентльмены',
+    'dc.g1': 'Классический костюм-двойка или тройка',
+    'dc.g2': 'Смокинг приветствуется',
+    'dc.g3': 'Оттенки зелёного, бежевого, розового',
+    'dc.g4': 'Галстук или галстук-бабочка',
+    'dc.g5': 'Классические оксфорды или дерби',
+    'dc.notice_g': '<strong>Просьба:</strong> полностью чёрный наряд не приветствуется — добавьте акцент в палитре бренда.',
+    // Gifts
+    'gifts.label': 'Подарки',
+    'gifts.heading': 'Вишлист',
+    'gifts.env_h': 'Денежный конверт',
+    'gifts.env_p': 'Самым желанным подарком для нас будет ваше присутствие и тёплые слова. Если вы хотите порадовать нас чем-то материальным — денежный конверт станет идеальным выбором. Он поможет нам создать уютный семейный дом и воплотить наши мечты.',
+    'gifts.noflowers': '<strong>Пожалуйста, без цветов!</strong> Сразу после свадьбы мы отправляемся в путешествие, и цветы, к сожалению, не дождутся нашего возвращения. Лучший подарок — ваше присутствие и тёплые слова!',
+    // RSVP
+    'rsvp.label': 'Анкета гостя',
+    'rsvp.heading': 'Подтвердите участие',
+    'rsvp.deadline': '⏰\u00a0 Просим вас подтвердить участие до: <strong>22 июля 2026</strong>',
+    'rsvp.name_lbl': 'Ваше имя и фамилия *',
+    'rsvp.name_ph': 'Иванова Мария Ивановна',
+    'rsvp.attend_lbl': 'Вы придёте на свадьбу? *',
+    'rsvp.yes': '🥂\u00a0 Да, обязательно буду!',
+    'rsvp.no': '😔\u00a0 К сожалению, не смогу',
+    'rsvp.transport_lbl': 'Как вы планируете добраться? *',
+    'rsvp.transport_info': 'Мы организуем <strong>трансфер</strong> для гостей. Если хотите воспользоваться — укажите ниже, и мы свяжемся с вами с деталями.',
+    'rsvp.own_car': '🚗\u00a0 На своей машине',
+    'rsvp.transfer': '🚌\u00a0 Воспользуюсь организованным трансфером',
+    'rsvp.drinks_lbl': 'Предпочтения по напиткам',
+    'rsvp.champagne': '🥂\u00a0 Шампанское',
+    'rsvp.wine_red': '🍷\u00a0 Вино красное',
+    'rsvp.wine_white': '🍾\u00a0 Вино белое',
+    'rsvp.beer': '🍺\u00a0 Пиво',
+    'rsvp.cocktails': '🍹\u00a0 Коктейли',
+    'rsvp.soft': '🧃\u00a0 Сок / Безалкогольное',
+    'rsvp.other': '✏️\u00a0 Другое',
+    'rsvp.other_ph': 'Кстати, будет самогон, но вы не стесняйтесь, пишите',
+    'rsvp.nokids': '<strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!',
+    'rsvp.comment_lbl': 'Комментарий / пожелания',
+    'rsvp.comment_ph': 'Аллергии, особые пожелания или просто тёплые слова...',
+    'rsvp.consent_read': 'Я прочитал(-а) приглашение и ознакомился(-ась) со всеми условиями: дресс-код, отсутствие детей, без цветов и программа мероприятия *',
+    'rsvp.consent_data': 'Я даю согласие на обработку персональных данных в целях организации мероприятия *',
+    'rsvp.submit': 'Отправить ответ ✉️',
+    'rsvp.thanks': 'Спасибо!',
+    'rsvp.success': 'Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день!',
+    // Contacts
+    'cont.label': 'Связь',
+    'cont.heading': 'Контакты',
+    'cont.sub': 'Есть вопросы? Свяжитесь с организатором или вступайте в свадебный чат!',
+    'cont.alina': 'Алина',
+    'cont.role_org': 'Организатор свадьбы',
+    'cont.couple': 'Молодожёны',
+    'cont.role_couple': 'Жених & Невеста',
+    'cont.groom_link': '@mxkalex (жених)',
+    'cont.bride_link': '@mak_nast (невеста)',
+    'cont.chat_h': 'Свадебный чат',
+    'cont.chat_p': 'Вступите в наш Telegram-чат, чтобы быть в курсе новостей, общаться с гостями и получать обновления',
+    'cont.chat_btn': '✈️\u00a0 Вступить в чат',
+    // Footer
+    'ft.cd_label': 'До свадьбы осталось',
+    'ft.days': 'дней',
+    'ft.hours': 'часов',
+    'ft.minutes': 'минут',
+    'ft.seconds': 'секунд',
+    'ft.cal_btn': 'Сохранить в календарь',
+    'ft.brand': 'Александр & Анастасия',
+    'ft.address': '22 августа 2026<br>Зелёная усадьба,<br>д. Кадикасы, Чувашская Республика',
+    'ft.nav': 'Навигация',
+    'ft.nav.details': 'Место и время',
+    'ft.nav.program': 'Программа',
+    'ft.nav.dresscode': 'Дресс-код',
+    'ft.nav.gifts': 'Подарки',
+    'ft.nav.music': 'Музыка',
+    'ft.nav.rsvp': 'Участие',
+    'ft.nav.contacts': 'Контакты',
+    'ft.couple': 'Молодожёны',
+    'ft.chat': 'Свадебный чат',
+    'ft.copy': '© 2026 Александр & Анастасия — сделано с ♥',
+    'ft.venue': '22.08.2026 · Зелёная усадьба',
+    // Mini-player
+    'mp.bride': 'Невеста',
+    'mp.groom': 'Жених',
+    'mp.couple': 'Вайб пары',
+    // JS strings
+    'js.error.name': 'Пожалуйста, введите ваше имя и фамилию.',
+    'js.error.attend': 'Пожалуйста, укажите, придёте ли вы на свадьбу.',
+    'js.error.invite': 'Пожалуйста, подтвердите, что прочитали приглашение.',
+    'js.error.consent': 'Пожалуйста, дайте согласие на обработку персональных данных.',
+    'js.success.yes': 'Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день! 🥂',
+    'js.success.no': 'Ваш ответ принят. Нам очень жаль, что вы не сможете быть с нами, но мы ценим, что вы нашли время ответить. 💌',
+    'js.submitting': 'Отправляем...',
+    'js.transport.transfer': 'Трансфер',
+    'js.transport.own': 'Своя машина',
+    'js.transport.unset': 'не указано',
+    'js.track_error': 'Не удалось загрузить трек',
+    'js.cal.summary': 'Свадьба Александра и Анастасии',
+    'js.cal.location': 'Зелёная усадьба\\, д. Кадикасы\\, ул. Пушкина 33\\, Чувашская Республика',
+    'js.cal.desc': 'Сбор гостей в 15:30\\nЦеремония в 16:00\\n\\nhttps://mxkalex.github.io/wedding-2026/',
+    'js.cal.alarm': 'Завтра свадьба Александра и Анастасии!',
+    // Aria
+    'aria.nav': 'Основная навигация',
+    'aria.burger': 'Открыть меню',
+    'aria.hero_date': 'Дата свадьбы: 22 августа 2026 года',
+    'aria.playlists': 'Плейлисты',
+    'aria.play': 'Воспроизвести',
+    'aria.pause': 'Пауза',
+    'aria.prev': 'Предыдущий трек',
+    'aria.next': 'Следующий трек',
+    'aria.progress': 'Прогресс воспроизведения',
+    'aria.pl_bride': 'Плейлист Анастасии',
+    'aria.pl_groom': 'Плейлист Александра',
+    'aria.pl_couple': 'Плейлист пары',
+    'aria.attend': 'Присутствие',
+    'aria.transport': 'Способ прибытия',
+    'aria.drinks': 'Выбор напитков',
+    'aria.consents': 'Согласия',
+    'aria.palette': 'Палитра дресс-кода',
+    'aria.prev_slide': 'Предыдущий слайд',
+    'aria.next_slide': 'Следующий слайд',
+    'aria.countdown': 'Обратный отсчёт до свадьбы',
+    'aria.cal_btn': 'Сохранить дату свадьбы в календарь',
+    'aria.ft_nav': 'Навигация в футере',
+    'aria.mini_player': 'Мини-плеер',
+    'aria.switch_pl': 'Переключить плейлист',
+    'aria.volume': 'Громкость',
+    'aria.vol_level': 'Уровень громкости',
+    'aria.close_player': 'Закрыть плеер',
+    'aria.scroll_top': 'Наверх',
+  },
+  zh: {
+    // Splash
+    'splash.greeting': '亲爱的朋友！',
+    'splash.sub': '我们向您发出邀请！',
+    // Nav
+    'nav.logo': 'A & A',
+    'nav.details': '详情',
+    'nav.program': '日程',
+    'nav.dresscode': '着装',
+    'nav.gifts': '礼物',
+    'nav.music': '音乐',
+    'nav.rsvp': '回复',
+    'nav.contacts': '联系',
+    // Hero
+    'hero.label': '诚挚邀请您参加婚礼',
+    'hero.names': '亚历山大 <span class="hero-amp">&amp;</span> 安娜斯塔西娅',
+    'hero.sub': '我们满怀爱意与期待等候您的到来',
+    'hero.day': '日',
+    'hero.month': '八月',
+    'hero.year': '年',
+    'hero.btn_rsvp': '确认出席',
+    'hero.btn_program': '当日日程',
+    // Music
+    'music.label': '音乐',
+    'music.heading': '选择你的氛围',
+    'music.tab.bride': '新娘之选',
+    'music.tab.groom': '新郎之选',
+    'music.tab.couple': '我们的歌',
+    'music.select': '选择曲目',
+    // Details
+    'details.label': '活动详情',
+    'details.heading': '日期、时间和地点',
+    'details.date_h': '日期和时间',
+    'details.date_p': '星期六，<strong>2026年8月22日</strong><br>宾客集合 <strong>15:30</strong><br>仪式开始 <strong>16:00</strong>',
+    'details.place_h': '地点',
+    'details.place_p': '<strong>绿色庄园</strong><br>楚瓦什共和国，<br>卡迪卡塞村，普希金街33号',
+    'details.how_h': '如何到达',
+    'details.how_p': '在您常用的地图应用中打开路线 — 我们将在那里等您！',
+    // Program
+    'prog.label': '2026年8月22日',
+    'prog.heading': '当日日程',
+    'prog.t1_time': '15:30 — 16:00',
+    'prog.t1_h': '宾客集合',
+    'prog.t1_p': '迎接亲爱的来宾，在温馨的氛围中享用餐前饮品',
+    'prog.t2_time': '16:00 — 17:00',
+    'prog.t2_h': '户外婚礼仪式',
+    'prog.t2_p': '在蓝天下交换誓言与戒指，与亲友合影留念',
+    'prog.t3_time': '17:00 — 22:00',
+    'prog.t3_h': '婚宴',
+    'prog.t3_p': '节日晚宴、祝酒、现场音乐与舞蹈，与最亲近的人共度美好时光',
+    // Dresscode
+    'dc.label': '着装要求',
+    'dc.heading': '着装规范',
+    'dc.style': '晚礼服 / 正式风格',
+    'dc.p1': '我们希望您能选择与婚礼氛围相符的着装 — 优雅而喜庆。',
+    'dc.p2': '建议选择我们的色彩方案：柔粉色、深绿色和温暖的米色。',
+    'dc.powder': '粉色',
+    'dc.pink': '玫瑰粉',
+    'dc.olive': '橄榄绿',
+    'dc.green': '深绿',
+    'dc.beige': '米色',
+    'dc.sand': '沙色',
+    'dc.ladies': '女士',
+    'dc.l1': '晚礼服或鸡尾酒裙',
+    'dc.l2': '优雅的裤装套装',
+    'dc.l3': '婚礼色系配色',
+    'dc.l4': '舒适的鞋子 — 我们要跳舞！',
+    'dc.notice_l': '<strong>温馨提示：</strong>纯白色和象牙色仅限新娘穿着。感谢理解！',
+    'dc.gents': '男士',
+    'dc.g1': '经典两件套或三件套西装',
+    'dc.g2': '欢迎穿着燕尾服',
+    'dc.g3': '绿色、米色、粉色色调',
+    'dc.g4': '领带或领结',
+    'dc.g5': '经典牛津鞋或德比鞋',
+    'dc.notice_g': '<strong>温馨提示：</strong>请避免全黑着装 — 请搭配婚礼色系的亮色点缀。',
+    // Gifts
+    'gifts.label': '礼物',
+    'gifts.heading': '心愿单',
+    'gifts.env_h': '红包',
+    'gifts.env_p': '您的到来和温暖的祝福是我们最珍贵的礼物。如果您想送给我们物质上的祝福，红包将是最好的选择。它将帮助我们打造温馨的家，实现我们的梦想。',
+    'gifts.noflowers': '<strong>请不要送花！</strong>婚礼后我们将立即启程旅行，鲜花遗憾无法等到我们归来。最好的礼物是您的到来和温暖的祝福！',
+    // RSVP
+    'rsvp.label': '宾客问卷',
+    'rsvp.heading': '请确认出席',
+    'rsvp.deadline': '⏰\u00a0 请在 <strong>2026年7月22日</strong> 前确认出席',
+    'rsvp.name_lbl': '您的姓名 *',
+    'rsvp.name_ph': '请输入您的全名',
+    'rsvp.attend_lbl': '您会参加婚礼吗？ *',
+    'rsvp.yes': '🥂\u00a0 是的，一定参加！',
+    'rsvp.no': '😔\u00a0 很遗憾，无法参加',
+    'rsvp.transport_lbl': '您打算如何到达？ *',
+    'rsvp.transport_info': '我们为来宾安排了<strong>接送服务</strong>。如需使用请在下方选择，我们将与您联系确认细节。',
+    'rsvp.own_car': '🚗\u00a0 自驾',
+    'rsvp.transfer': '🚌\u00a0 使用接送服务',
+    'rsvp.drinks_lbl': '饮品偏好',
+    'rsvp.champagne': '🥂\u00a0 香槟',
+    'rsvp.wine_red': '🍷\u00a0 红葡萄酒',
+    'rsvp.wine_white': '🍾\u00a0 白葡萄酒',
+    'rsvp.beer': '🍺\u00a0 啤酒',
+    'rsvp.cocktails': '🍹\u00a0 鸡尾酒',
+    'rsvp.soft': '🧃\u00a0 果汁 / 无酒精饮品',
+    'rsvp.other': '✏️\u00a0 其他',
+    'rsvp.other_ph': '顺便说一下，会有伏特加，但请不要客气，随便写',
+    'rsvp.nokids': '<strong>重要提示：</strong>本次婚礼<strong>不接待儿童</strong>。恳请您在安排行程时留意。感谢理解！',
+    'rsvp.comment_lbl': '留言 / 祝福',
+    'rsvp.comment_ph': '过敏信息、特殊需求或温暖的祝福...',
+    'rsvp.consent_read': '我已阅读邀请函并了解所有要求：着装规范、不接待儿童、不送花及活动安排 *',
+    'rsvp.consent_data': '我同意为活动组织目的处理我的个人信息 *',
+    'rsvp.submit': '提交回复 ✉️',
+    'rsvp.thanks': '谢谢！',
+    'rsvp.success': '您的回复已收到。我们很高兴您能在这个特别的日子与我们同在！',
+    // Contacts
+    'cont.label': '联系方式',
+    'cont.heading': '联系我们',
+    'cont.sub': '有问题？请联系婚礼策划人或加入我们的群聊！',
+    'cont.alina': '艾琳娜',
+    'cont.role_org': '婚礼策划',
+    'cont.couple': '新人',
+    'cont.role_couple': '新郎 & 新娘',
+    'cont.groom_link': '@mxkalex (新郎)',
+    'cont.bride_link': '@mak_nast (新娘)',
+    'cont.chat_h': '婚礼群聊',
+    'cont.chat_p': '加入我们的Telegram群聊，获取最新消息、与来宾交流、接收更新通知',
+    'cont.chat_btn': '✈️\u00a0 加入群聊',
+    // Footer
+    'ft.cd_label': '距婚礼还有',
+    'ft.days': '天',
+    'ft.hours': '小时',
+    'ft.minutes': '分钟',
+    'ft.seconds': '秒',
+    'ft.cal_btn': '添加到日历',
+    'ft.brand': '亚历山大 & 安娜斯塔西娅',
+    'ft.address': '2026年8月22日<br>绿色庄园，<br>楚瓦什共和国，卡迪卡塞村',
+    'ft.nav': '导航',
+    'ft.nav.details': '时间地点',
+    'ft.nav.program': '日程',
+    'ft.nav.dresscode': '着装',
+    'ft.nav.gifts': '礼物',
+    'ft.nav.music': '音乐',
+    'ft.nav.rsvp': '回复',
+    'ft.nav.contacts': '联系',
+    'ft.couple': '新人',
+    'ft.chat': '婚礼群聊',
+    'ft.copy': '© 2026 亚历山大 & 安娜斯塔西娅 — 用 ♥ 制作',
+    'ft.venue': '2026.08.22 · 绿色庄园',
+    // Mini-player
+    'mp.bride': '新娘',
+    'mp.groom': '新郎',
+    'mp.couple': '我们的歌',
+    // JS strings
+    'js.error.name': '请输入您的姓名。',
+    'js.error.attend': '请告知您是否能参加婚礼。',
+    'js.error.invite': '请确认您已阅读邀请函。',
+    'js.error.consent': '请同意个人信息处理条款。',
+    'js.success.yes': '您的回复已收到。我们很高兴您能在这个特别的日子与我们同在！🥂',
+    'js.success.no': '您的回复已收到。很遗憾您无法到场，但我们感谢您抽出时间回复。💌',
+    'js.submitting': '提交中...',
+    'js.transport.transfer': '接送服务',
+    'js.transport.own': '自驾',
+    'js.transport.unset': '未选择',
+    'js.track_error': '曲目加载失败',
+    'js.cal.summary': '亚历山大与安娜斯塔西娅的婚礼',
+    'js.cal.location': '绿色庄园\\, 卡迪卡塞村\\, 普希金街33号\\, 楚瓦什共和国',
+    'js.cal.desc': '宾客集合 15:30\\n仪式开始 16:00\\n\\nhttps://mxkalex.github.io/wedding-2026/',
+    'js.cal.alarm': '明天是亚历山大与安娜斯塔西娅的婚礼！',
+    // Aria
+    'aria.nav': '主导航',
+    'aria.burger': '打开菜单',
+    'aria.hero_date': '婚礼日期：2026年8月22日',
+    'aria.playlists': '播放列表',
+    'aria.play': '播放',
+    'aria.pause': '暂停',
+    'aria.prev': '上一曲',
+    'aria.next': '下一曲',
+    'aria.progress': '播放进度',
+    'aria.pl_bride': '新娘播放列表',
+    'aria.pl_groom': '新郎播放列表',
+    'aria.pl_couple': '我们的播放列表',
+    'aria.attend': '出席',
+    'aria.transport': '交通方式',
+    'aria.drinks': '饮品选择',
+    'aria.consents': '同意事项',
+    'aria.palette': '着装色系',
+    'aria.prev_slide': '上一张',
+    'aria.next_slide': '下一张',
+    'aria.countdown': '婚礼倒计时',
+    'aria.cal_btn': '将婚礼日期添加到日历',
+    'aria.ft_nav': '页脚导航',
+    'aria.mini_player': '迷你播放器',
+    'aria.switch_pl': '切换播放列表',
+    'aria.volume': '音量',
+    'aria.vol_level': '音量大小',
+    'aria.close_player': '关闭播放器',
+    'aria.scroll_top': '返回顶部',
+  }
+};
+
+function t(key) {
+    return TRANSLATIONS[currentLang]?.[key] || TRANSLATIONS.ru[key] || key;
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('wedding-lang', lang);
+    document.documentElement.lang = lang;
+    // data-i18n → textContent
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        el.textContent = t(el.dataset.i18n);
+    });
+    // data-i18n-html → innerHTML
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+        el.innerHTML = t(el.dataset.i18nHtml);
+    });
+    // data-i18n-placeholder → placeholder
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+    });
+    // data-i18n-aria → aria-label
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el) {
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+    // Toggle button
+    var btn = document.getElementById('langToggle');
+    if (btn) btn.textContent = lang === 'ru' ? '中文' : 'RU';
+}
+
 /* ── Splash screen ── */
 (function() {
     var splash = document.getElementById('splash');
     if (!splash) return;
     document.body.style.overflow = 'hidden';
+
+    var ruBlock = splash.querySelector('.splash-lang--ru');
+    var zhBlock = splash.querySelector('.splash-lang--zh');
+
+    // Phase 1: Russian shows (0-2s)
+    // Phase 2: Crossfade (2-2.6s)
+    setTimeout(function() {
+        ruBlock.style.opacity = '0';
+        setTimeout(function() {
+            ruBlock.style.display = 'none';
+            zhBlock.style.display = 'block';
+            zhBlock.style.opacity = '0';
+            void zhBlock.offsetWidth;
+            zhBlock.style.opacity = '1';
+            zhBlock.querySelectorAll('.splash-text').forEach(function(el, i) {
+                el.style.animation = 'none';
+                void el.offsetWidth;
+                el.style.animation = 'fadeInUp 0.8s ease forwards';
+                el.style.animationDelay = (i * 0.4) + 's';
+            });
+        }, 600);
+    }, 2000);
+
+    // Phase 3: Fade out (5.5s)
     setTimeout(function() {
         splash.classList.add('fade-out');
         document.body.style.overflow = '';
         splash.addEventListener('transitionend', function() {
             splash.remove();
         });
-    }, 3500);
+    }, 5500);
 })();
 
 /* ── RSVP Backend ────────────────────────────────────────────── */
@@ -2342,13 +2833,13 @@ document.getElementById('calBtn').addEventListener('click', function() {
         'DTSTAMP:' + now,
         'DTSTART:20260822T123000Z',
         'DTEND:20260822T205900Z',
-        'SUMMARY:Свадьба Александра и Анастасии',
-        'LOCATION:Зелёная усадьба\\, д. Кадикасы\\, ул. Пушкина 33\\, Чувашская Республика',
-        'DESCRIPTION:Сбор гостей в 15:30\\nЦеремония в 16:00\\n\\nhttps://mxkalex.github.io/wedding-2026/',
+        'SUMMARY:' + t('js.cal.summary'),
+        'LOCATION:' + t('js.cal.location').replace(/,/g, '\\,'),
+        'DESCRIPTION:' + t('js.cal.desc'),
         'BEGIN:VALARM',
         'TRIGGER:-P1D',
         'ACTION:DISPLAY',
-        'DESCRIPTION:Завтра свадьба Александра и Анастасии!',
+        'DESCRIPTION:' + t('js.cal.alarm'),
         'END:VALARM',
         'END:VEVENT',
         'END:VCALENDAR'
@@ -2402,23 +2893,23 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     const dataCons   = document.getElementById('dataConsent').checked;
 
     if (!name) {
-        showError('Пожалуйста, введите ваше имя и фамилию.');
+        showError(t('js.error.name'));
         document.getElementById('fullName').focus();
         return;
     }
     if (!attendance) {
-        showError('Пожалуйста, укажите, придёте ли вы на свадьбу.');
+        showError(t('js.error.attend'));
         return;
     }
 
     const coming = attendance.value === 'yes';
 
     if (coming && !document.getElementById('readInvite').checked) {
-        showError('Пожалуйста, подтвердите, что прочитали приглашение.');
+        showError(t('js.error.invite'));
         return;
     }
     if (!dataCons) {
-        showError('Пожалуйста, дайте согласие на обработку персональных данных.');
+        showError(t('js.error.consent'));
         return;
     }
 
@@ -2433,17 +2924,15 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     const drinks = drinksList.join(', ');
     const comment = document.getElementById('comment').value.trim();
     const transportLabel = transport
-        ? (transport.value === 'transfer' ? 'Трансфер' : 'Своя машина')
-        : 'не указано';
+        ? (transport.value === 'transfer' ? t('js.transport.transfer') : t('js.transport.own'))
+        : t('js.transport.unset');
 
-    const successMsg = coming
-        ? 'Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день! 🥂'
-        : 'Ваш ответ принят. Нам очень жаль, что вы не сможете быть с нами, но мы ценим, что вы нашли время ответить. 💌';
+    const successMsg = coming ? t('js.success.yes') : t('js.success.no');
 
     var submitBtn = this.querySelector('.btn-submit');
     var originalBtnHTML = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="btn-spinner"></span>Отправляем...';
+    submitBtn.innerHTML = '<span class="btn-spinner"></span>' + t('js.submitting');
 
     var formData = {
         name: name,
@@ -3257,6 +3746,14 @@ function showError(msg) {
     document.getElementById('rsvpForm').prepend(div);
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     setTimeout(() => div.remove(), 5000);
+}
+
+/* ── i18n: Initialize language from localStorage ────────────────── */
+// Restore saved language preference on page load
+// Note: currentLang is already set from localStorage in the declaration above,
+// but we need to update the DOM if it's not Russian
+if (currentLang === 'zh') {
+    setLanguage('zh');
 }
 </script>
 
