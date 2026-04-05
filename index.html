@@ -160,14 +160,16 @@
             margin-left: 0.5rem;
         }
         .lang-toggle:hover {
-            background: var(--green); color: var(--white);
+            background: transparent;
+            border-color: var(--pink); color: var(--pink);
             transform: translateY(-2px);
         }
         @media (max-width: 768px) {
             .lang-toggle {
                 position: fixed; top: 0.85rem; left: 50%; transform: translateX(-50%);
-                z-index: 1001;
+                z-index: 1001; margin-left: 0;
             }
+            .lang-toggle:hover { transform: translateX(-50%); }
         }
 
         /* ============================================================
@@ -2287,6 +2289,10 @@
 <script>
 'use strict';
 
+/* ── Scroll to top on every load/refresh ── */
+if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+window.scrollTo(0, 0);
+
 /* ── i18n ── */
 let currentLang = localStorage.getItem('wedding-lang') || 'ru';
 
@@ -2693,10 +2699,12 @@ function setLanguage(lang) {
     document.documentElement.lang = lang;
     // data-i18n → textContent
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        if (el.closest('#splash')) return; // splash manages its own RU→ZH sequence
         el.textContent = t(el.dataset.i18n);
     });
     // data-i18n-html → innerHTML
     document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+        if (el.closest('#splash')) return;
         el.innerHTML = t(el.dataset.i18nHtml);
     });
     // data-i18n-placeholder → placeholder
