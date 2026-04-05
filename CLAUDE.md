@@ -20,13 +20,13 @@
 
 ```
 project 1/
-├── index.html                        # весь сайт (единый файл, ~3150 строк)
-├── first photo.png                   # фото пары (hero, портретное 759×1139px)
+├── index.html                        # весь сайт (единый файл, ~3760 строк)
+├── first-photo.png                   # фото пары (hero, портретное 759×1139px)
 ├── venue.jpg                         # фото площадки
 ├── CLAUDE.md                         # этот файл
-├── dress_code_background.jpg         # blur-фон секции дресс-кода
-├── Plan_dnya_background.jpg          # blur-фон секции «План дня»
-├── wishlist_background.jpg           # blur-фон секции «Вишлист»
+├── dresscode-background.jpg          # blur-фон секции дресс-кода
+├── program-background.jpg            # blur-фон секции «План дня»
+├── gifts-background.jpg              # blur-фон секции «Вишлист/Подарки»
 ├── maps_logo/                        # логотипы сервисов карт
 │   ├── 2gis.webp
 │   ├── Google_Maps_Logo_2020.svg.png
@@ -34,42 +34,42 @@ project 1/
 ├── music_back_logo/                  # фоны секции музыки (по артисту/треку)
 │   ├── sqwzbab.jpg                   # SQWOZ BAB
 │   ├── tokyo.webp                    # Tokyo Drift
-│   ├── монеточка.jpeg                # Монеточка
-│   ├── русская душа.jpg              # РУССКАЯ ДУША
+│   ├── monetochka.jpeg               # Монеточка
+│   ├── russkaya-dusha.jpg            # РУССКАЯ ДУША
 │   ├── DDT.png                       # ДДТ
-│   ├── Король и Шут.jpg              # КиШ
-│   ├── Фамилия.png                   # Дайте Танк!
+│   ├── korol-i-shut.jpg              # КиШ
+│   ├── familia.png                   # Дайте Танк!
 │   └── PLC.jpg                       # PLC (Вайб пары)
-├── дресскод/                         # визуалы для секции дресс-кода
-│   ├── 1х1 женский образ оливковый.png
-│   ├── 1х1 женский образ розовый.png
-│   ├── 1х1 мужской образ пудровый.png
-│   ├── 1х1 образ бежевый.png
-│   ├── 1х1 образ зелёный.png
-│   ├── 1х1 образ песочный.png
-│   ├── женский образ 1.png           # карусель
-│   ├── женский образ 2.png
-│   ├── мужской образ 1.png
-│   └── мужской образ 2.png
-└── плейлист/
-    ├── аватарки для плейлиста/       # фото для мини-плеера
+├── dresscode/                        # визуалы для секции дресс-кода
+│   ├── 1x1-female-olive.png
+│   ├── 1x1-female-pink.png
+│   ├── 1x1-male-powder.png
+│   ├── 1x1-beige.png
+│   ├── 1x1-green.png
+│   ├── 1x1-sand.png
+│   ├── female-outfit-1.png           # карусель
+│   ├── female-outfit-2.png
+│   ├── male-outfit-1.png
+│   └── male-outfit-2.png
+└── playlist/
+    ├── avatars/                      # фото для мини-плеера
     │   ├── wifey.jpg                 # аватар невесты
     │   ├── husband.jpg               # аватар жениха
     │   └── ourvibe.jpg               # аватар пары
-    ├── невеста/                      # 5 треков (.m4a) — SQWOZ BAB, Монеточка и др.
-    │   ├── SQWOZ BAB – BAZA (Official audio).m4a
-    │   ├── SQWOZ BAB — TOKYO (prod. DJ AUX) (Official audio).m4a
-    │   ├── Tokyo Drift.m4a
-    │   ├── Монеточка - Кис Кис Кис (Live Video 2025).m4a
-    │   └── РУССКАЯ ДУША.m4a
-    ├── общий вайб/                   # трек(и) пары
-    │   └── PLC - Навылет.mp3         # Вайб пары
-    └── жених/                        # 5 треков (.m4a) — Дайте Танк!, ДДТ, КиШ
-        ├── Дайте Танк! — Фамилия.m4a
-        ├── ДДТ - Ваши вещи мертвы (Творчество в пустоте - 2. Аудио).m4a
-        ├── Король и Шут — На краю (Последния ария Тодда).m4a
-        ├── Король и Шут — Паника в селе.m4a
-        └── Король и Шут — Счастье_ (Ария Тодда).m4a
+    ├── bride/                        # 5 треков (.m4a) — SQWOZ BAB, Монеточка и др.
+    │   ├── sqwoz-bab-baza.m4a
+    │   ├── sqwoz-bab-tokyo.m4a
+    │   ├── tokyo-drift.m4a
+    │   ├── monetochka-kis-kis-kis.m4a
+    │   └── russkaya-dusha.m4a
+    ├── couple/                       # трек(и) пары
+    │   └── plc-navylet.mp3           # Вайб пары
+    └── groom/                        # 5 треков (.m4a) — Дайте Танк!, ДДТ, КиШ
+        ├── dayte-tank-familia.m4a
+        ├── ddt-vashi-veshi.m4a
+        ├── korol-i-shut-na-krayu.m4a
+        ├── korol-i-shut-panika.m4a
+        └── korol-i-shut-schaste.m4a
 ```
 
 ---
@@ -82,9 +82,9 @@ project 1/
 | `#hero` | «Приглашаем вас на свадьбу Александра & Анастасии» | gradient green |
 | `#music` | «Включи свой вайб» — аудиоплеер (три плейлиста) | beige-pale + blur фон артиста |
 | `#details` | Дата, время, место, карты (логотипы 2GIS/Яндекс/Google) | white |
-| `#program` | Таймлайн программы дня | gradient green + blur фото (`Plan_dnya_background.jpg`) |
-| `#dresscode` | Дресс-код | beige-pale + blur фото (`dress_code_background.jpg`) |
-| `#gifts` | Подарки (только конверт) | white + blur фото (`wishlist_background.jpg`) |
+| `#program` | Таймлайн программы дня | gradient green + blur фото (`program-background.jpg`) |
+| `#dresscode` | Дресс-код | beige-pale + blur фото (`dresscode-background.jpg`) |
+| `#gifts` | Подарки (только конверт) | white + blur фото (`gifts-background.jpg`) |
 | `#rsvp` | Анкета гостя | pink-light→beige-pale |
 | `#contacts` | Контакты + Telegram-чат | green |
 | `footer` | Обратный отсчёт + «Сохранить в календарь» + навигация | #0d2a00 |
@@ -100,7 +100,7 @@ project 1/
 - **JS IIFE**: блокирует скролл (`overflow: hidden`) на время splash
 
 ### Hero-фото
-- **Фото**: `first photo.png` — портретное (759×1139px), отображается вертикально полностью
+- **Фото**: `first-photo.png` — портретное (759×1139px), отображается вертикально полностью
 - **CSS**: `.hero-photo-wrap` max-width 480px, `.hero-photo` height: auto (no crop), border-radius 20px
 - **Fallback**: `.hero-initials` (инициалы А&А) — скрыт через `display: none`
 
@@ -109,15 +109,15 @@ project 1/
 - **Навигация**: только кнопки `‹ ›` и точки-индикаторы (свайп/drag **убраны**)
 - **Мобильный split**: JS динамически разделяет слайд правил на два (Дамы / Джентльмены) и добавляет 6-ю точку
 - JS IIFE: `#dcTrack`, `#dcPrev`, `#dcNext`, `#dcDots`
-- Все 4 фото-слайда заполнены из `дресскод/{женский,мужской} образ {1,2}.png`
-- **Фон секции**: `.dc-bg` — `dress_code_background.jpg` в blur 40px, opacity 0.25
+- Все 4 фото-слайда заполнены из `dresscode/{female,male}-outfit-{1,2}.png`
+- **Фон секции**: `.dc-bg` — `dresscode-background.jpg` в blur 40px, opacity 0.25
 - **Кнопки**: glassmorphism 44×44px, spring-анимация hover, pill-dot индикаторы (width transition)
 
 ### Попап цветовой палитры (`.swatches`)
 - Desktop: hover на `.swatch-c` → попап рядом со свотчем
 - Mobile: tap → модал с затемнением, tap мимо → закрывается (350ms debounce защита от мгновенного закрытия)
 - JS IIFE: `#swatchPopup`, `#spOverlay`, `#spImg`, `#spPlaceholder`, `#spCaption`
-- Все `data-ref` заполнены из `дресскод/1х1 *.png`
+- Все `data-ref` заполнены из `dresscode/1x1-*.png`
 
 ### RSVP форма (`#rsvp`)
 - Поля: имя, присутствие (да/нет), транспорт, напитки, комментарий
@@ -131,8 +131,8 @@ project 1/
 - **Архитектура**: один `Audio` объект, три состояния (`pState.bride` / `pState.groom` / `pState.couple`), при клике на таб плейлист автоматически начинает играть
 - **CSS**: все классы с префиксом `ap-` (audio player): `.ap-panel`, `.ap-controls`, `.ap-btn--play/prev/next`, `.ap-progress-bar`, `.ap-tracklist`, `.ap-track`, `.ap-eq` (анимированный эквалайзер)
 - **JS IIFE**: `PLAYLISTS` объект с массивами `{ title, src }`, `panels` DOM-кэш, функции `loadTrack()`, `activateTab()`, `seek()`
-- **Файлы**: `плейлист/невеста/*.m4a` (5 шт.), `плейлист/жених/*.m4a` (5 шт.), `плейлист/общий вайб/PLC - Навылет.mp3` (1 шт.)
-- **Кириллица в путях**: `encodePath()` = `split('/').map(encodeURIComponent).join('/')`
+- **Файлы**: `playlist/bride/*.m4a` (5 шт.), `playlist/groom/*.m4a` (5 шт.), `playlist/couple/plc-navylet.mp3` (1 шт.)
+- **Пути латиницей** (переименовано), `encodePath()` всё ещё используется для совместимости
 - **A11y**: WAI-ARIA tablist, `role="slider"` на progress bar с `tabindex="0"` и keyboard seek (±5сек), `aria-live="polite"` на track title, `focus-visible` на всех кнопках, `aria-valuetext` на слайдере
 - **Фон секции**: `.music-bg` (#musicBg) — по умолчанию `ourvibe.jpg` (фото пары) в blur 45px, opacity 0.3. При воспроизведении трека заменяется на фото артиста/группы через `TRACK_BG` маппинг в JS
 - **Play-кнопка**: gradient + pulse ring анимация (`@keyframes playPulse`) при воспроизведении (класс `.playing`)
@@ -158,7 +158,7 @@ project 1/
 ### Вишлист (`#gifts`)
 - Карточки жениха и невесты **удалены**
 - Остался только блок «Денежный конверт»
-- **Фон**: `.gifts-bg` — `wishlist_background.jpg` в blur 40px, opacity 0.2
+- **Фон**: `.gifts-bg` — `gifts-background.jpg` в blur 40px, opacity 0.2
 
 ### «Как добраться» (`#details`)
 - Кнопки 2GIS / Яндекс.Карты / Google Maps с **логотипами** (`.map-btn-logo` 18×18px из `maps_logo/`)
@@ -256,7 +256,7 @@ project 1/
 <meta property="og:type" content="website">
 <meta property="og:title" content="Свадьба Александра & Анастасии · 22.08.2026">
 <meta property="og:description" content="Приглашаем на свадьбу! 22 августа 2026, Зелёная усадьба, Чувашская Республика">
-<meta property="og:image" content="https://mxkalex.github.io/wedding-2026/first%20photo.png">
+<meta property="og:image" content="https://mxkalex.github.io/wedding-2026/first-photo.png">
 <meta property="og:url" content="https://mxkalex.github.io/wedding-2026/">
 <meta property="og:locale" content="ru_RU">
 <link rel="icon" href="data:image/svg+xml,..."> <!-- эмодзи 💍 -->
@@ -266,8 +266,8 @@ project 1/
 
 ## Что ещё не сделано / план
 
-- [x] **Добавить фото** в карусель дресс-кода — готово (`дресскод/*.png`)
-- [x] **Добавить фото** в попапы палитры — готово (`дресскод/1х1 *.png`)
+- [x] **Добавить фото** в карусель дресс-кода — готово (`dresscode/*.png`)
+- [x] **Добавить фото** в попапы палитры — готово (`dresscode/1x1-*.png`)
 - [x] **Подключить RSVP** — Google Apps Script -> Google Sheets + Telegram-уведомление (apps-script.js)
 - [x] **Публикация** — задеплоено на GitHub Pages
 - [x] **OG meta tags** — Telegram/WhatsApp/VK превью
