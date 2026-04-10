@@ -2092,9 +2092,18 @@
 
                     <hr class="divider">
 
+                    <!-- Мессенджер для связи -->
+                    <div class="form-group">
+                        <label class="form-label" for="messenger" data-i18n="rsvp.messenger_lbl">Где с вами связаться? (Кроме MAX) *</label>
+                        <input type="text" id="messenger" name="messenger" placeholder="Telegram @nickname / WeChat ID / WhatsApp +7..." data-i18n-placeholder="rsvp.messenger_ph">
+                    </div>
+
+                    <hr class="divider">
+
                     <!-- Нет детей -->
-                    <div class="no-kids" role="note" data-i18n-html="rsvp.nokids">
-                        <strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!
+                    <div class="no-kids" role="note">
+                        <span class="no-kids-ico">⚠️</span>
+                        <p data-i18n-html="rsvp.nokids"><strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!</p>
                     </div>
                 </div>
 
@@ -2400,6 +2409,8 @@ const TRANSLATIONS = {
     'rsvp.soft': '🧃\u00a0 Сок / Безалкогольное',
     'rsvp.other': '✏️\u00a0 Другое',
     'rsvp.other_ph': 'Кстати, будет самогон, но вы не стесняйтесь, пишите',
+    'rsvp.messenger_lbl': 'Где с вами связаться? (Кроме MAX) *',
+    'rsvp.messenger_ph': 'Telegram @nickname / WeChat ID / WhatsApp +7...',
     'rsvp.nokids': '<strong>Важно:</strong> Наша свадьба проводится <strong>без детей</strong>. Мы с уважением просим учесть это при планировании визита. Спасибо за понимание!',
     'rsvp.comment_lbl': 'Комментарий / пожелания',
     'rsvp.comment_ph': 'Аллергии, особые пожелания или просто тёплые слова...',
@@ -2595,6 +2606,8 @@ const TRANSLATIONS = {
     'rsvp.soft': '🧃\u00a0 果汁 / 无酒精饮品',
     'rsvp.other': '✏️\u00a0 其他',
     'rsvp.other_ph': '顺便说一下，会有伏特加，但请不要客气，随便写',
+    'rsvp.messenger_lbl': '如何联系您？(MAX除外) *',
+    'rsvp.messenger_ph': 'Telegram @nickname / 微信号 / WhatsApp +7...',
     'rsvp.nokids': '<strong>重要提示：</strong>本次婚礼<strong>不接待儿童</strong>。恳请您在安排行程时留意。感谢理解！',
     'rsvp.comment_lbl': '留言 / 祝福',
     'rsvp.comment_ph': '过敏信息、特殊需求或温暖的祝福...',
@@ -2939,6 +2952,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         drinksList.push(otherDrink);
     }
     const drinks = drinksList.join(', ');
+    const messenger = coming ? document.getElementById('messenger').value.trim() : '';
     const comment = document.getElementById('comment').value.trim();
     const transportLabel = transport
         ? (transport.value === 'transfer' ? t('js.transport.transfer') : t('js.transport.own'))
@@ -2956,6 +2970,7 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         attendance: attendance.value,
         transport: transportLabel,
         drinks: drinks || 'не указано',
+        messenger: messenger || 'не указано',
         comment: comment || ''
     };
 
