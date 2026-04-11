@@ -12,7 +12,9 @@
     <meta property="og:image" content="https://mxkalex.github.io/wedding-2026/first-photo.png">
     <meta property="og:url" content="https://mxkalex.github.io/wedding-2026/">
     <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="zh_CN">
     <meta property="og:site_name" content="Свадьба Александра &amp; Анастасии">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
     <link rel="preload" href="./first-photo.png" as="image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,7 +104,7 @@
         }
         #navbar.scrolled {
             background: rgba(255,250,246,0.95);
-            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
             box-shadow: 0 2px 20px rgba(24,74,0,0.07);
         }
         .nav-logo {
@@ -360,7 +362,7 @@
             animation: fadeInUp 0.8s ease 0.85s both;
         }
         .hero-date-part { text-align: center; }
-        .hero-date-num  { font-family: var(--font-h); font-size: 2.1rem; color: var(--green); line-height: 1; }
+        .hero-date-num  { font-family: var(--font-h); font-size: clamp(1.6rem, 5vw, 2.1rem); color: var(--green); line-height: 1; }
         .hero-date-lbl  { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-light); }
         .hero-date-sep  { width: 1px; height: 44px; background: var(--beige); }
 
@@ -1293,7 +1295,7 @@
         input[type="text"], textarea {
             width: 100%; padding: 0.88rem 1.1rem;
             border: 2px solid var(--beige-light); border-radius: 10px;
-            font-family: var(--font-b); font-size: 0.95rem; color: var(--text);
+            font-family: var(--font-b); font-size: 1rem; color: var(--text);
             background: var(--white); outline: none;
             transition: border-color var(--tr), box-shadow var(--tr);
         }
@@ -1599,7 +1601,7 @@
         <li><a href="#rsvp"      onclick="closeNav()" data-i18n="nav.rsvp">Участие</a></li>
         <li><a href="#contacts"  onclick="closeNav()" data-i18n="nav.contacts">Контакты</a></li>
     </ul>
-    <button id="langToggle" class="lang-toggle" type="button" onclick="setLanguage(currentLang === 'ru' ? 'zh' : 'ru')" aria-label="Switch language">中文</button>
+    <button id="langToggle" class="lang-toggle" type="button" onclick="setLanguage(currentLang === 'ru' ? 'zh' : 'ru')" data-i18n-aria="aria.lang_toggle" aria-label="Переключить язык">中文</button>
     <div class="nav-burger" id="navBurger" onclick="toggleNav()" role="button" data-i18n-aria="aria.burger" aria-label="Открыть меню" aria-expanded="false">
         <span></span><span></span><span></span>
     </div>
@@ -1676,14 +1678,14 @@
                 </div>
                 <div class="ap-controls">
                     <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
@@ -1704,14 +1706,14 @@
                 </div>
                 <div class="ap-controls">
                     <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
@@ -1732,14 +1734,14 @@
                 </div>
                 <div class="ap-controls">
                     <button class="ap-btn ap-btn--prev" type="button" data-i18n-aria="aria.prev" aria-label="Предыдущий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--play" type="button" data-i18n-aria="aria.play" aria-label="Воспроизвести">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-play"><polygon points="6,3 20,12 6,21"/></svg>
+                        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="ap-ico-pause" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
                     </button>
                     <button class="ap-btn ap-btn--next" type="button" data-i18n-aria="aria.next" aria-label="Следующий трек">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
                     </button>
                 </div>
                 <div class="ap-progress">
@@ -2087,7 +2089,7 @@
                             <label><input type="checkbox" name="drinks" value="soft"><span data-i18n="rsvp.soft">🧃&nbsp; Сок / Безалкогольное</span></label>
                             <label class="drinks-other-label"><input type="checkbox" name="drinks" value="other" id="drinksOther"><span data-i18n="rsvp.other">✏️&nbsp; Другое</span></label>
                         </div>
-                        <input type="text" id="drinksOtherText" name="drinksOtherText" placeholder="Кстати, будет самогон, но вы не стесняйтесь, пишите" data-i18n-placeholder="rsvp.other_ph" style="display:none; margin-top:0.6rem;">
+                        <input type="text" id="drinksOtherText" name="drinksOtherText" aria-label="Другое (напитки)" placeholder="Кстати, будет самогон, но вы не стесняйтесь, пишите" data-i18n-placeholder="rsvp.other_ph" style="display:none; margin-top:0.6rem;">
                     </div>
 
                     <hr class="divider">
@@ -2110,7 +2112,7 @@
                 <!-- Комментарий (всегда виден) -->
                 <div class="form-group">
                     <label class="form-label" for="comment" data-i18n="rsvp.comment_lbl">Комментарий / пожелания</label>
-                    <textarea id="comment" name="comment" placeholder="Аллергии, особые пожелания или просто тёплые слова..." data-i18n-placeholder="rsvp.comment_ph"></textarea>
+                    <textarea id="comment" name="comment" maxlength="500" placeholder="Аллергии, особые пожелания или просто тёплые слова..." data-i18n-placeholder="rsvp.comment_ph"></textarea>
                 </div>
 
                 <!-- Соглашения -->
@@ -2288,7 +2290,7 @@
 
 <!-- Swatch Popup -->
 <div id="swatchPopup" role="tooltip" aria-hidden="true">
-    <img class="sp-img" id="spImg" src="" alt="">
+    <img class="sp-img" id="spImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
     <div class="sp-img-placeholder" id="spPlaceholder"></div>
     <div class="sp-caption" id="spCaption"></div>
 </div>
@@ -2462,6 +2464,7 @@ const TRANSLATIONS = {
     'js.error.attend': 'Пожалуйста, укажите, придёте ли вы на свадьбу.',
     'js.error.invite': 'Пожалуйста, подтвердите, что прочитали приглашение.',
     'js.error.consent': 'Пожалуйста, дайте согласие на обработку персональных данных.',
+    'js.error.messenger': 'Пожалуйста, укажите, как с вами связаться.',
     'js.success.yes': 'Ваш ответ принят. Мы рады, что вы будете рядом в этот особенный день! 🥂',
     'js.success.no': 'Ваш ответ принят. Нам очень жаль, что вы не сможете быть с нами, но мы ценим, что вы нашли время ответить. 💌',
     'js.submitting': 'Отправляем...',
@@ -2476,6 +2479,7 @@ const TRANSLATIONS = {
     // Aria
     'aria.nav': 'Основная навигация',
     'aria.burger': 'Открыть меню',
+    'aria.lang_toggle': 'Переключить язык',
     'aria.hero_date': 'Дата свадьбы: 22 августа 2026 года',
     'aria.playlists': 'Плейлисты',
     'aria.play': 'Воспроизвести',
@@ -2659,6 +2663,7 @@ const TRANSLATIONS = {
     'js.error.attend': '请告知您是否能参加婚礼。',
     'js.error.invite': '请确认您已阅读邀请函。',
     'js.error.consent': '请同意个人信息处理条款。',
+    'js.error.messenger': '请提供您的联系方式。',
     'js.success.yes': '您的回复已收到。我们很高兴您能在这个特别的日子与我们同在！🥂',
     'js.success.no': '您的回复已收到。很遗憾您无法到场，但我们感谢您抽出时间回复。💌',
     'js.submitting': '提交中...',
@@ -2673,6 +2678,7 @@ const TRANSLATIONS = {
     // Aria
     'aria.nav': '主导航',
     'aria.burger': '打开菜单',
+    'aria.lang_toggle': '切换语言',
     'aria.hero_date': '婚礼日期：2026年8月22日',
     'aria.playlists': '播放列表',
     'aria.play': '播放',
@@ -2768,7 +2774,7 @@ function setLanguage(lang) {
             document.body.style.overflow = '';
             splash.addEventListener('transitionend', function() {
                 splash.remove();
-            });
+            }, { once: true });
         }, 5500);
     }
 
@@ -2827,6 +2833,7 @@ reveals.forEach((el, i) => {
 /* ── Countdown ───────────────────────────────────────────────── */
 function pad(n) { return String(n).padStart(2, '0'); }
 
+let countdownInterval;
 function updateCountdown() {
     const target = new Date('2026-08-22T15:30:00+03:00');
     const diff = target - Date.now();
@@ -2835,6 +2842,7 @@ function updateCountdown() {
         ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach((id, i) => {
             document.getElementById(id).textContent = ['🎊','🎉','💍','🥂'][i];
         });
+        if (countdownInterval) clearInterval(countdownInterval);
         return;
     }
 
@@ -2849,7 +2857,7 @@ function updateCountdown() {
     document.getElementById('cd-seconds').textContent = pad(seconds);
 }
 updateCountdown();
-setInterval(updateCountdown, 1000);
+countdownInterval = setInterval(updateCountdown, 1000);
 
 /* ── Save to Calendar (.ics) ─────────────────────────────────── */
 document.getElementById('calBtn').addEventListener('click', function() {
@@ -2942,6 +2950,11 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
         showError(t('js.error.consent'));
         return;
     }
+    if (coming && !document.getElementById('messenger').value.trim()) {
+        showError(t('js.error.messenger'));
+        document.getElementById('messenger').focus();
+        return;
+    }
 
     const transport = this.querySelector('input[name="transport"]:checked');
     var drinksList = [...this.querySelectorAll('input[name="drinks"]:checked')]
@@ -2993,7 +3006,6 @@ document.getElementById('rsvpForm').addEventListener('submit', function(e) {
     })
     .then(function() { showSuccess(); })
     .catch(function(err) {
-        console.error('RSVP submit error:', err);
         showSuccess();
     })
     .finally(function() {
@@ -3775,7 +3787,8 @@ function showError(msg) {
     div.setAttribute('role', 'alert');
     div.style.cssText = 'background:#fff0f0;border:1.5px solid #e87878;border-radius:10px;padding:.8rem 1.1rem;margin-bottom:1rem;font-size:.88rem;color:#c84040;';
     div.textContent = '⚠️ ' + msg;
-    document.getElementById('rsvpForm').prepend(div);
+    const form = document.getElementById('rsvpForm');
+    if (form) form.prepend(div);
     div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     setTimeout(() => div.remove(), 5000);
 }
