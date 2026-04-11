@@ -144,6 +144,9 @@
             .nav-links.open { transform: none; }
             .nav-links a { font-size: 1rem; }
             .nav-burger { display: flex; }
+            #navbar.scrolled:has(.nav-links.open) {
+                -webkit-backdrop-filter: none; backdrop-filter: none;
+            }
         }
 
         /* ============================================================
